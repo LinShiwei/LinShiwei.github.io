@@ -1,1 +1,7 @@
-{"name":"Linshiwei.GitHub.io","tagline":"","body":"### Welcome to My GitHub Page.\r\nI am now learning Swift language, and have updated several projects I designed in my spare time. Though those projects is simple, it can be helpful to someone who is new to Swift. Because they are designed with Swift 2.0 in Xcode 7 which is newer compared to those reference program online. I hope these will help you in learning Swift.","google":"","note":"Don't delete this file! It's used internally to help with page regeneration."}
+{
+  "name": "Linshiwei.GitHub.io",
+  "tagline": "",
+  "body": "### Welcome to My GitHub Page.\r\nI am now learning Swift language, and have updated several projects I designed in my spare time. Though those projects are simple, it can be helpful to someone who is new to Swift. Because there projects are designed with Swift 2.2 in Xcode 7 which is newer compared to those reference program online. I hope these can be reference projects in learning Swift.",
+  "google": "",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
