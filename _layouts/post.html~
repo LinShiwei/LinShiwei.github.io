@@ -12,6 +12,6 @@ layout: default
     {{ content }}
   </div>
 
-  <h3 style="text-align: center;"><a href="{{ site.baseurl }}/">- to blog -</a></h3>
+  <h3 style="text-align: center;"><a href="{{ site.url }}{{ site.baseurl }}">{{site.url}}- to blog -</a></h3>
 
 </article>
