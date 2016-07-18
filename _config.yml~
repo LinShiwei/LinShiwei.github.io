@@ -6,7 +6,7 @@ description: > # this means to ignore newlines until "baseurl:"
 baseurl: "/linshiwei" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 google_analytics: #your GA unique id, e.g. UA-xxxxxxxx-x
-disqus_username: #Your disqus_username to add comments on the post
+disqus_username: "linshiwei" #Your disqus_username to add comments on the post
 
 # Optional settings
 github: #your github username

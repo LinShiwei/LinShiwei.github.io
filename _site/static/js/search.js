@@ -8,6 +8,6 @@ $(function(){
   SimpleJekyllSearch.init({
     searchInput: document.getElementById('search-input'),
     resultsContainer: document.getElementById('results-container'),
-    dataSource: "/linshiwei/search.json",fuzzy: true}
+    dataSource: "/search.json",fuzzy: true}
   );
 });
