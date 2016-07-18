@@ -1,11 +1,11 @@
 # Site settings
-title: Lin Shiwei
+title: "Lin Shiwei"
 email: linshiweicn@163.com
 description: > # this means to ignore newlines until "baseurl:"
   Welcome to my awesome blog.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
-google_analytics: #your GA unique id, e.g. UA-xxxxxxxx-x
+google_analytics: UA-80935640-1 #your GA unique id, e.g. UA-xxxxxxxx-x
 disqus_username: "linshiwei" #Your disqus_username to add comments on the post
 
 # Optional settings
@@ -19,7 +19,9 @@ facebook:
 google_plus: #gplus id or username
 
 # Build settings
-markdown: redcarpet 
+markdown: kramdown
+kramdown:
+  input: GFM 
 
 sass:
     style: compressed
