@@ -9,7 +9,7 @@ google_analytics: #your GA unique id, e.g. UA-xxxxxxxx-x
 disqus_username: "linshiwei" #Your disqus_username to add comments on the post
 
 # Optional settings
-github: #your github username
+github: "LinShiwei" #your github username
 linkedin: #linkedin username
 twitter:
   username: #twitter username here
@@ -19,7 +19,7 @@ facebook:
 google_plus: #gplus id or username
 
 # Build settings
-markdown: kramdown
+markdown: redcarpet 
 
 sass:
     style: compressed

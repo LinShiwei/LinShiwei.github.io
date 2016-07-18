@@ -20,6 +20,8 @@ google_plus: #gplus id or username
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM 
 
 sass:
     style: compressed
