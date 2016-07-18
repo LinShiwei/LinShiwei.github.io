@@ -10,7 +10,6 @@
         <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
         <nav class="site-nav">
             <div class="trigger">
-		    <a class="page-link" href="https://github.com/{{ site.github }}">View on Github</a>
             {% for page in site.pages %}
                 {% if page.title and page.url != '/404.html' %}
                         <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
