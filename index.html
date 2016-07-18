@@ -2,35 +2,27 @@
 layout: default
 ---
 
-{% for post in paginator.posts %}
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-
-    <div class="main-content" itemprop="articleBody">
-
-  <header class="post-header">
-      <a class="post-link" href="{{ post.url | prepend: site.baseurl }}"><h1 class="post-title" itemprop="name headline">  {{ post.title }}</h1> </a>
-
-  </header>
-
-    {{ post.content }}
-
- <p class="post-meta" style="text-align: right; color: rgb(152,152,152);"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ post.author }}</span></span>{% endif %} • <a href="{{ post.url | prepend: site.baseurl }}">permalink</a></p>
-
-  </div>
-
-</article>
-
-{% endfor %}
-
-<div class="pagination" style="text-align: center;">
-
-  {% if paginator.next_page %}
-    <h2><a href="{{ paginator.next_page_path }}" class="next">- more posts -</a></h2>
-  {% endif %}
-
-  {% if paginator.previous_page %}
-    <h2><a href="{{ paginator.previous_page_path }}" class="previous">- previous page -</a></h2>
-  {% endif %}
-
+<div class="home">
+  <h1 class="page-heading">Posts</h1>
+  <ul class="post-list">
+    {% for post in paginator.posts %}
+      <li>
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <p class="description">
+            {% if post.description %}
+                {{ post.description | strip_html | strip_newlines | truncate: 250 }}
+            {% else %}
+                {{ post.content | strip_html | strip_newlines | truncate: 250 }}
+            {% endif %}</p>
+      </li>
+    {% endfor %}
+  </ul>
 </div>
+{% if paginator.total_pages > 1 %}<!-- Pagination links -->
+  <div class="pagination">
+    {% if paginator.previous_page %} <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}" class="prev">Newer Posts</a> {% endif %}
+    {% if paginator.next_page %} <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="next">Older Posts</a>{% endif %}
+  </div>{% endif %}

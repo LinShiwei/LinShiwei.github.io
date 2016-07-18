@@ -1,16 +1,26 @@
-A [Jekyll](https://jekyllrb.com/) blog template made for simple, readable snippets of your brain drippings.
+# Nangka - theme for jekyll
+Just simple for your jekyll blog, based on default Jekyll theme.
 
-[DEMO](http://adueck.github.io/cayman-blog/)
+### Feature
 
-To get this going follow these simple steps:
+- [x] **Google Analytics**
+- [x] **Jekyll Search on Archive Page**
+- [x] **Pagination**
+- [x] **404 Error Page**
+- [x] **SEO** Gems: *[jekyll-sitemap](https://github.com/jekyll/jekyll-sitemap), [jekyll-seo-tag](https://github.com/jekyll/jekyll-seo-tag), [jekyll-feed](https://github.com/jekyll/jekyll-feed)*
+- [x] **Disqus Comments**
+- [ ] **Share Button**
 
-1. Fork, clone, or download the repository
-2. Edit <code>_config.yml</code>
-3. If you want, swap `img/cover.jpg` for your own header image
-3. Fill up the `_posts` folder with whatever you want to say
-4. run <code>jekyll build</code> and then <code>jekyll serve</code>  
-note: This will require the `jekyll-paginate` gem `$ gem install jekyll-paginate`
+### [View Demo](http://rmsubekti.github.io/nangka)
 
-You can easily host your blog for free on [GitHub Pages](https://pages.github.com/)
+### Run this theme on your local machine
+To serve this theme make sure your computer meets the [following requirements](https://jekyllrb.com/docs/installation/#requirements), and then run this command.
+```
+git clone git@github.com:rmsubekti/nangka.git
+cd nangka
+bundle install
+bundle exec jekyll s
+```
+You can change the site configuration in the [_config.yml](https://github.com/rmsubekti/nangka/blob/gh-pages/_config.yml) file
 
-I made this Jekyll theme by adapting and modifying the [Cayman Theme](https://github.com/jasonlong/cayman-theme) by [Jason Lang](https://github.com/jasonlong), which is licensed under a [Creative Commons Attribution 4.0 International license](http://creativecommons.org/licenses/by/4.0/).
+Feel free to fork, change, modify and re-use it.

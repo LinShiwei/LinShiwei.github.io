@@ -1,23 +1,49 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
 title: Lin Shiwei
-description: '' # write a nice description for your blog
-baseurl: '' # the subpath of your site, e.g. /blog
-url: '' # the base hostname & protocol for your site http://www.example.com
-# google_analytics: 'UA-XXXXXX-X'
-twitter_username: 'LinShiwei'
+email: linshiweicn@163.com
+description: > # this means to ignore newlines until "baseurl:"
+  Welcome to my awesome blog.
+baseurl: "/linshiwei" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
+google_analytics: #your GA unique id, e.g. UA-xxxxxxxx-x
+disqus_username: #Your disqus_username to add comments on the post
+
+# Optional settings
+github: #your github username
+linkedin: #linkedin username
+twitter:
+  username: #twitter username here
+facebook:
+  app_id: 1234
+  publisher: 1234
+google_plus: #gplus id or username
 
 # Build settings
 markdown: kramdown
 
-permalink: '/:title/'
+sass:
+    style: compressed
 
-gems: [jekyll-paginate]
+gems:
+  - jekyll-redirect-from
+  - jekyll-mentions
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+  - jemoji
 
-paginate: 10
+defaults:
+    - {scope: {type: posts}, values: {layout: post, permalink : '/:year/:title'}}
+
+include:
+  - _pages
+
+exclude:
+  - CNAME
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+paginate: 5
+paginate_path: 'p/:num'
