@@ -51,6 +51,8 @@ Until now, the training files are ready.(training files can be find in this repo
 
 I have done some changes to tensorflow's mnist example code. You can use `lswBeginnerMnist.py` for simple mnist training or use `lswDeepMnist.py` for deep mnist training.
 
+## Example results
+
 Result of [lswBeginnerMnist.py](https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswBeginnerMnist.py) training , 29 images.
 
 ![image](https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/beginnerMnistTrainingResult.png)
