@@ -11,13 +11,13 @@ title: Using Jekyll and GithubPages to build your own blog [macOS]
 
 My blog, this website, is build using Jekll and GithubPages. You can get its original code from [here](https://github.com/LinShiwei/linshiwei.github.io).
 
-Now let's strat building your own blog. The following guildline is in macOS environment.
+Now let's strat building your own blog. The following guideline is in macOS environment.
 
 ## Method
 
 ### Step One
 
-You should have an account in [Github](https://github.com) and create a new repository base on your github username. [Here](https://pages.github.com) is the guildline in GithubPages website. The name of your repository maybe `your-username.github.io`. Make sure the name is correct. Then in the repository's setting page: 
+You should have an account in [Github](https://github.com) and create a new repository base on your github username. [Here](https://pages.github.com) is the guideline in GithubPages website. The name of your repository maybe `your-username.github.io`. Make sure the name is correct. Then in the repository's setting page: 
 
 ![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2012.31.55.png)
 
@@ -27,7 +27,7 @@ You can see:
 
 Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don't need to, because we are going to build website using jekyll.
 
-After create the repository, your should clone it to your mac. I suggest your using [Github Desktop](https://desktop.github.com) to do it. 
+After creating the repository, your should clone it to your mac. I suggest your using [Github Desktop](https://desktop.github.com) to do it. 
 
 ### Step Two
 
@@ -61,7 +61,7 @@ Run jekyll serve:
 $ jekyll serve
 ```
 
-In this step, due to the template your choose, you may need to install some other jekyll gem. Just follow the guild in terminal.
+In this step, due to the template your choose, you may need to install some other jekyll gems. Just follow the guide in terminal.
 
 After jekyll serve successfully, a website will run in `http://localhost:4000/` by default for developing.
 
@@ -71,7 +71,7 @@ Until now, the blog has been built. You can commit the change to `master` of you
 
 But this is not the end, it's time to add things to your blog.
 
-Basically, to add a post to your blog, you can write a post in Markdown grammar and put it in the `_posts` folder in your repository:
+Basically, to add a post to your blog, you can write a post in `Markdown` grammar and put it in the `_posts` folder in your repository:
 
 ![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.46.20.png)
 
