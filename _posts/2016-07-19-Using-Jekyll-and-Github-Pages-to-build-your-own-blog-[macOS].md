@@ -17,9 +17,13 @@ Now let's strat building your own blog. The following guildline is in macOS envi
 
 ### Step One
 
-You should have an account in [Github](https://github.com) and create a new repository base on your github username. [Here](https://pages.github.com) is the guildline in GithubPages website. The name of your repository maybe `your-username.github.io`. Make sure the name is correct. Then in the repository's setting page, you can see:
+You should have an account in [Github](https://github.com) and create a new repository base on your github username. [Here](https://pages.github.com) is the guildline in GithubPages website. The name of your repository maybe `your-username.github.io`. Make sure the name is correct. Then in the repository's setting page: 
 
-![image]()
+![image](https://github.com/LinShiwei/linshiwei.github.io/blob/master/images/屏幕快照%202016-07-19%2012.31.55.png)
+
+You can see:
+
+![image](https://github.com/LinShiwei/linshiwei.github.io/blob/master/images/屏幕快照%202016-07-19%2014.18.21.png)
 
 Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don't need to, because we are going to build website using jekyll.
 
@@ -43,7 +47,7 @@ $ sudo gem install jekyll
 
 After installing jekyll, you can download some jekyll template from [Jekyll Theme](http://jekyllthemes.org) and choose the one your like most. And copy all the files in the folder to the repository folder your create in Step One:
 
-![image]()
+![image](https://github.com/LinShiwei/linshiwei.github.io/blob/master/images/屏幕快照%202016-07-19%2013.22.32.png)
 
 Now run Terminal in your repository folder:
 
@@ -69,7 +73,7 @@ But this is not the end, it's time to add things to your blog.
 
 Basically, to add a post to your blog, you can write a post in Markdown grammar and put it in the `_posts` folder in your repository:
 
-![image]()
+![image](https://github.com/LinShiwei/linshiwei.github.io/blob/master/images/屏幕快照%202016-07-19%2013.46.20.png)
 
 For more information about the files and folders in a jekyll template, you can read documents [here](https://jekyllrb.com/docs/structure/).
 
