@@ -1,5 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-18T21:31:59+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
-</subtitle><entry><title>Train mnist using your own images</title><link href="/2016/Train-mnist-using-your-own-images" rel="alternate" type="text/html" title="Train mnist using your own images" /><published>2016-07-13T00:00:00+08:00</published><updated>2016-07-13T00:00:00+08:00</updated><id>/2016/Train-mnist-using-your-own-images</id><content type="html" xml:base="/2016/Train-mnist-using-your-own-images">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-19T21:17:46+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
+</subtitle><entry><title>Using Jekyll and GithubPages to build your own blog [macOS]</title><link href="/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS" rel="alternate" type="text/html" title="Using Jekyll and GithubPages to build your own blog [macOS]" /><published>2016-07-19T00:00:00+08:00</published><updated>2016-07-19T00:00:00+08:00</updated><id>/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-[macOS]</id><content type="html" xml:base="/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pages.github.com&quot;&gt;GithubPages&lt;/a&gt; is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; is a tool for building GithubPages, which is also simple and easy to understand.&lt;/p&gt;
+
+&lt;p&gt;My blog, this website, is build using Jekll and GithubPages. You can get its original code from &lt;a href=&quot;https://github.com/LinShiwei/linshiwei.github.io&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now let’s strat building your own blog. The following guideline is in macOS environment.&lt;/p&gt;
+
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
+
+&lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
+
+&lt;p&gt;You should have an account in &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt; and create a new repository base on your github username. &lt;a href=&quot;https://pages.github.com&quot;&gt;Here&lt;/a&gt; is the guideline in GithubPages website. The name of your repository maybe &lt;code class=&quot;highlighter-rouge&quot;&gt;your-username.github.io&lt;/code&gt;. Make sure the name is correct. Then in the repository’s setting page:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2012.31.55.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2014.18.21.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don’t need to, because we are going to build website using jekyll.&lt;/p&gt;
+
+&lt;p&gt;After creating the repository, your should clone it to your mac. I suggest your using &lt;a href=&quot;https://desktop.github.com&quot;&gt;Github Desktop&lt;/a&gt; to do it.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-two&quot;&gt;Step Two&lt;/h3&gt;
+
+&lt;p&gt;In Terminal, using the following code to install jekyll:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If your have enabled password in you mac. You may use this instead:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
+
+&lt;p&gt;After installing jekyll, you can download some jekyll template from &lt;a href=&quot;http://jekyllthemes.org&quot;&gt;Jekyll Theme&lt;/a&gt; and choose the one your like most. And copy all the files in the folder to the repository folder your create in Step One:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.22.32.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now run Terminal in your repository folder:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;folder&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Run jekyll serve:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serve&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this step, due to the template your choose, you may need to install some other jekyll gems. Just follow the guide in terminal.&lt;/p&gt;
+
+&lt;p&gt;After jekyll serve successfully, a website will run in &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000/&lt;/code&gt; by default for developing.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
+
+&lt;p&gt;Until now, the blog has been built. You can commit the change to &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; of your repository and visit your blog at url such as &lt;code class=&quot;highlighter-rouge&quot;&gt;your-username.github.io&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But this is not the end, it’s time to add things to your blog.&lt;/p&gt;
+
+&lt;p&gt;Basically, to add a post to your blog, you can write a post in &lt;code class=&quot;highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; grammar and put it in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder in your repository:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.46.20.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For more information about the files and folders in a jekyll template, you can read documents &lt;a href=&quot;https://jekyllrb.com/docs/structure/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;ending&quot;&gt;Ending&lt;/h2&gt;
+
+&lt;p&gt;There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It’s easy only if your have done it. Hope you enjoy it.&lt;/p&gt;</content><author><name>Lin Shiwei</name></author><summary>Introduction</summary></entry><entry><title>Train mnist using your own images</title><link href="/2016/Train-mnist-using-your-own-images" rel="alternate" type="text/html" title="Train mnist using your own images" /><published>2016-07-13T00:00:00+08:00</published><updated>2016-07-13T00:00:00+08:00</updated><id>/2016/Train-mnist-using-your-own-images</id><content type="html" xml:base="/2016/Train-mnist-using-your-own-images">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;In &lt;a href=&quot;http://www.tensorflow.org&quot;&gt;tensorflow.org&lt;/a&gt; there are &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html&quot;&gt;MNIST For ML Beginners&lt;/a&gt; and &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html&quot;&gt;Deep MNIST for Experts&lt;/a&gt; for learning.&lt;/p&gt;
 
