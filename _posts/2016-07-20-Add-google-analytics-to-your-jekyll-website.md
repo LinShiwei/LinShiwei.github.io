@@ -7,13 +7,13 @@ title: Add google analytics to your jekyll website
 
 Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit [here](https://en.wikipedia.org/wiki/Google_Analytics) for more information.
 
-In this post, we are going to add goole analytics to a jekyll website. [Here](http://linshiwei.github.io) is the example website, having contained google analytics code already.
+In this post, we are going to add goole analytics to a jekyll website. [This blog](http://linshiwei.github.io) is an example website, having contained google analytics code already.
 
 ## Method
 
 ### Step One
 
-To add google analytics, you should visit [google analytics](https://www.google.com/intl/en_uk/analytics/#?modal_active=none) website and sign up a google account. 
+To add google analytics, you should visit [google analytics](https://www.google.com/intl/en_uk/analytics/#?modal_active=none) website and sign up a google account: 
 
 ![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.24.04.png)
 
@@ -34,17 +34,19 @@ Fill in website name and website url. Select one industry category.
 
 Then click `Get Tracking ID`.
 
-Now in your google analytics page, you will get a track ID such as `UA-80935640-1` and some code for website tracking. 
+Now in your google analytics page, you will get a track ID such as `UA-80935640-1` and some code for website tracking: 
 
 ![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png)
 
 ### Step Three
 
-Copy the tracking code, create a `google-analytics.html` file in your jekyll website's `_includes` folder, and put the code in this `.html` file. 
+Copy the tracking code, create a `google-analytics.html` file in your jekyll website's `_includes` folder:
 
 ![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.19.11.png)
 
-![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png)
+Put the code in this `.html` file:
+
+![image](https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.32.53.png)
 
 ### Step Four
 

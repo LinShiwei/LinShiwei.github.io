@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-20T11:52:30+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-20T12:03:19+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
 </subtitle><entry><title>Add google analytics to your jekyll website</title><link href="/2016/Add-google-analytics-to-your-jekyll-website" rel="alternate" type="text/html" title="Add google analytics to your jekyll website" /><published>2016-07-20T00:00:00+08:00</published><updated>2016-07-20T00:00:00+08:00</updated><id>/2016/Add-google-analytics-to-your-jekyll-website</id><content type="html" xml:base="/2016/Add-google-analytics-to-your-jekyll-website">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit &lt;a href=&quot;https://en.wikipedia.org/wiki/Google_Analytics&quot;&gt;here&lt;/a&gt; for more information.&lt;/p&gt;
 
-&lt;p&gt;In this post, we are going to add goole analytics to a jekyll website. &lt;a href=&quot;http://linshiwei.github.io&quot;&gt;Here&lt;/a&gt; is the example website, having contained google analytics code already.&lt;/p&gt;
+&lt;p&gt;In this post, we are going to add goole analytics to a jekyll website. &lt;a href=&quot;http://linshiwei.github.io&quot;&gt;This blog&lt;/a&gt; is an example website, having contained google analytics code already.&lt;/p&gt;
 
 &lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
 
 &lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
 
-&lt;p&gt;To add google analytics, you should visit &lt;a href=&quot;https://www.google.com/intl/en_uk/analytics/#?modal_active=none&quot;&gt;google analytics&lt;/a&gt; website and sign up a google account.&lt;/p&gt;
+&lt;p&gt;To add google analytics, you should visit &lt;a href=&quot;https://www.google.com/intl/en_uk/analytics/#?modal_active=none&quot;&gt;google analytics&lt;/a&gt; website and sign up a google account:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.24.04.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -29,17 +29,19 @@
 
 &lt;p&gt;Then click &lt;code class=&quot;highlighter-rouge&quot;&gt;Get Tracking ID&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Now in your google analytics page, you will get a track ID such as &lt;code class=&quot;highlighter-rouge&quot;&gt;UA-80935640-1&lt;/code&gt; and some code for website tracking.&lt;/p&gt;
+&lt;p&gt;Now in your google analytics page, you will get a track ID such as &lt;code class=&quot;highlighter-rouge&quot;&gt;UA-80935640-1&lt;/code&gt; and some code for website tracking:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
 
-&lt;p&gt;Copy the tracking code, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;google-analytics.html&lt;/code&gt; file in your jekyll website’s &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; folder, and put the code in this &lt;code class=&quot;highlighter-rouge&quot;&gt;.html&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;Copy the tracking code, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;google-analytics.html&lt;/code&gt; file in your jekyll website’s &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; folder:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.19.11.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Put the code in this &lt;code class=&quot;highlighter-rouge&quot;&gt;.html&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.32.53.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
 
