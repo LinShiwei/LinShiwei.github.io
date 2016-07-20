@@ -1,6 +1,15 @@
 [
 
 	{
+		"title"    : "Add google analytics to your jekyll website",
+		"category" : "",
+		"desc"     : "IntroductionGoogle Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit here for more information.In this post, we are going to add...",
+		"tags"     : "",
+		"url"      : "/2016/Add-google-analytics-to-your-jekyll-website",
+		"date"     : "2016-07-20 00:00:00 +0800"
+	} ,
+
+	{
 		"title"    : "Using Jekyll and GithubPages to build your own blog [macOS]",
 		"category" : "",
 		"desc"     : "IntroductionGithubPages is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.Jekyl...",
