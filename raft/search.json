@@ -1,15 +1,6 @@
 [
 
 	{
-		"title"    : "让现有的Swift项目支持Carthage",
-		"category" : "",
-		"desc"     : "IntroductionCarthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考这里。我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？本文将主要介绍为已有的项目添加Carthage支持。前提条件如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)...",
-		"tags"     : "",
-		"url"      : "/2016/Let-your-framework-support-carthage",
-		"date"     : "2016-07-30 11:41:22 +0800"
-	} ,
-
-	{
 		"title"    : "Add google analytics to your jekyll website",
 		"category" : "",
 		"desc"     : "IntroductionGoogle Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit here for more information.In this post, we are going to add...",
