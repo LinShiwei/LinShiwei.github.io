@@ -1,5 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-30T11:41:22+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
-</subtitle><entry><title>Add google analytics to your jekyll website</title><link href="/2016/Add-google-analytics-to-your-jekyll-website" rel="alternate" type="text/html" title="Add google analytics to your jekyll website" /><published>2016-07-20T00:00:00+08:00</published><updated>2016-07-20T00:00:00+08:00</updated><id>/2016/Add-google-analytics-to-your-jekyll-website</id><content type="html" xml:base="/2016/Add-google-analytics-to-your-jekyll-website">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.6">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2016-07-30T11:55:03+08:00</updated><id>/</id><title>Lin Shiwei</title><subtitle>Welcome to my awesome blog.
+</subtitle><entry><title>让现有的Swift项目支持Carthage</title><link href="/2016/Let-your-framework-support-carthage" rel="alternate" type="text/html" title="让现有的Swift项目支持Carthage" /><published>2016-07-30T00:00:00+08:00</published><updated>2016-07-30T00:00:00+08:00</updated><id>/2016/Let-your-framework-support-carthage</id><content type="html" xml:base="/2016/Let-your-framework-support-carthage">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考&lt;a href=&quot;https://github.com/Carthage/Carthage&quot;&gt;这里&lt;/a&gt;。
+我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？&lt;strong&gt;本文将主要介绍为已有的项目添加Carthage支持。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;前提条件&lt;/h2&gt;
+&lt;p&gt;如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用&lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt;修饰，因为各个类和变量的默认修饰符是&lt;code class=&quot;highlighter-rouge&quot;&gt;internal&lt;/code&gt;，如果直接生成&lt;code class=&quot;highlighter-rouge&quot;&gt;.framework&lt;/code&gt;的话，是没办法使用这些类和变量的。&lt;/p&gt;
+
+&lt;h2 id=&quot;target&quot;&gt;第一步：为项目新建Target&lt;/h2&gt;
+&lt;p&gt;原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport13.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;Framework &amp;amp; Library&lt;/code&gt;里选择&lt;code class=&quot;highlighter-rouge&quot;&gt;Cocoa Touch Framework&lt;/code&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport12.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;设置好framework的名称：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport11.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;framework&quot;&gt;第二步：选择framework包含的文件&lt;/h2&gt;
+&lt;p&gt;在项目的target中选中刚刚新建的framework target，在&lt;code class=&quot;highlighter-rouge&quot;&gt;Build Phases&lt;/code&gt;里，确保添加了需要编译到framework里面的文件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport10.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;target-1&quot;&gt;第三步：分享target&lt;/h2&gt;
+&lt;p&gt;在左上角停止按钮旁，点击target，选择&lt;code class=&quot;highlighter-rouge&quot;&gt;Manage Schemes&lt;/code&gt;，勾选要分享的Scheme：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport9.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport8.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;framework-1&quot;&gt;第四步：生成framework&lt;/h2&gt;
+&lt;p&gt;在项目的根目录里打开终端，运行&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;no&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;运行后，会在下面的目录里生成framework：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Carthage/Build/iOS/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;framework-2&quot;&gt;第五步：测试framework&lt;/h2&gt;
+&lt;p&gt;这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。
+新建一个test项目，把刚刚生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;.framework&lt;/code&gt;拖到test项目左边的navigation栏里：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport7.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport6.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这时候如果运行出错的话，别紧张：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport5.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;需要在&lt;code class=&quot;highlighter-rouge&quot;&gt;Build Phases&lt;/code&gt;里新建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;New copy file phase&lt;/code&gt;并添加framework：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport4.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后就可以测试framework了，可以写一些代码，看看framework里的东西能不能用。&lt;/p&gt;
+
+&lt;h2 id=&quot;release&quot;&gt;最后一步：生成release&lt;/h2&gt;
+&lt;p&gt;到Github网页上，在项目的release页面，新建一个release，并给这个release一个版本号，如v1.0：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport3.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;填写版本号，Release title，Describe this release，点击Publish release就行：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就可以通过Carghage来导入framework了。例如，在项目根目录新建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;cartfile&lt;/code&gt;文件，在里面写入&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;LinShiwei/ImageSlider&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;再在项目根目录的终端里运行：&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Carghage就会自动下载framework到项目目录下。具体的添加过程可以看这里：&lt;a href=&quot;&quot;&gt;用Carthage为项目添加第三方依赖&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;感谢您的阅读，有任何疑问可以在下方的评论区问我，欢迎访问我的&lt;a href=&quot;https://github.com/LinShiwei&quot;&gt;github&lt;/a&gt;。&lt;/strong&gt;&lt;/p&gt;</content><author><name>Lin Shiwei</name></author><summary>Introduction</summary></entry><entry><title>Add google analytics to your jekyll website</title><link href="/2016/Add-google-analytics-to-your-jekyll-website" rel="alternate" type="text/html" title="Add google analytics to your jekyll website" /><published>2016-07-20T00:00:00+08:00</published><updated>2016-07-20T00:00:00+08:00</updated><id>/2016/Add-google-analytics-to-your-jekyll-website</id><content type="html" xml:base="/2016/Add-google-analytics-to-your-jekyll-website">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit &lt;a href=&quot;https://en.wikipedia.org/wiki/Google_Analytics&quot;&gt;here&lt;/a&gt; for more information.&lt;/p&gt;
 
