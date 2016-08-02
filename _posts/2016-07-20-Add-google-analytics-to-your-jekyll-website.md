@@ -1,7 +1,13 @@
 ---
+published: true
 layout: post
-author: Lin Shiwei
 title: Add google analytics to your jekyll website 
+category: Tutorial
+tags: 
+  - jekyll
+  - GithubPages
+time: 2016.07.20 20:00:00
+excerpt: Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic.In this post, we are going to add goole analytics to a jekyll website.
 ---
 ## Introduction
 
@@ -75,3 +81,5 @@ $ jekyll serve
 If you use github to manage your website code, you can use github desktop to commit changes to `master`. The google analytics will work in no time. You can see the analytics report in your google analytics page.
 
 By the way, if you want to know how to build your own blog in Github, [here](http://linshiwei.github.io/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS) is another post for you.
+
+

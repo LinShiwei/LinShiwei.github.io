@@ -1,7 +1,14 @@
 ---
+published: true
 layout: post
-author: Lin Shiwei
 title: 让现有的Swift项目支持Carthage 
+category: Tutorial
+tags: 
+  - github
+  - Carthage
+  - swift
+time: 2016.07.30 20:00:00
+excerpt: Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？本文将主要介绍为已有的项目添加Carthage支持。
 ---
 ## Introduction
 

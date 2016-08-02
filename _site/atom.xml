@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Lin Shiwei</title>
+ <link href="" rel="self"/>
+ <link href=""/>
+ <updated>2016-08-02T17:24:09+08:00</updated>
+ <id></id>
+ <author>
+   <name>linshiwei</name>
+   <email>linshiweicn@163.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>让现有的Swift项目支持Carthage</title>
+   <link href="/tutorial/2016/07/30/Let-your-framework-support-carthage"/>
+   <updated>2016-07-30T00:00:00+08:00</updated>
+   <id>/tutorial/2016/07/30/Let-your-framework-support-carthage</id>
+   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考&lt;a href=&quot;https://github.com/Carthage/Carthage&quot;&gt;这里&lt;/a&gt;。&lt;br&gt;
+我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？&lt;strong&gt;本文将主要介绍为已有的项目添加Carthage支持。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;&gt;前提条件&lt;/h2&gt;
+
+&lt;p&gt;如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用&lt;code&gt;public&lt;/code&gt;修饰，因为各个类和变量的默认修饰符是&lt;code&gt;internal&lt;/code&gt;，如果直接生成&lt;code&gt;.framework&lt;/code&gt;的话，是没办法使用这些类和变量的。&lt;/p&gt;
+
+&lt;h2 id=&quot;target&quot;&gt;第一步：为项目新建Target&lt;/h2&gt;
+
+&lt;p&gt;原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport13.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;在&lt;code&gt;Framework &amp;amp; Library&lt;/code&gt;里选择&lt;code&gt;Cocoa Touch Framework&lt;/code&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport12.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;设置好framework的名称：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport11.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;framework&quot;&gt;第二步：选择framework包含的文件&lt;/h2&gt;
+
+&lt;p&gt;在项目的target中选中刚刚新建的framework target，在&lt;code&gt;Build Phases&lt;/code&gt;里，确保添加了需要编译到framework里面的文件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport10.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;target&quot;&gt;第三步：分享target&lt;/h2&gt;
+
+&lt;p&gt;在左上角停止按钮旁，点击target，选择&lt;code&gt;Manage Schemes&lt;/code&gt;，勾选要分享的Scheme：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport9.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport8.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;framework&quot;&gt;第四步：生成framework&lt;/h2&gt;
+
+&lt;p&gt;在项目的根目录里打开终端，运行&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;no&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;运行后，会在下面的目录里生成framework：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Carthage/Build/iOS/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;framework&quot;&gt;第五步：测试framework&lt;/h2&gt;
+
+&lt;p&gt;这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。&lt;br&gt;
+新建一个test项目，把刚刚生成的&lt;code&gt;.framework&lt;/code&gt;拖到test项目左边的navigation栏里：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport7.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport6.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;这时候如果运行出错的话，别紧张：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport5.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;需要在&lt;code&gt;Build Phases&lt;/code&gt;里新建一个&lt;code&gt;New copy file phase&lt;/code&gt;并添加framework：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport4.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;之后就可以测试framework了，可以写一些代码，看看framework里的东西能不能用。&lt;/p&gt;
+
+&lt;h2 id=&quot;release&quot;&gt;最后一步：生成release&lt;/h2&gt;
+
+&lt;p&gt;到Github网页上，在项目的release页面，新建一个release，并给这个release一个版本号，如v1.0：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport3.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport2.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;填写版本号，Release title，Describe this release，点击Publish release就行：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/carthageSupport1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就可以通过Carghage来导入framework了。例如，在项目根目录新建一个&lt;code&gt;cartfile&lt;/code&gt;文件，在里面写入&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;LinShiwei/ImageSlider&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;再在项目根目录的终端里运行：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Carghage就会自动下载framework到项目目录下。具体的添加过程可以看这里：&lt;a href=&quot;&quot;&gt;用Carthage为项目添加第三方依赖&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;感谢您的阅读，有任何疑问可以在下方的评论区问我，欢迎访问我的&lt;a href=&quot;https://github.com/LinShiwei&quot;&gt;github&lt;/a&gt;。&lt;/strong&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Add google analytics to your jekyll website</title>
+   <link href="/tutorial/2016/07/20/Add-google-analytics-to-your-jekyll-website"/>
+   <updated>2016-07-20T00:00:00+08:00</updated>
+   <id>/tutorial/2016/07/20/Add-google-analytics-to-your-jekyll-website</id>
+   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit &lt;a href=&quot;https://en.wikipedia.org/wiki/Google_Analytics&quot;&gt;here&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;p&gt;In this post, we are going to add goole analytics to a jekyll website. &lt;a href=&quot;http://linshiwei.github.io&quot;&gt;This blog&lt;/a&gt; is an example website, having contained google analytics code already.&lt;/p&gt;
+
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
+
+&lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
+
+&lt;p&gt;To add google analytics, you should visit &lt;a href=&quot;https://www.google.com/intl/en_uk/analytics/#?modal_active=none&quot;&gt;google analytics&lt;/a&gt; website and sign up a google account: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-20%2009.24.04.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-20%2009.26.22.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;For Chinese version, you can visit &lt;a href=&quot;https://www.google.com/intl/zh-CN/analytics/&quot;&gt;here&lt;/a&gt;. If you have had a google account, you can log in and go to next step.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-two&quot;&gt;Step Two&lt;/h3&gt;
+
+&lt;p&gt;After you have a google account and log in google analytics website, you need to follow the guide to register for google analytics.&lt;/p&gt;
+
+&lt;p&gt;Choose &lt;code&gt;website&lt;/code&gt; in this page:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-20%2009.28.39.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Fill in website name and website url. Select one industry category.&lt;/p&gt;
+
+&lt;p&gt;Then click &lt;code&gt;Get Tracking ID&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now in your google analytics page, you will get a track ID such as &lt;code&gt;UA-80935640-1&lt;/code&gt; and some code for website tracking: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-20%2009.30.07.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
+
+&lt;p&gt;Copy the tracking code, create a &lt;code&gt;google-analytics.html&lt;/code&gt; file in your jekyll website&amp;#39;s &lt;code&gt;_includes&lt;/code&gt; folder:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2023.19.11.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Put the code in this &lt;code&gt;.html&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-20%2009.32.53.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
+
+&lt;p&gt;After creating &lt;code&gt;google-analytics.html&lt;/code&gt; with tracking code from google analytics website, you can open the &lt;code&gt;footer.html&lt;/code&gt; file in &lt;code&gt;_include&lt;/code&gt; folder and add  &lt;code&gt;include google-analytics.html&lt;/code&gt; in it like the following:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2023.16.44.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;This step will simply add analytics code to all pages in your website, which helps google to analyse.&lt;/p&gt;
+
+&lt;h3 id=&quot;final-step&quot;&gt;Final Step&lt;/h3&gt;
+
+&lt;p&gt;We have added analytics code to website step by step. Now in Terminal of your website folder,let&amp;#39;s run:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After that, you can preview your website at &lt;code&gt;http://localhost:4000&lt;/code&gt; by running:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serve&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;ending&quot;&gt;Ending&lt;/h2&gt;
+
+&lt;p&gt;If you use github to manage your website code, you can use github desktop to commit changes to &lt;code&gt;master&lt;/code&gt;. The google analytics will work in no time. You can see the analytics report in your google analytics page.&lt;/p&gt;
+
+&lt;p&gt;By the way, if you want to know how to build your own blog in Github, &lt;a href=&quot;http://linshiwei.github.io/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS&quot;&gt;here&lt;/a&gt; is another post for you.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Using Jekyll and GithubPages to build your own blog [macOS]</title>
+   <link href="/tutorial/2016/07/19/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS"/>
+   <updated>2016-07-19T00:00:00+08:00</updated>
+   <id>/tutorial/2016/07/19/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-[macOS]</id>
+   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pages.github.com&quot;&gt;GithubPages&lt;/a&gt; is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; is a tool for building GithubPages, which is also simple and easy to understand.&lt;/p&gt;
+
+&lt;p&gt;My blog, this website, is build using Jekll and GithubPages. You can get its original code from &lt;a href=&quot;https://github.com/LinShiwei/linshiwei.github.io&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;#39;s strat building your own blog. The following guideline is in macOS environment.&lt;/p&gt;
+
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
+
+&lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
+
+&lt;p&gt;You should have an account in &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt; and create a new repository base on your github username. &lt;a href=&quot;https://pages.github.com&quot;&gt;Here&lt;/a&gt; is the guideline in GithubPages website. The name of your repository maybe &lt;code&gt;your-username.github.io&lt;/code&gt;. Make sure the name is correct. Then in the repository&amp;#39;s setting page: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2012.31.55.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2014.18.21.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don&amp;#39;t need to, because we are going to build website using jekyll.&lt;/p&gt;
+
+&lt;p&gt;After creating the repository, your should clone it to your mac. I suggest your using &lt;a href=&quot;https://desktop.github.com&quot;&gt;Github Desktop&lt;/a&gt; to do it. &lt;/p&gt;
+
+&lt;h3 id=&quot;step-two&quot;&gt;Step Two&lt;/h3&gt;
+
+&lt;p&gt;In Terminal, using the following code to install jekyll:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If your have enabled password in you mac. You may use this instead:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
+
+&lt;p&gt;After installing jekyll, you can download some jekyll template from &lt;a href=&quot;http://jekyllthemes.org&quot;&gt;Jekyll Theme&lt;/a&gt; and choose the one your like most. And copy all the files in the folder to the repository folder your create in Step One:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2013.22.32.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Now run Terminal in your repository folder:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;folder&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Run jekyll serve:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serve&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this step, due to the template your choose, you may need to install some other jekyll gems. Just follow the guide in terminal.&lt;/p&gt;
+
+&lt;p&gt;After jekyll serve successfully, a website will run in &lt;code&gt;http://localhost:4000/&lt;/code&gt; by default for developing.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
+
+&lt;p&gt;Until now, the blog has been built. You can commit the change to &lt;code&gt;master&lt;/code&gt; of your repository and visit your blog at url such as &lt;code&gt;your-username.github.io&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But this is not the end, it&amp;#39;s time to add things to your blog.&lt;/p&gt;
+
+&lt;p&gt;Basically, to add a post to your blog, you can write a post in &lt;code&gt;Markdown&lt;/code&gt; grammar and put it in the &lt;code&gt;_posts&lt;/code&gt; folder in your repository:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2013.46.20.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;For more information about the files and folders in a jekyll template, you can read documents &lt;a href=&quot;https://jekyllrb.com/docs/structure/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;ending&quot;&gt;Ending&lt;/h2&gt;
+
+&lt;p&gt;There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It&amp;#39;s easy only if your have done it. Hope you enjoy it.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Train mnist using your own images</title>
+   <link href="/tutorial/2016/07/13/Train-mnist-using-your-own-images"/>
+   <updated>2016-07-13T00:00:00+08:00</updated>
+   <id>/tutorial/2016/07/13/Train-mnist-using-your-own-images</id>
+   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;In &lt;a href=&quot;http://www.tensorflow.org&quot;&gt;tensorflow.org&lt;/a&gt; there are &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html&quot;&gt;MNIST For ML Beginners&lt;/a&gt; and &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html&quot;&gt;Deep MNIST for Experts&lt;/a&gt; for learning. &lt;/p&gt;
+
+&lt;p&gt;In these tutorials, the training source is from &lt;a href=&quot;http://yann.lecun.com/exdb/mnist/&quot;&gt;MNIST&lt;/a&gt;. It is awesome, containing thousands of images.&lt;/p&gt;
+
+&lt;p&gt;But there are some situations that we want to use our own images for training. I have searched on the Internet and could hardly find the direct way to convert images into MNIST Database format. So I just do it myself and have found another way to create my data files and train it in the tensorflow.&lt;/p&gt;
+
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
+
+&lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
+
+&lt;p&gt;You should first have some images for training. You can use your own images or use &lt;a href=&quot;https://github.com/LinShiwei/TensorflowLearning/tree/master/trainYourOwnMnist/numberImage&quot;&gt;my images&lt;/a&gt; for a try. &lt;/p&gt;
+
+&lt;p&gt;The images like the following, should have a black background and a white number.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/imageSample.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;step-two&quot;&gt;Step Two&lt;/h3&gt;
+
+&lt;p&gt;I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have &lt;code&gt;.txt&lt;/code&gt; suffix. Here shows the data format in these data file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/dataFormat.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;After generating, these four files should like the following:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;n&quot;&gt;trainImage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainImageLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImageLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And then you should use &lt;a href=&quot;https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/gzipCreate.py&quot;&gt;gzipCreate.py&lt;/a&gt; to convert these files into &amp;#39;.gz&amp;#39; files.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;n&quot;&gt;trainImage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainImageLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImageLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Until now, the training files are ready.(training files can be find in this repository)&lt;/p&gt;
+
+&lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
+
+&lt;p&gt;I have done some changes to tensorflow&amp;#39;s mnist example code. You can use &lt;code&gt;lswBeginnerMnist.py&lt;/code&gt; for simple mnist training or use &lt;code&gt;lswDeepMnist.py&lt;/code&gt; for deep mnist training.&lt;/p&gt;
+
+&lt;h2 id=&quot;example-results&quot;&gt;Example results&lt;/h2&gt;
+
+&lt;p&gt;Result of &lt;a href=&quot;https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswBeginnerMnist.py&quot;&gt;lswBeginnerMnist.py&lt;/a&gt; training , 29 images.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/beginnerMnistTrainingResult.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Result of &lt;a href=&quot;https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswDeepMnist.py&quot;&gt;lswDeepMnist.py&lt;/a&gt; training , 36 images.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/deepMnistTrainingResult.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Welcome to my github blog!</title>
+   <link href="/introduction/2016/06/08/Welcome-to-my-github-blog"/>
+   <updated>2016-06-08T00:00:00+08:00</updated>
+   <id>/introduction/2016/06/08/Welcome-to-my-github-blog</id>
+   <content type="html">&lt;p&gt;Welcome to my github blog! I am now learning Swift programming language and have developed some iOS apps for practice.&lt;/p&gt;
+
+&lt;p&gt;I used to learn Swift from books. But most of books are so out-of-date that I could hardly catch up with the latest version of Swift and Xcode. As soon as I realized that, I started to learn from the Internet. Google, StackOverflow and Github help me a lot. I still keep on going. Thank you for your visiting! &lt;/p&gt;
+
+&lt;p&gt;View my repositories &lt;a href=&quot;https://github.com/LinShiwei&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>

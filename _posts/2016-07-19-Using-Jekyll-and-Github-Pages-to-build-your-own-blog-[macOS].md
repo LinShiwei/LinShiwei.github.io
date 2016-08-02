@@ -1,7 +1,14 @@
 ---
+published: true
 layout: post
-author: Lin Shiwei
 title: Using Jekyll and GithubPages to build your own blog [macOS]
+category: Tutorial
+tags: 
+  - jekyll
+  - GithubPages
+  - github
+time: 2016.07.19 20:00:00
+excerpt: GithubPages is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.Jekyll is a tool for building GithubPages, which is also simple and easy to understand.
 ---
 ## Introduction
 
@@ -80,3 +87,5 @@ For more information about the files and folders in a jekyll template, you can r
 ## Ending
 
 There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It's easy only if your have done it. Hope you enjoy it.
+
+

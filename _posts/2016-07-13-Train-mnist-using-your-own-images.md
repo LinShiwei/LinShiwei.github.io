@@ -1,7 +1,12 @@
 ---
+published: true
 layout: post
-author: Lin Shiwei
 title: Train mnist using your own images
+category: Tutorial
+tags: 
+  - tensorflow
+time: 2016.07.13 20:00:00
+excerpt: In tensorflow.org there are "MNIST for beginners" and "Deep MNIST for experts" for learning. In these tutorials, the training source is from MNIST. It is awesome, containing thousands of images. But there are some situations that we want to use our own images for training...
 ---
 ## Introduction
 
@@ -60,3 +65,5 @@ Result of [lswBeginnerMnist.py](https://github.com/LinShiwei/TensorflowLearning/
 Result of [lswDeepMnist.py](https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswDeepMnist.py) training , 36 images.
 
 ![image](https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/deepMnistTrainingResult.png)
+
+
