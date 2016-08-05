@@ -109,89 +109,88 @@
 		
 		<h2 id="introduction">Introduction</h2>
 
-<p>Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考<a href="https://github.com/Carthage/Carthage">这里</a>。<br>
+<p>Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考<a href="https://github.com/Carthage/Carthage">这里</a>。
 我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？<strong>本文将主要介绍为已有的项目添加Carthage支持。</strong></p>
 
-<h2 id=">前提条件</h2>
-
+<h2 id="section">前提条件</h2>
 <p>如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用<code>public</code>修饰，因为各个类和变量的默认修饰符是<code>internal</code>，如果直接生成<code>.framework</code>的话，是没办法使用这些类和变量的。</p>
 
 <h2 id="target">第一步：为项目新建Target</h2>
-
 <p>原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：</p>
 
-<p><img src="/images/carthageSupport13.png" alt="image"></p>
+<p><img src="/images/carthageSupport13.png" alt="image" /></p>
 
 <p>在<code>Framework &amp; Library</code>里选择<code>Cocoa Touch Framework</code>：</p>
 
-<p><img src="/images/carthageSupport12.png" alt="image"></p>
+<p><img src="/images/carthageSupport12.png" alt="image" /></p>
 
 <p>设置好framework的名称：</p>
 
-<p><img src="/images/carthageSupport11.png" alt="image"></p>
+<p><img src="/images/carthageSupport11.png" alt="image" /></p>
 
 <h2 id="framework">第二步：选择framework包含的文件</h2>
-
 <p>在项目的target中选中刚刚新建的framework target，在<code>Build Phases</code>里，确保添加了需要编译到framework里面的文件：</p>
 
-<p><img src="/images/carthageSupport10.png" alt="image"></p>
+<p><img src="/images/carthageSupport10.png" alt="image" /></p>
 
-<h2 id="target">第三步：分享target</h2>
-
+<h2 id="target-1">第三步：分享target</h2>
 <p>在左上角停止按钮旁，点击target，选择<code>Manage Schemes</code>，勾选要分享的Scheme：</p>
 
-<p><img src="/images/carthageSupport9.png" alt="image"></p>
+<p><img src="/images/carthageSupport9.png" alt="image" /></p>
 
-<p><img src="/images/carthageSupport8.png" alt="image"></p>
+<p><img src="/images/carthageSupport8.png" alt="image" /></p>
 
-<h2 id="framework">第四步：生成framework</h2>
-
+<h2 id="framework-1">第四步：生成framework</h2>
 <p>在项目的根目录里打开终端，运行</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">carthage</span> <span class="n">build</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">skip</span><span class="o">-</span><span class="n">current</span>
-</code></pre></div>
-<p>运行后，会在下面的目录里生成framework：</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Carthage/Build/iOS/
-</code></pre></div>
-<h2 id="framework">第五步：测试framework</h2>
 
-<p>这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。<br>
+<pre><code class="language-ruby">$ carthage build --no-skip-current
+</code></pre>
+<p>运行后，会在下面的目录里生成framework：</p>
+
+<pre><code>Carthage/Build/iOS/
+</code></pre>
+
+<h2 id="framework-2">第五步：测试framework</h2>
+<p>这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。
 新建一个test项目，把刚刚生成的<code>.framework</code>拖到test项目左边的navigation栏里：</p>
 
-<p><img src="/images/carthageSupport7.png" alt="image"></p>
+<p><img src="/images/carthageSupport7.png" alt="image" /></p>
 
-<p><img src="/images/carthageSupport6.png" alt="image"></p>
+<p><img src="/images/carthageSupport6.png" alt="image" /></p>
 
 <p>这时候如果运行出错的话，别紧张：</p>
 
-<p><img src="/images/carthageSupport5.png" alt="image"></p>
+<p><img src="/images/carthageSupport5.png" alt="image" /></p>
 
 <p>需要在<code>Build Phases</code>里新建一个<code>New copy file phase</code>并添加framework：</p>
 
-<p><img src="/images/carthageSupport4.png" alt="image"></p>
+<p><img src="/images/carthageSupport4.png" alt="image" /></p>
 
 <p>之后就可以测试framework了，可以写一些代码，看看framework里的东西能不能用。</p>
 
 <h2 id="release">最后一步：生成release</h2>
-
 <p>到Github网页上，在项目的release页面，新建一个release，并给这个release一个版本号，如v1.0：</p>
 
-<p><img src="/images/carthageSupport3.png" alt="image"></p>
+<p><img src="/images/carthageSupport3.png" alt="image" /></p>
 
-<p><img src="/images/carthageSupport2.png" alt="image"></p>
+<p><img src="/images/carthageSupport2.png" alt="image" /></p>
 
 <p>填写版本号，Release title，Describe this release，点击Publish release就行：</p>
 
-<p><img src="/images/carthageSupport1.png" alt="image"></p>
+<p><img src="/images/carthageSupport1.png" alt="image" /></p>
 
 <p>这样就可以通过Carghage来导入framework了。例如，在项目根目录新建一个<code>cartfile</code>文件，在里面写入</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">github</span> <span class="s2">&quot;LinShiwei/ImageSlider&quot;</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">github "LinShiwei/ImageSlider"
+</code></pre>
 <p>再在项目根目录的终端里运行：</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">carthage</span> <span class="n">update</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">$ carthage update
+</code></pre>
 <p>Carghage就会自动下载framework到项目目录下。具体的添加过程可以看这里：<a href="">用Carthage为项目添加第三方依赖</a>。</p>
 
 <p><strong>感谢您的阅读，有任何疑问可以在下方的评论区问我，欢迎访问我的<a href="https://github.com/LinShiwei">github</a>。</strong></p>
+
   
 	</div>
 	<footer class="article-footer clearfix">

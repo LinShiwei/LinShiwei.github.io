@@ -109,7 +109,7 @@
 		
 		<h2 id="introduction">Introduction</h2>
 
-<p>In <a href="http://www.tensorflow.org">tensorflow.org</a> there are <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html">MNIST For ML Beginners</a> and <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html">Deep MNIST for Experts</a> for learning. </p>
+<p>In <a href="http://www.tensorflow.org">tensorflow.org</a> there are <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html">MNIST For ML Beginners</a> and <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html">Deep MNIST for Experts</a> for learning.</p>
 
 <p>In these tutorials, the training source is from <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a>. It is awesome, containing thousands of images.</p>
 
@@ -119,45 +119,50 @@
 
 <h3 id="step-one">Step One</h3>
 
-<p>You should first have some images for training. You can use your own images or use <a href="https://github.com/LinShiwei/TensorflowLearning/tree/master/trainYourOwnMnist/numberImage">my images</a> for a try. </p>
+<p>You should first have some images for training. You can use your own images or use <a href="https://github.com/LinShiwei/TensorflowLearning/tree/master/trainYourOwnMnist/numberImage">my images</a> for a try.</p>
 
 <p>The images like the following, should have a black background and a white number.</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/imageSample.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/imageSample.png" alt="image" /></p>
 
 <h3 id="step-two">Step Two</h3>
 
 <p>I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have <code>.txt</code> suffix. Here shows the data format in these data file.</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/dataFormat.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/dataFormat.png" alt="image" /></p>
 
 <p>After generating, these four files should like the following:</p>
-<div class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">trainImage</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">trainImageLabel</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">testImage</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">testImageLabel</span><span class="p">.</span><span class="n">txt</span>
-</code></pre></div>
-<p>And then you should use <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/gzipCreate.py">gzipCreate.py</a> to convert these files into &#39;.gz&#39; files.</p>
-<div class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">trainImage</span><span class="p">.</span><span class="n">txt</span><span class="p">.</span><span class="n">gz</span>
-<span class="n">trainImageLabel</span><span class="p">.</span><span class="n">txt</span><span class="p">.</span><span class="n">gz</span>
-<span class="n">testImage</span><span class="p">.</span><span class="n">txt</span><span class="p">.</span><span class="n">gz</span>
-<span class="n">testImageLabel</span><span class="p">.</span><span class="n">txt</span><span class="p">.</span><span class="n">gz</span>
-</code></pre></div>
+
+<pre><code class="language-swift">trainImage.txt
+trainImageLabel.txt
+testImage.txt
+testImageLabel.txt
+</code></pre>
+
+<p>And then you should use <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/gzipCreate.py">gzipCreate.py</a> to convert these files into ‘.gz’ files.</p>
+
+<pre><code class="language-swift">trainImage.txt.gz
+trainImageLabel.txt.gz
+testImage.txt.gz
+testImageLabel.txt.gz
+</code></pre>
+
 <p>Until now, the training files are ready.(training files can be find in this repository)</p>
 
 <h3 id="step-three">Step Three</h3>
 
-<p>I have done some changes to tensorflow&#39;s mnist example code. You can use <code>lswBeginnerMnist.py</code> for simple mnist training or use <code>lswDeepMnist.py</code> for deep mnist training.</p>
+<p>I have done some changes to tensorflow’s mnist example code. You can use <code>lswBeginnerMnist.py</code> for simple mnist training or use <code>lswDeepMnist.py</code> for deep mnist training.</p>
 
 <h2 id="example-results">Example results</h2>
 
 <p>Result of <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswBeginnerMnist.py">lswBeginnerMnist.py</a> training , 29 images.</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/beginnerMnistTrainingResult.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/beginnerMnistTrainingResult.png" alt="image" /></p>
 
 <p>Result of <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswDeepMnist.py">lswDeepMnist.py</a> training , 36 images.</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/deepMnistTrainingResult.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/deepMnistTrainingResult.png" alt="image" /></p>
+
   
 	</div>
 	<footer class="article-footer clearfix">

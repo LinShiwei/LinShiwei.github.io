@@ -115,44 +115,52 @@
 
 <p>My blog, this website, is build using Jekll and GithubPages. You can get its original code from <a href="https://github.com/LinShiwei/linshiwei.github.io">here</a>.</p>
 
-<p>Now let&#39;s strat building your own blog. The following guideline is in macOS environment.</p>
+<p>Now let’s strat building your own blog. The following guideline is in macOS environment.</p>
 
 <h2 id="method">Method</h2>
 
 <h3 id="step-one">Step One</h3>
 
-<p>You should have an account in <a href="https://github.com">Github</a> and create a new repository base on your github username. <a href="https://pages.github.com">Here</a> is the guideline in GithubPages website. The name of your repository maybe <code>your-username.github.io</code>. Make sure the name is correct. Then in the repository&#39;s setting page: </p>
+<p>You should have an account in <a href="https://github.com">Github</a> and create a new repository base on your github username. <a href="https://pages.github.com">Here</a> is the guideline in GithubPages website. The name of your repository maybe <code>your-username.github.io</code>. Make sure the name is correct. Then in the repository’s setting page:</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2012.31.55.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2012.31.55.png" alt="image" /></p>
 
 <p>You can see:</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2014.18.21.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2014.18.21.png" alt="image" /></p>
 
-<p>Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don&#39;t need to, because we are going to build website using jekyll.</p>
+<p>Here you can launch automatic page generator to generate your site quickly. But in this circumstance you don’t need to, because we are going to build website using jekyll.</p>
 
-<p>After creating the repository, your should clone it to your mac. I suggest your using <a href="https://desktop.github.com">Github Desktop</a> to do it. </p>
+<p>After creating the repository, your should clone it to your mac. I suggest your using <a href="https://desktop.github.com">Github Desktop</a> to do it.</p>
 
 <h3 id="step-two">Step Two</h3>
 
 <p>In Terminal, using the following code to install jekyll:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">jekyll</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">$ gem install jekyll
+</code></pre>
+
 <p>If your have enabled password in you mac. You may use this instead:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">jekyll</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">$ sudo gem install jekyll
+</code></pre>
+
 <h3 id="step-three">Step Three</h3>
 
 <p>After installing jekyll, you can download some jekyll template from <a href="http://jekyllthemes.org">Jekyll Theme</a> and choose the one your like most. And copy all the files in the folder to the repository folder your create in Step One:</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2013.22.32.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.22.32.png" alt="image" /></p>
 
 <p>Now run Terminal in your repository folder:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">cd</span> <span class="n">your</span> <span class="n">repository</span> <span class="n">folder</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">$ cd your repository folder
+</code></pre>
+
 <p>Run jekyll serve:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">jekyll</span> <span class="n">serve</span>
-</code></pre></div>
+
+<pre><code class="language-ruby">$ jekyll serve
+</code></pre>
+
 <p>In this step, due to the template your choose, you may need to install some other jekyll gems. Just follow the guide in terminal.</p>
 
 <p>After jekyll serve successfully, a website will run in <code>http://localhost:4000/</code> by default for developing.</p>
@@ -161,17 +169,18 @@
 
 <p>Until now, the blog has been built. You can commit the change to <code>master</code> of your repository and visit your blog at url such as <code>your-username.github.io</code>.</p>
 
-<p>But this is not the end, it&#39;s time to add things to your blog.</p>
+<p>But this is not the end, it’s time to add things to your blog.</p>
 
 <p>Basically, to add a post to your blog, you can write a post in <code>Markdown</code> grammar and put it in the <code>_posts</code> folder in your repository:</p>
 
-<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-07-19%2013.46.20.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.46.20.png" alt="image" /></p>
 
 <p>For more information about the files and folders in a jekyll template, you can read documents <a href="https://jekyllrb.com/docs/structure/">here</a>.</p>
 
 <h2 id="ending">Ending</h2>
 
-<p>There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It&#39;s easy only if your have done it. Hope you enjoy it.</p>
+<p>There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It’s easy only if your have done it. Hope you enjoy it.</p>
+
   
 	</div>
 	<footer class="article-footer clearfix">
