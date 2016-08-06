@@ -5,8 +5,8 @@
         <description>Lin Shiwei - linshiwei</description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Thu, 04 Aug 2016 09:45:15 +0800</lastBuildDate>
-        <pubDate>Thu, 04 Aug 2016 09:45:15 +0800</pubDate>
+        <lastBuildDate>Sat, 06 Aug 2016 11:07:32 +0800</lastBuildDate>
+        <pubDate>Sat, 06 Aug 2016 11:07:32 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -18,14 +18,14 @@
 我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？&lt;strong&gt;本文将主要介绍为已有的项目添加Carthage支持。&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;前提条件&lt;/h2&gt;
-&lt;p&gt;如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用&lt;code&gt;public&lt;/code&gt;修饰，因为各个类和变量的默认修饰符是&lt;code&gt;internal&lt;/code&gt;，如果直接生成&lt;code&gt;.framework&lt;/code&gt;的话，是没办法使用这些类和变量的。&lt;/p&gt;
+&lt;p&gt;如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用&lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt;修饰，因为各个类和变量的默认修饰符是&lt;code class=&quot;highlighter-rouge&quot;&gt;internal&lt;/code&gt;，如果直接生成&lt;code class=&quot;highlighter-rouge&quot;&gt;.framework&lt;/code&gt;的话，是没办法使用这些类和变量的。&lt;/p&gt;
 
 &lt;h2 id=&quot;target&quot;&gt;第一步：为项目新建Target&lt;/h2&gt;
 &lt;p&gt;原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport13.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;在&lt;code&gt;Framework &amp;amp; Library&lt;/code&gt;里选择&lt;code&gt;Cocoa Touch Framework&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;Framework &amp;amp; Library&lt;/code&gt;里选择&lt;code class=&quot;highlighter-rouge&quot;&gt;Cocoa Touch Framework&lt;/code&gt;：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport12.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -34,12 +34,12 @@
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport11.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;framework&quot;&gt;第二步：选择framework包含的文件&lt;/h2&gt;
-&lt;p&gt;在项目的target中选中刚刚新建的framework target，在&lt;code&gt;Build Phases&lt;/code&gt;里，确保添加了需要编译到framework里面的文件：&lt;/p&gt;
+&lt;p&gt;在项目的target中选中刚刚新建的framework target，在&lt;code class=&quot;highlighter-rouge&quot;&gt;Build Phases&lt;/code&gt;里，确保添加了需要编译到framework里面的文件：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport10.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;target-1&quot;&gt;第三步：分享target&lt;/h2&gt;
-&lt;p&gt;在左上角停止按钮旁，点击target，选择&lt;code&gt;Manage Schemes&lt;/code&gt;，勾选要分享的Scheme：&lt;/p&gt;
+&lt;p&gt;在左上角停止按钮旁，点击target，选择&lt;code class=&quot;highlighter-rouge&quot;&gt;Manage Schemes&lt;/code&gt;，勾选要分享的Scheme：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport9.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -48,16 +48,18 @@
 &lt;h2 id=&quot;framework-1&quot;&gt;第四步：生成framework&lt;/h2&gt;
 &lt;p&gt;在项目的根目录里打开终端，运行&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ carthage build --no-skip-current
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;no&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;运行后，会在下面的目录里生成framework：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Carthage/Build/iOS/
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Carthage/Build/iOS/
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;framework-2&quot;&gt;第五步：测试framework&lt;/h2&gt;
 &lt;p&gt;这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。
-新建一个test项目，把刚刚生成的&lt;code&gt;.framework&lt;/code&gt;拖到test项目左边的navigation栏里：&lt;/p&gt;
+新建一个test项目，把刚刚生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;.framework&lt;/code&gt;拖到test项目左边的navigation栏里：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport7.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -67,7 +69,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport5.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;需要在&lt;code&gt;Build Phases&lt;/code&gt;里新建一个&lt;code&gt;New copy file phase&lt;/code&gt;并添加framework：&lt;/p&gt;
+&lt;p&gt;需要在&lt;code class=&quot;highlighter-rouge&quot;&gt;Build Phases&lt;/code&gt;里新建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;New copy file phase&lt;/code&gt;并添加framework：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport4.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -84,14 +86,16 @@
 
 &lt;p&gt;&lt;img src=&quot;/images/carthageSupport1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;这样就可以通过Carghage来导入framework了。例如，在项目根目录新建一个&lt;code&gt;cartfile&lt;/code&gt;文件，在里面写入&lt;/p&gt;
+&lt;p&gt;这样就可以通过Carghage来导入framework了。例如，在项目根目录新建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;cartfile&lt;/code&gt;文件，在里面写入&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;github &quot;LinShiwei/ImageSlider&quot;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;LinShiwei/ImageSlider&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;再在项目根目录的终端里运行：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ carthage update
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;carthage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;Carghage就会自动下载framework到项目目录下。具体的添加过程可以看这里：&lt;a href=&quot;&quot;&gt;用Carthage为项目添加第三方依赖&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;感谢您的阅读，有任何疑问可以在下方的评论区问我，欢迎访问我的&lt;a href=&quot;https://github.com/LinShiwei&quot;&gt;github&lt;/a&gt;。&lt;/strong&gt;&lt;/p&gt;
@@ -126,31 +130,31 @@
 
 &lt;p&gt;After you have a google account and log in google analytics website, you need to follow the guide to register for google analytics.&lt;/p&gt;
 
-&lt;p&gt;Choose &lt;code&gt;website&lt;/code&gt; in this page:&lt;/p&gt;
+&lt;p&gt;Choose &lt;code class=&quot;highlighter-rouge&quot;&gt;website&lt;/code&gt; in this page:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.28.39.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Fill in website name and website url. Select one industry category.&lt;/p&gt;
 
-&lt;p&gt;Then click &lt;code&gt;Get Tracking ID&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then click &lt;code class=&quot;highlighter-rouge&quot;&gt;Get Tracking ID&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Now in your google analytics page, you will get a track ID such as &lt;code&gt;UA-80935640-1&lt;/code&gt; and some code for website tracking:&lt;/p&gt;
+&lt;p&gt;Now in your google analytics page, you will get a track ID such as &lt;code class=&quot;highlighter-rouge&quot;&gt;UA-80935640-1&lt;/code&gt; and some code for website tracking:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
 
-&lt;p&gt;Copy the tracking code, create a &lt;code&gt;google-analytics.html&lt;/code&gt; file in your jekyll website’s &lt;code&gt;_includes&lt;/code&gt; folder:&lt;/p&gt;
+&lt;p&gt;Copy the tracking code, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;google-analytics.html&lt;/code&gt; file in your jekyll website’s &lt;code class=&quot;highlighter-rouge&quot;&gt;_includes&lt;/code&gt; folder:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.19.11.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Put the code in this &lt;code&gt;.html&lt;/code&gt; file:&lt;/p&gt;
+&lt;p&gt;Put the code in this &lt;code class=&quot;highlighter-rouge&quot;&gt;.html&lt;/code&gt; file:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.32.53.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
 
-&lt;p&gt;After creating &lt;code&gt;google-analytics.html&lt;/code&gt; with tracking code from google analytics website, you can open the &lt;code&gt;footer.html&lt;/code&gt; file in &lt;code&gt;_include&lt;/code&gt; folder and add  &lt;code&gt;include google-analytics.html&lt;/code&gt; in it like the following:&lt;/p&gt;
+&lt;p&gt;After creating &lt;code class=&quot;highlighter-rouge&quot;&gt;google-analytics.html&lt;/code&gt; with tracking code from google analytics website, you can open the &lt;code class=&quot;highlighter-rouge&quot;&gt;footer.html&lt;/code&gt; file in &lt;code class=&quot;highlighter-rouge&quot;&gt;_include&lt;/code&gt; folder and add  &lt;code class=&quot;highlighter-rouge&quot;&gt;include google-analytics.html&lt;/code&gt; in it like the following:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.16.44.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -160,17 +164,19 @@
 
 &lt;p&gt;We have added analytics code to website step by step. Now in Terminal of your website folder,let’s run:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ jekyll build
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;After that, you can preview your website at &lt;code&gt;http://localhost:4000&lt;/code&gt; by running:&lt;/p&gt;
+&lt;p&gt;After that, you can preview your website at &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000&lt;/code&gt; by running:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ jekyll serve
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serve&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;ending&quot;&gt;Ending&lt;/h2&gt;
 
-&lt;p&gt;If you use github to manage your website code, you can use github desktop to commit changes to &lt;code&gt;master&lt;/code&gt;. The google analytics will work in no time. You can see the analytics report in your google analytics page.&lt;/p&gt;
+&lt;p&gt;If you use github to manage your website code, you can use github desktop to commit changes to &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt;. The google analytics will work in no time. You can see the analytics report in your google analytics page.&lt;/p&gt;
 
 &lt;p&gt;By the way, if you want to know how to build your own blog in Github, &lt;a href=&quot;http://linshiwei.github.io/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS&quot;&gt;here&lt;/a&gt; is another post for you.&lt;/p&gt;
 
@@ -196,7 +202,7 @@
 
 &lt;h3 id=&quot;step-one&quot;&gt;Step One&lt;/h3&gt;
 
-&lt;p&gt;You should have an account in &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt; and create a new repository base on your github username. &lt;a href=&quot;https://pages.github.com&quot;&gt;Here&lt;/a&gt; is the guideline in GithubPages website. The name of your repository maybe &lt;code&gt;your-username.github.io&lt;/code&gt;. Make sure the name is correct. Then in the repository’s setting page:&lt;/p&gt;
+&lt;p&gt;You should have an account in &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt; and create a new repository base on your github username. &lt;a href=&quot;https://pages.github.com&quot;&gt;Here&lt;/a&gt; is the guideline in GithubPages website. The name of your repository maybe &lt;code class=&quot;highlighter-rouge&quot;&gt;your-username.github.io&lt;/code&gt;. Make sure the name is correct. Then in the repository’s setting page:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2012.31.55.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -212,13 +218,15 @@
 
 &lt;p&gt;In Terminal, using the following code to install jekyll:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ gem install jekyll
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;If your have enabled password in you mac. You may use this instead:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ sudo gem install jekyll
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
 
@@ -228,25 +236,27 @@
 
 &lt;p&gt;Now run Terminal in your repository folder:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ cd your repository folder
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;folder&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Run jekyll serve:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;$ jekyll serve
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serve&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;In this step, due to the template your choose, you may need to install some other jekyll gems. Just follow the guide in terminal.&lt;/p&gt;
 
-&lt;p&gt;After jekyll serve successfully, a website will run in &lt;code&gt;http://localhost:4000/&lt;/code&gt; by default for developing.&lt;/p&gt;
+&lt;p&gt;After jekyll serve successfully, a website will run in &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000/&lt;/code&gt; by default for developing.&lt;/p&gt;
 
 &lt;h3 id=&quot;step-four&quot;&gt;Step Four&lt;/h3&gt;
 
-&lt;p&gt;Until now, the blog has been built. You can commit the change to &lt;code&gt;master&lt;/code&gt; of your repository and visit your blog at url such as &lt;code&gt;your-username.github.io&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Until now, the blog has been built. You can commit the change to &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; of your repository and visit your blog at url such as &lt;code class=&quot;highlighter-rouge&quot;&gt;your-username.github.io&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;But this is not the end, it’s time to add things to your blog.&lt;/p&gt;
 
-&lt;p&gt;Basically, to add a post to your blog, you can write a post in &lt;code&gt;Markdown&lt;/code&gt; grammar and put it in the &lt;code&gt;_posts&lt;/code&gt; folder in your repository:&lt;/p&gt;
+&lt;p&gt;Basically, to add a post to your blog, you can write a post in &lt;code class=&quot;highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; grammar and put it in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder in your repository:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照%202016-07-19%2013.46.20.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
@@ -284,31 +294,33 @@
 
 &lt;h3 id=&quot;step-two&quot;&gt;Step Two&lt;/h3&gt;
 
-&lt;p&gt;I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have &lt;code&gt;.txt&lt;/code&gt; suffix. Here shows the data format in these data file.&lt;/p&gt;
+&lt;p&gt;I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have &lt;code class=&quot;highlighter-rouge&quot;&gt;.txt&lt;/code&gt; suffix. Here shows the data format in these data file.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/dataFormat.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;After generating, these four files should like the following:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;trainImage.txt
-trainImageLabel.txt
-testImage.txt
-testImageLabel.txt
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;trainImage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainImageLabel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImageLabel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;And then you should use &lt;a href=&quot;https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/gzipCreate.py&quot;&gt;gzipCreate.py&lt;/a&gt; to convert these files into ‘.gz’ files.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-swift&quot;&gt;trainImage.txt.gz
-trainImageLabel.txt.gz
-testImage.txt.gz
-testImageLabel.txt.gz
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;trainImage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainImageLabel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImageLabel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gz&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Until now, the training files are ready.(training files can be find in this repository)&lt;/p&gt;
 
 &lt;h3 id=&quot;step-three&quot;&gt;Step Three&lt;/h3&gt;
 
-&lt;p&gt;I have done some changes to tensorflow’s mnist example code. You can use &lt;code&gt;lswBeginnerMnist.py&lt;/code&gt; for simple mnist training or use &lt;code&gt;lswDeepMnist.py&lt;/code&gt; for deep mnist training.&lt;/p&gt;
+&lt;p&gt;I have done some changes to tensorflow’s mnist example code. You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;lswBeginnerMnist.py&lt;/code&gt; for simple mnist training or use &lt;code class=&quot;highlighter-rouge&quot;&gt;lswDeepMnist.py&lt;/code&gt; for deep mnist training.&lt;/p&gt;
 
 &lt;h2 id=&quot;example-results&quot;&gt;Example results&lt;/h2&gt;
 

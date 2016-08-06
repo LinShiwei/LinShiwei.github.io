@@ -23,7 +23,9 @@ baseurl: "" #http://sunxiaobiu.github.io
 paginate: 10
 
 # Markdown Processors
-markdown: redcarpet
+markdown: kramdown
+kramdown:
+  input: GFM
 redcarpet:
   extensions:
     - hard_wrap

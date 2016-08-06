@@ -129,31 +129,31 @@
 
 <p>After you have a google account and log in google analytics website, you need to follow the guide to register for google analytics.</p>
 
-<p>Choose <code>website</code> in this page:</p>
+<p>Choose <code class="highlighter-rouge">website</code> in this page:</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.28.39.png" alt="image" /></p>
 
 <p>Fill in website name and website url. Select one industry category.</p>
 
-<p>Then click <code>Get Tracking ID</code>.</p>
+<p>Then click <code class="highlighter-rouge">Get Tracking ID</code>.</p>
 
-<p>Now in your google analytics page, you will get a track ID such as <code>UA-80935640-1</code> and some code for website tracking:</p>
+<p>Now in your google analytics page, you will get a track ID such as <code class="highlighter-rouge">UA-80935640-1</code> and some code for website tracking:</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png" alt="image" /></p>
 
 <h3 id="step-three">Step Three</h3>
 
-<p>Copy the tracking code, create a <code>google-analytics.html</code> file in your jekyll website’s <code>_includes</code> folder:</p>
+<p>Copy the tracking code, create a <code class="highlighter-rouge">google-analytics.html</code> file in your jekyll website’s <code class="highlighter-rouge">_includes</code> folder:</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.19.11.png" alt="image" /></p>
 
-<p>Put the code in this <code>.html</code> file:</p>
+<p>Put the code in this <code class="highlighter-rouge">.html</code> file:</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.32.53.png" alt="image" /></p>
 
 <h3 id="step-four">Step Four</h3>
 
-<p>After creating <code>google-analytics.html</code> with tracking code from google analytics website, you can open the <code>footer.html</code> file in <code>_include</code> folder and add  <code>include google-analytics.html</code> in it like the following:</p>
+<p>After creating <code class="highlighter-rouge">google-analytics.html</code> with tracking code from google analytics website, you can open the <code class="highlighter-rouge">footer.html</code> file in <code class="highlighter-rouge">_include</code> folder and add  <code class="highlighter-rouge">include google-analytics.html</code> in it like the following:</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-19 23.16.44.png" alt="image" /></p>
 
@@ -163,17 +163,19 @@
 
 <p>We have added analytics code to website step by step. Now in Terminal of your website folder,let’s run:</p>
 
-<pre><code class="language-ruby">$ jekyll build
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="err">$</span> <span class="n">jekyll</span> <span class="n">build</span>
 </code></pre>
+</div>
 
-<p>After that, you can preview your website at <code>http://localhost:4000</code> by running:</p>
+<p>After that, you can preview your website at <code class="highlighter-rouge">http://localhost:4000</code> by running:</p>
 
-<pre><code class="language-ruby">$ jekyll serve
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="err">$</span> <span class="n">jekyll</span> <span class="n">serve</span>
 </code></pre>
+</div>
 
 <h2 id="ending">Ending</h2>
 
-<p>If you use github to manage your website code, you can use github desktop to commit changes to <code>master</code>. The google analytics will work in no time. You can see the analytics report in your google analytics page.</p>
+<p>If you use github to manage your website code, you can use github desktop to commit changes to <code class="highlighter-rouge">master</code>. The google analytics will work in no time. You can see the analytics report in your google analytics page.</p>
 
 <p>By the way, if you want to know how to build your own blog in Github, <a href="http://linshiwei.github.io/2016/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS">here</a> is another post for you.</p>
 

@@ -14,7 +14,7 @@ github_username: LinShiwei
 permalink: /:categories/:year/:month/:day/:title
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
-highlighter: pygments
+highlighter: rouge
 
 assets: "/assets" #http://sunxiaobiu.github.io/assets
 baseurl: "" #http://sunxiaobiu.github.io

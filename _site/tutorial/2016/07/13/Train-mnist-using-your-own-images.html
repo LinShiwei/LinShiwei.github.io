@@ -127,31 +127,33 @@
 
 <h3 id="step-two">Step Two</h3>
 
-<p>I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have <code>.txt</code> suffix. Here shows the data format in these data file.</p>
+<p>I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have <code class="highlighter-rouge">.txt</code> suffix. Here shows the data format in these data file.</p>
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/dataFormat.png" alt="image" /></p>
 
 <p>After generating, these four files should like the following:</p>
 
-<pre><code class="language-swift">trainImage.txt
-trainImageLabel.txt
-testImage.txt
-testImageLabel.txt
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="n">trainImage</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">trainImageLabel</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">testImage</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">testImageLabel</span><span class="o">.</span><span class="n">txt</span>
 </code></pre>
+</div>
 
 <p>And then you should use <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/gzipCreate.py">gzipCreate.py</a> to convert these files into ‘.gz’ files.</p>
 
-<pre><code class="language-swift">trainImage.txt.gz
-trainImageLabel.txt.gz
-testImage.txt.gz
-testImageLabel.txt.gz
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="n">trainImage</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">trainImageLabel</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">testImage</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">testImageLabel</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
 </code></pre>
+</div>
 
 <p>Until now, the training files are ready.(training files can be find in this repository)</p>
 
 <h3 id="step-three">Step Three</h3>
 
-<p>I have done some changes to tensorflow’s mnist example code. You can use <code>lswBeginnerMnist.py</code> for simple mnist training or use <code>lswDeepMnist.py</code> for deep mnist training.</p>
+<p>I have done some changes to tensorflow’s mnist example code. You can use <code class="highlighter-rouge">lswBeginnerMnist.py</code> for simple mnist training or use <code class="highlighter-rouge">lswDeepMnist.py</code> for deep mnist training.</p>
 
 <h2 id="example-results">Example results</h2>
 
