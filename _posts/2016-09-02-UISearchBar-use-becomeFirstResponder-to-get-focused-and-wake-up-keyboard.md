@@ -13,7 +13,7 @@ excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时�
 ## 背景
 
 当我们使用 `UISearchBar` 时，常常会想当 `searchBar` 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
-从 Apple 的官方文档中，我们知道
+从 Apple 的官方文档中，我们知道：
 
 >- becomeFirstResponder
 
@@ -21,7 +21,7 @@ excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时�
 
 即对于继承自 `UIResponder` 的类，如：`UISearchBar`，使用 `becomeFirstResponder` 能够使其获得焦点，同时 `CocoaTouch` 还做了优化：获得焦点后当控件需要输入时，能够自动唤起键盘。
 
-因此，我们只需要关注如何使 `UISearchBar` 获得焦点。但是某些情况下，使用 `becomeFirstResponder` 并不能实现我们的目标。下面我们将在实例中解决这个问题。
+因此，我们只需要关注如何使 `UISearchBar` 获得焦点。但是某些情况下，使用 `becomeFirstResponder` 并不能实现我们的目标。下面我们将在实例中解决这个问题。 
 
 ## 问题描述
 
