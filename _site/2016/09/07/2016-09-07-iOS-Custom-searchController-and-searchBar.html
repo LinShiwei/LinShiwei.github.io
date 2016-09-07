@@ -1,0 +1,101 @@
+<h2 id="section">背景</h2>
+
+<p>在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的<a href="https://github.com/LinShiwei/WeatherDemo">天气 APP</a>。CocoaTouch 自带的 <code class="highlighter-rouge">UISearchController</code>，包含了一个 <code class="highlighter-rouge">searchBar: UISearchBar</code> 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
+但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？</p>
+
+<h2 id="section-1">自定义教程及核心思路</h2>
+
+<p>在官方文档中 <code class="highlighter-rouge">UISearchController</code> 这一部分有下面一句话：</p>
+
+<blockquote>
+  <p>To use a custom subclass of UISearchBar, subclass UISearchController and implement this property to return your custom search bar.</p>
+</blockquote>
+
+<p>这句话说明了，想要有自定义 searchBar 的话，应该 有一个 <code class="highlighter-rouge">UISearchController</code> 子类（如：CustomSearchController）和 <code class="highlighter-rouge">UISearchBar</code> 子类（如：CustomSearchBar），并在 CustomSearchController 中声明一个 CustomSearchBar 的属性。</p>
+
+<p>详细的教程和步骤请参考<a href="http://www.appcoda.com/custom-search-bar-tutorial/">这里</a>。</p>
+
+<p><strong>核心思路</strong>如下：</p>
+
+<ol>
+  <li>创建一个 CustomSearchBar 类继承自 <code class="highlighter-rouge">UISearchBar</code> 。
+    <ul>
+      <li>在 drawRect(rect:CGRect) 中更改外观。</li>
+      <li>重写初始化函数 <code class="highlighter-rouge">init(frame: CGRect)</code> 或者自定义初始化函数，记得设定 <code class="highlighter-rouge">frame</code> 属性。</li>
+    </ul>
+  </li>
+  <li>创建一个 CustomSearchController 类继承自 <code class="highlighter-rouge">UISearchController</code> 。
+    <ul>
+      <li>在类里声明一个属性：</li>
+    </ul>
+  </li>
+</ol>
+
+<p><code class="highlighter-rouge">swift
+ customSearchBar: CustomSearchBar!
+</code></p>
+
+<ul>
+  <li>在定义初始化函数，并在初始化函数中调用 CustomSearchBar 的初始化函数。</li>
+</ul>
+
+<ol>
+  <li>由于是自定义的 searchBar ，不支持原有的一些 delegate 协议。因此需要自己声明 delegate 协议。
+    <ul>
+      <li>声明 CustomSearchControllerDelegate 协议，如：</li>
+    </ul>
+  </li>
+</ol>
+
+<p><code class="highlighter-rouge">swift
+protocol CustomSearchControllerDelegate {
+    func didChangeSearchTextInSearchBar(searchBar:CustomSearchBar, searchText:String)
+} 
+</code></p>
+
+<ul>
+  <li>在 CustomSearchController 类中声明一个属性：</li>
+</ul>
+
+<p><code class="highlighter-rouge">swift
+ customDelegate: CustomSearchControllerDelegate?
+</code></p>
+
+<ul>
+  <li>在包含 CustomSearchController 的上一级 viewController 中支持并实现这个协议。</li>
+</ul>
+
+<p><code class="highlighter-rouge">swift
+ extension ViewController: CustomSearchControllerDelegate
+</code></p>
+
+<ul>
+  <li>把 customDelegate 设为这个 viewController，即让这个 viewController 作为 customSearchController 的代理。</li>
+</ul>
+
+<ol>
+  <li>让 CustomSearchController 支持 <code class="highlighter-rouge">UISearchBarDelegate</code> 。</li>
+</ol>
+
+<p><code class="highlighter-rouge">swift
+ extension CustomSearchController: UISearchBarDelegate
+ </code></p>
+
+<ul>
+  <li>设 customSearchBar.delegate 为 CustomSearchController。</li>
+  <li>
+    <p>在 CustomSearchController 中实现 <code class="highlighter-rouge">UISearchBarDelegate</code> ，在具体的实现中可以通过 customDelegate 调用 CustomSearchControllerDelegate 中的函数，如：</p>
+
+    <p><code class="highlighter-rouge">swift
+ extension CustomSearchController : UISearchBarDelegate{
+     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+         guard let bar = searchBar as? CustomSearchBar else {return}
+         searchDelegate?.didChangeSearchTextInSearchBar(bar, searchText: searchText)
+     }
+ }  
+</code></p>
+  </li>
+</ul>
+
+<p>这就是整个自定义 searchBar 和 searchController 的流程，在自定义外观的同时，还应该记得定义自己的 delegate ，否则定义的 searchBar 就没法使用了。</p>
+

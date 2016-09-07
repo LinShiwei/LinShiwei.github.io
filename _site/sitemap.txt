@@ -12,6 +12,8 @@
 /rss.xml
 /sitemap.txt
 
+/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar
+/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard
 /tutorial/2016/07/30/Let-your-framework-support-carthage
 /tutorial/2016/07/20/Add-google-analytics-to-your-jekyll-website
 /tutorial/2016/07/19/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS

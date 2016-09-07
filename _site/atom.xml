@@ -4,13 +4,210 @@
  <title>Lin Shiwei</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-08-06T11:07:32+08:00</updated>
+ <updated>2016-09-07T18:52:10+08:00</updated>
  <id></id>
  <author>
    <name>linshiwei</name>
    <email>linshiweicn@163.com</email>
  </author>
 
+ 
+ <entry>
+   <title>iOS ：自定义 searchController 和 searchBar</title>
+   <link href="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar"/>
+   <updated>2016-09-07T00:00:00+08:00</updated>
+   <id>/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的&lt;a href=&quot;https://github.com/LinShiwei/WeatherDemo&quot;&gt;天气 APP&lt;/a&gt;。CocoaTouch 自带的 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchController&lt;/code&gt;，包含了一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar: UISearchBar&lt;/code&gt; 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
+但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？&lt;/p&gt;
+
+&lt;h2 id=&quot;searchbar--searchcontroller&quot;&gt;教程：自定义 searchBar 和 searchController&lt;/h2&gt;
+
+&lt;p&gt;在官方文档中 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchController&lt;/code&gt; 这一部分有下面一句话：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;To use a custom subclass of UISearchBar, subclass UISearchController and implement this property to return your custom search bar.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这句话说明了，想要有自定义 searchBar 的话，应该 有一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchController&lt;/code&gt; 子类（如：CustomSearchController）和 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt; 子类（如：CustomSearchBar），并在 CustomSearchController 中声明一个 CustomSearchBar 的属性。&lt;/p&gt;
+
+&lt;p&gt; &lt;strong&gt;详细的教程和步骤请参考&lt;a href=&quot;http://www.appcoda.com/custom-search-bar-tutorial/&quot;&gt;这里&lt;/a&gt;。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;核心思路&lt;/h2&gt;
+
+&lt;p&gt;详细的步骤上面的链接已经给出，但是教程篇幅较长，内容很多。光看教程很容易只知其然而不知其所以然。下面我大致介绍一下，整个自定义过程的&lt;strong&gt;核心思路&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;核心思路&lt;/strong&gt;如下：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建一个 CustomSearchBar 类继承自 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt; 。
+    &lt;ul&gt;
+      &lt;li&gt;在 drawRect(rect:CGRect) 中更改外观。&lt;/li&gt;
+      &lt;li&gt;重写初始化函数 &lt;code class=&quot;highlighter-rouge&quot;&gt;init(frame: CGRect)&lt;/code&gt; 或者自定义初始化函数，记得设定 &lt;code class=&quot;highlighter-rouge&quot;&gt;frame&lt;/code&gt; 属性。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;创建一个 CustomSearchController 类继承自 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchController&lt;/code&gt; 。
+    &lt;ul&gt;
+      &lt;li&gt;在类里声明一个属性：&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nv&quot;&gt;customSearchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchBar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在定义初始化函数，并在初始化函数中调用 CustomSearchBar 的初始化函数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;由于是自定义的 searchBar ，不支持原有的一些 delegate 协议。因此需要自己声明 delegate 协议。
+    &lt;ul&gt;
+      &lt;li&gt;声明 CustomSearchControllerDelegate 协议，如：&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchControllerDelegate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;didChangeSearchTextInSearchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;CustomSearchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;searchText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在 CustomSearchController 类中声明一个属性：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nv&quot;&gt;customDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchControllerDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在包含 CustomSearchController 的上一级 viewController 中支持并实现这个协议。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ViewController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchControllerDelegate&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;把 customDelegate 设为这个 viewController，即让这个 viewController 作为 customSearchController 的代理。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;让 CustomSearchController 支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBarDelegate&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UISearchBarDelegate&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;设 customSearchBar.delegate 为 CustomSearchController。&lt;/li&gt;
+  &lt;li&gt;在 CustomSearchController 中实现 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBarDelegate&lt;/code&gt; ，在具体的实现中可以通过 customDelegate 调用 CustomSearchControllerDelegate 中的函数，如：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UISearchBarDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UISearchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;textDidChange&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;searchText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as?&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CustomSearchBar&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;searchDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;didChangeSearchTextInSearchBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;searchText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;searchText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这就是整个自定义 searchBar 和 searchController 的流程，在自定义外观的同时，还应该记得定义自己的 delegate ，否则定义的 searchBar 就没法使用了。&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘</title>
+   <link href="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard"/>
+   <updated>2016-09-02T00:00:00+08:00</updated>
+   <id>/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;当我们使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt; 时，常常会想当 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
+从 Apple 的官方文档中，我们知道：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;becomeFirstResponder&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Notifies the receiver that it is about to become first responder in its window.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;即对于继承自 &lt;code class=&quot;highlighter-rouge&quot;&gt;UIResponder&lt;/code&gt; 的类，如：&lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt;，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;becomeFirstResponder&lt;/code&gt; 能够使其获得焦点，同时 &lt;code class=&quot;highlighter-rouge&quot;&gt;CocoaTouch&lt;/code&gt; 还做了优化：获得焦点后当控件需要输入时，能够自动唤起键盘。&lt;/p&gt;
+
+&lt;p&gt;因此，我们只需要关注如何使 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt; 获得焦点。但是某些情况下，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;becomeFirstResponder&lt;/code&gt; 并不能实现我们的目标。下面我们将在实例中解决这个问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;问题描述&lt;/h2&gt;
+
+&lt;p&gt;在目前我正在开发的&lt;strong&gt;天气APP（源码请看&lt;a href=&quot;https://github.com/LinShiwei/WeatherDemo&quot;&gt;这里&lt;/a&gt;）&lt;/strong&gt;中，主界面的左侧有一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView&lt;/code&gt; 用于显示不同的城市，其中有一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;tableViewCell&lt;/code&gt;，当点击它的时候，会出现另一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController&lt;/code&gt; 供用户添加新的城市。&lt;/p&gt;
+
+&lt;p&gt;假设这个 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController&lt;/code&gt; 为 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController_A&lt;/code&gt;，这个类里包含了一个 tableView，和一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBarController&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;这样把 &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;tableHeaderView&lt;/code&gt; 设置为 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController.searchBar&lt;/code&gt;，就能把 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 显示在 tableView 上。&lt;/p&gt;
+
+&lt;p&gt;现在的问题就是，当点击 &lt;code class=&quot;highlighter-rouge&quot;&gt;tableViewCell&lt;/code&gt;，出现了包含 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController_A&lt;/code&gt; 时，并不会将焦点定位到 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 上，当然也不会出现键盘。&lt;/p&gt;
+
+&lt;p&gt;我尝试了在 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController_A&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewDidLoad()&lt;/code&gt; 里用：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;becomeFirstResponder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;第一行用于激活 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt;，第二行让 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 获得焦点。&lt;/p&gt;
+
+&lt;p&gt;但是运行结果表明，只激活了 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt;，而没有把焦点定位到 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 上。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;原因分析&lt;/h2&gt;
+
+&lt;p&gt;在官方文档里有如下描述：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A responder object only becomes the first responder if the current responder can resign first-responder status (canResignFirstResponder) and the new responder can become first responder.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;responder&lt;/code&gt; 想要成功获得焦点，必需满足，上一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;responder&lt;/code&gt; 能够放弃焦点，并且当前的 &lt;code class=&quot;highlighter-rouge&quot;&gt;responder&lt;/code&gt; 能够获得焦点。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;因此，问题就出在之前描述的那种情况下，使用：&lt;code class=&quot;highlighter-rouge&quot;&gt;SearchController.searchBar.becomeFirstResponder()&lt;/code&gt; 的时候，&lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 并没有能力获得焦点，因此焦点设置不成功。&lt;/p&gt;
+
+&lt;p&gt;但是为什么 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 这时候没有能力获得焦点呢？&lt;/p&gt;
+
+&lt;p&gt;因为，在 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewDidLoad()&lt;/code&gt; 的时候，&lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt; 也刚刚初始化，必需得等到 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt; 初始化完毕，呈现出来的时候，才能为 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 设置焦点。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;解决方法&lt;/h2&gt;
+
+&lt;p&gt;为了在 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt; 初始化之后，再进行 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 焦点设置，我们可以为 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController_A&lt;/code&gt; 声明 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchControllerDelegate&lt;/code&gt;，并在 &lt;code class=&quot;highlighter-rouge&quot;&gt;didPresentSearchController&lt;/code&gt; 中添加焦点设置代码，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ViewController_A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UISearchControllerDelegate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;didPresentSearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UISearchController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;searchController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;searchBar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;becomeFirstResponder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样就能在出现 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewController_A&lt;/code&gt; 后，自动将焦点定位到 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 并唤起键盘。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;结语&lt;/h2&gt;
+
+&lt;p&gt;这其实是 &lt;code class=&quot;highlighter-rouge&quot;&gt;View&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;ViewController&lt;/code&gt; 的&lt;strong&gt;生命周期（cycle）&lt;/strong&gt;的问题，在周期的各个阶段，会触发相应的事件，可以进行相应的设置。&lt;/p&gt;
+
+&lt;p&gt;之前在 &lt;code class=&quot;highlighter-rouge&quot;&gt;viewDidLoad()&lt;/code&gt; 中同时设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController.active&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController.searchBar.becomeFirstResponder()&lt;/code&gt;，由于此时 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 是不可用的，因此对它的设置无效。必需在  &lt;code class=&quot;highlighter-rouge&quot;&gt;searchController&lt;/code&gt; 初始化完毕才能对 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 进行设置。因此，后来，我们在 &lt;code class=&quot;highlighter-rouge&quot;&gt;didPresentSearchController&lt;/code&gt; 中设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt;，就能设置成功了。&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>让现有的Swift项目支持Carthage</title>

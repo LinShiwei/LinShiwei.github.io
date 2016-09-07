@@ -7,7 +7,7 @@
     
     
     
-    <title>About me | Lin Shiwei</title>
+    <title>iOS ：自定义 searchController 和 searchBar | Lin Shiwei</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -22,12 +22,12 @@
     
     <meta property="og:type" content="website">
     
-    <meta property="og:title" content="About me">
-    <meta property="og:url" content="/about/">
+    <meta property="og:title" content="iOS ：自定义 searchController 和 searchBar">
+    <meta property="og:url" content="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar">
     <meta property="og:site_name" content="Lin Shiwei">
     <meta property="og:description" content="">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="About me">
+    <meta name="twitter:title" content="iOS ：自定义 searchController 和 searchBar">
     <meta name="twitter:description" content="page.description">
     <meta name="twitter:creator" content="@">
     <link rel="publisher" href="">
@@ -88,36 +88,165 @@
       
 
 
-
 <div id="main" class="post" itemscope itemprop="blogPost">
   
 	<article itemprop="articleBody"> 
 	<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/about/" title="About me" itemprop="url">About me</a>
+      <a href="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar" title="iOS ：自定义 searchController 和 searchBar" itemprop="url">iOS ：自定义 searchController 和 searchBar</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
 		
   <p class="article-time">
-    <time datetime="" itemprop="datePublished"> 发表于 </time>
+    <time datetime="2016-09-07 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-09-07</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		<div id="posts" class="posts-expand">
+		<h2 id="section">背景</h2>
 
+<p>在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的<a href="https://github.com/LinShiwei/WeatherDemo">天气 APP</a>。CocoaTouch 自带的 <code class="highlighter-rouge">UISearchController</code>，包含了一个 <code class="highlighter-rouge">searchBar: UISearchBar</code> 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
+但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？</p>
 
-    <h2>Name</h2><p>CN: 林世伟（Lin Shiwei）</p>
-    <h2>I Am</h2><p>In Nankai University, Tianjin, China</p>
-</div>  
+<h2 id="searchbar--searchcontroller">教程：自定义 searchBar 和 searchController</h2>
+
+<p>在官方文档中 <code class="highlighter-rouge">UISearchController</code> 这一部分有下面一句话：</p>
+
+<blockquote>
+  <p>To use a custom subclass of UISearchBar, subclass UISearchController and implement this property to return your custom search bar.</p>
+</blockquote>
+
+<p>这句话说明了，想要有自定义 searchBar 的话，应该 有一个 <code class="highlighter-rouge">UISearchController</code> 子类（如：CustomSearchController）和 <code class="highlighter-rouge">UISearchBar</code> 子类（如：CustomSearchBar），并在 CustomSearchController 中声明一个 CustomSearchBar 的属性。</p>
+
+<p> <strong>详细的教程和步骤请参考<a href="http://www.appcoda.com/custom-search-bar-tutorial/">这里</a>。</strong></p>
+
+<h2 id="section-1">核心思路</h2>
+
+<p>详细的步骤上面的链接已经给出，但是教程篇幅较长，内容很多。光看教程很容易只知其然而不知其所以然。下面我大致介绍一下，整个自定义过程的<strong>核心思路</strong>。</p>
+
+<ul>
+  <li><strong>核心思路</strong>如下：</li>
+</ul>
+
+<ol>
+  <li>创建一个 CustomSearchBar 类继承自 <code class="highlighter-rouge">UISearchBar</code> 。
+    <ul>
+      <li>在 drawRect(rect:CGRect) 中更改外观。</li>
+      <li>重写初始化函数 <code class="highlighter-rouge">init(frame: CGRect)</code> 或者自定义初始化函数，记得设定 <code class="highlighter-rouge">frame</code> 属性。</li>
+    </ul>
+  </li>
+  <li>创建一个 CustomSearchController 类继承自 <code class="highlighter-rouge">UISearchController</code> 。
+    <ul>
+      <li>在类里声明一个属性：</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="nv">customSearchBar</span><span class="p">:</span> <span class="kt">CustomSearchBar</span><span class="o">!</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>在定义初始化函数，并在初始化函数中调用 CustomSearchBar 的初始化函数。</li>
+</ul>
+
+<ol>
+  <li>由于是自定义的 searchBar ，不支持原有的一些 delegate 协议。因此需要自己声明 delegate 协议。
+    <ul>
+      <li>声明 CustomSearchControllerDelegate 协议，如：</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">CustomSearchControllerDelegate</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">didChangeSearchTextInSearchBar</span><span class="p">(</span><span class="nv">searchBar</span><span class="p">:</span><span class="kt">CustomSearchBar</span><span class="p">,</span> <span class="nv">searchText</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span>
+<span class="p">}</span> 
+</code></pre>
+</div>
+
+<ul>
+  <li>在 CustomSearchController 类中声明一个属性：</li>
+</ul>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="nv">customDelegate</span><span class="p">:</span> <span class="kt">CustomSearchControllerDelegate</span><span class="p">?</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>在包含 CustomSearchController 的上一级 viewController 中支持并实现这个协议。</li>
+</ul>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">CustomSearchControllerDelegate</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>把 customDelegate 设为这个 viewController，即让这个 viewController 作为 customSearchController 的代理。</li>
+</ul>
+
+<ol>
+  <li>让 CustomSearchController 支持 <code class="highlighter-rouge">UISearchBarDelegate</code> 。</li>
+</ol>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="kd">extension</span> <span class="kt">CustomSearchController</span><span class="p">:</span> <span class="kt">UISearchBarDelegate</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>设 customSearchBar.delegate 为 CustomSearchController。</li>
+  <li>在 CustomSearchController 中实现 <code class="highlighter-rouge">UISearchBarDelegate</code> ，在具体的实现中可以通过 customDelegate 调用 CustomSearchControllerDelegate 中的函数，如：</li>
+</ul>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">extension</span> <span class="kt">CustomSearchController</span> <span class="p">:</span> <span class="kt">UISearchBarDelegate</span><span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">searchBar</span><span class="p">(</span><span class="nv">searchBar</span><span class="p">:</span> <span class="kt">UISearchBar</span><span class="p">,</span> <span class="n">textDidChange</span> <span class="nv">searchText</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">bar</span> <span class="o">=</span> <span class="n">searchBar</span> <span class="k">as?</span> <span class="kt">CustomSearchBar</span> <span class="k">else</span> <span class="p">{</span><span class="k">return</span><span class="p">}</span>
+        <span class="n">searchDelegate</span><span class="p">?</span><span class="o">.</span><span class="nf">didChangeSearchTextInSearchBar</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="nv">searchText</span><span class="p">:</span> <span class="n">searchText</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>  
+</code></pre>
+</div>
+
+<p>这就是整个自定义 searchBar 和 searchController 的流程，在自定义外观的同时，还应该记得定义自己的 delegate ，否则定义的 searchBar 就没法使用了。</p>
+
+  
 	</div>
 	<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#swift">swift</a>
+  
+  <a href="/tags/#iOS">iOS</a>
+  
+  </div>
 
 </div>
 
@@ -125,7 +254,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="/about/" data-title="About me | Lin Shiwei" data-tsina="" class="share clearfix">
+	  <div data-url="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar" data-title="iOS ：自定义 searchController 和 searchBar | Lin Shiwei" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -134,13 +263,27 @@
 </footer>   
 	</article>
 	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard" title="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘">
+  <strong>上一篇：</strong><br/>
+  <span>
+  UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘</span>
+</a>
+</div>
+
+
+</nav>
+
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="about/index.html" data-title="About me" data-url="/about/"></div>
+	<div class="ds-thread" data-thread-key="_posts/2016-09-07-iOS-Custom-searchController-and-searchBar.md" data-title="iOS ：自定义 searchController 和 searchBar" data-url="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar"></div>
 </section>
 
 
 </div>  
+
       
       
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>

@@ -7,7 +7,7 @@
     
     
     
-    <title>About me | Lin Shiwei</title>
+    <title>UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘 | Lin Shiwei</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -22,12 +22,12 @@
     
     <meta property="og:type" content="website">
     
-    <meta property="og:title" content="About me">
-    <meta property="og:url" content="/about/">
+    <meta property="og:title" content="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘">
+    <meta property="og:url" content="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard">
     <meta property="og:site_name" content="Lin Shiwei">
     <meta property="og:description" content="">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="About me">
+    <meta name="twitter:title" content="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘">
     <meta name="twitter:description" content="page.description">
     <meta name="twitter:creator" content="@">
     <link rel="publisher" href="">
@@ -88,36 +88,136 @@
       
 
 
-
 <div id="main" class="post" itemscope itemprop="blogPost">
   
 	<article itemprop="articleBody"> 
 	<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/about/" title="About me" itemprop="url">About me</a>
+      <a href="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard" title="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘" itemprop="url">UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
 		
   <p class="article-time">
-    <time datetime="" itemprop="datePublished"> 发表于 </time>
+    <time datetime="2016-09-02 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-09-02</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		<div id="posts" class="posts-expand">
+		<h2 id="section">背景</h2>
 
+<p>当我们使用 <code class="highlighter-rouge">UISearchBar</code> 时，常常会想当 <code class="highlighter-rouge">searchBar</code> 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
+从 Apple 的官方文档中，我们知道：</p>
 
-    <h2>Name</h2><p>CN: 林世伟（Lin Shiwei）</p>
-    <h2>I Am</h2><p>In Nankai University, Tianjin, China</p>
-</div>  
+<blockquote>
+  <ul>
+    <li>becomeFirstResponder</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>Notifies the receiver that it is about to become first responder in its window.</p>
+</blockquote>
+
+<p>即对于继承自 <code class="highlighter-rouge">UIResponder</code> 的类，如：<code class="highlighter-rouge">UISearchBar</code>，使用 <code class="highlighter-rouge">becomeFirstResponder</code> 能够使其获得焦点，同时 <code class="highlighter-rouge">CocoaTouch</code> 还做了优化：获得焦点后当控件需要输入时，能够自动唤起键盘。</p>
+
+<p>因此，我们只需要关注如何使 <code class="highlighter-rouge">UISearchBar</code> 获得焦点。但是某些情况下，使用 <code class="highlighter-rouge">becomeFirstResponder</code> 并不能实现我们的目标。下面我们将在实例中解决这个问题。</p>
+
+<h2 id="section-1">问题描述</h2>
+
+<p>在目前我正在开发的<strong>天气APP（源码请看<a href="https://github.com/LinShiwei/WeatherDemo">这里</a>）</strong>中，主界面的左侧有一个 <code class="highlighter-rouge">tableView</code> 用于显示不同的城市，其中有一个 <code class="highlighter-rouge">tableViewCell</code>，当点击它的时候，会出现另一个 <code class="highlighter-rouge">viewController</code> 供用户添加新的城市。</p>
+
+<p>假设这个 <code class="highlighter-rouge">viewController</code> 为 <code class="highlighter-rouge">viewController_A</code>，这个类里包含了一个 tableView，和一个 <code class="highlighter-rouge">UISearchBarController</code>。</p>
+
+<p>这样把 <code class="highlighter-rouge">tableView</code> 的 <code class="highlighter-rouge">tableHeaderView</code> 设置为 <code class="highlighter-rouge">searchController.searchBar</code>，就能把 <code class="highlighter-rouge">searchBar</code> 显示在 tableView 上。</p>
+
+<p>现在的问题就是，当点击 <code class="highlighter-rouge">tableViewCell</code>，出现了包含 <code class="highlighter-rouge">searchBar</code> 的 <code class="highlighter-rouge">viewController_A</code> 时，并不会将焦点定位到 <code class="highlighter-rouge">searchBar</code> 上，当然也不会出现键盘。</p>
+
+<p>我尝试了在 <code class="highlighter-rouge">viewController_A</code> 的 <code class="highlighter-rouge">viewDidLoad()</code> 里用：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="n">searchController</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="n">searchController</span><span class="o">.</span><span class="n">searchBar</span><span class="o">.</span><span class="nf">becomeFirstResponder</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>第一行用于激活 <code class="highlighter-rouge">searchController</code>，第二行让 <code class="highlighter-rouge">searchBar</code> 获得焦点。</p>
+
+<p>但是运行结果表明，只激活了 <code class="highlighter-rouge">searchController</code>，而没有把焦点定位到 <code class="highlighter-rouge">searchBar</code> 上。</p>
+
+<h2 id="section-2">原因分析</h2>
+
+<p>在官方文档里有如下描述：</p>
+
+<blockquote>
+  <p>A responder object only becomes the first responder if the current responder can resign first-responder status (canResignFirstResponder) and the new responder can become first responder.</p>
+</blockquote>
+
+<p><strong>一个 <code class="highlighter-rouge">responder</code> 想要成功获得焦点，必需满足，上一个 <code class="highlighter-rouge">responder</code> 能够放弃焦点，并且当前的 <code class="highlighter-rouge">responder</code> 能够获得焦点。</strong></p>
+
+<p>因此，问题就出在之前描述的那种情况下，使用：<code class="highlighter-rouge">SearchController.searchBar.becomeFirstResponder()</code> 的时候，<code class="highlighter-rouge">searchBar</code> 并没有能力获得焦点，因此焦点设置不成功。</p>
+
+<p>但是为什么 <code class="highlighter-rouge">searchBar</code> 这时候没有能力获得焦点呢？</p>
+
+<p>因为，在 <code class="highlighter-rouge">viewDidLoad()</code> 的时候，<code class="highlighter-rouge">searchController</code> 也刚刚初始化，必需得等到 <code class="highlighter-rouge">searchController</code> 初始化完毕，呈现出来的时候，才能为 <code class="highlighter-rouge">searchBar</code> 设置焦点。</p>
+
+<h2 id="section-3">解决方法</h2>
+
+<p>为了在 <code class="highlighter-rouge">searchController</code> 初始化之后，再进行 <code class="highlighter-rouge">searchBar</code> 焦点设置，我们可以为 <code class="highlighter-rouge">viewController_A</code> 声明 <code class="highlighter-rouge">UISearchControllerDelegate</code>，并在 <code class="highlighter-rouge">didPresentSearchController</code> 中添加焦点设置代码，如下：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">extension</span> <span class="kt">ViewController_A</span> <span class="p">:</span> <span class="kt">UISearchControllerDelegate</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">didPresentSearchController</span><span class="p">(</span><span class="nv">searchController</span><span class="p">:</span> <span class="kt">UISearchController</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">searchController</span><span class="o">.</span><span class="n">searchBar</span><span class="o">.</span><span class="nf">becomeFirstResponder</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>这样就能在出现 <code class="highlighter-rouge">viewController_A</code> 后，自动将焦点定位到 <code class="highlighter-rouge">searchBar</code> 并唤起键盘。</p>
+
+<h2 id="section-4">结语</h2>
+
+<p>这其实是 <code class="highlighter-rouge">View</code> 和 <code class="highlighter-rouge">ViewController</code> 的<strong>生命周期（cycle）</strong>的问题，在周期的各个阶段，会触发相应的事件，可以进行相应的设置。</p>
+
+<p>之前在 <code class="highlighter-rouge">viewDidLoad()</code> 中同时设置 <code class="highlighter-rouge">searchController.active</code> 和 <code class="highlighter-rouge">searchController.searchBar.becomeFirstResponder()</code>，由于此时 <code class="highlighter-rouge">searchBar</code> 是不可用的，因此对它的设置无效。必需在  <code class="highlighter-rouge">searchController</code> 初始化完毕才能对 <code class="highlighter-rouge">searchBar</code> 进行设置。因此，后来，我们在 <code class="highlighter-rouge">didPresentSearchController</code> 中设置 <code class="highlighter-rouge">searchBar</code>，就能设置成功了。</p>
+
+  
 	</div>
 	<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#swift">swift</a>
+  
+  <a href="/tags/#iOS">iOS</a>
+  
+  </div>
 
 </div>
 
@@ -125,7 +225,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="/about/" data-title="About me | Lin Shiwei" data-tsina="" class="share clearfix">
+	  <div data-url="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard" data-title="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘 | Lin Shiwei" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -134,13 +234,35 @@
 </footer>   
 	</article>
 	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/07/30/Let-your-framework-support-carthage" title="让现有的Swift项目支持Carthage">
+  <strong>上一篇：</strong><br/>
+  <span>
+  让现有的Swift项目支持Carthage</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar"  title="iOS ：自定义 searchController 和 searchBar">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS ：自定义 searchController 和 searchBar
+</span>
+</a>
+</div>
+
+</nav>
+
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="about/index.html" data-title="About me" data-url="/about/"></div>
+	<div class="ds-thread" data-thread-key="_posts/2016-09-02-UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard.md" data-title="UISearchBar：使用 becomeFirstResponder 获得焦点并唤起键盘" data-url="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard"></div>
 </section>
 
 
 </div>  
+
       
       
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
