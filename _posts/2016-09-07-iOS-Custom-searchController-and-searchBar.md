@@ -6,6 +6,8 @@ category: Tutorial
 tags: 
   - swift
   - iOS
+  - UISearchBar
+  - UISearchController
 time: 2016.09.07 13:19:00
 excerpt: 在 iOS app 中，搜索功能非常常见，UISearchBar 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？
 ---

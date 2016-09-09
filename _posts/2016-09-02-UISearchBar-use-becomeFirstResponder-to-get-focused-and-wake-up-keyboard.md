@@ -6,6 +6,8 @@ category: Tutorial
 tags: 
   - swift
   - iOS
+  - UISearchBar
+  - UISearchController
 time: 2016.09.02 09:23:00
 excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。但是某些情况下，使用 becomeFirstResponder 并不能实现我们的目标。
 ---

@@ -1,0 +1,582 @@
+
+        <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>为未勾选“ Using CoreData ”的项目添加 CoreData 支持 | Lin Shiwei</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="linshiwei">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="website">
+    
+    <meta property="og:title" content="为未勾选“ Using CoreData ”的项目添加 CoreData 支持">
+    <meta property="og:url" content="/tutorial/2016/09/09/Adding-CoreData-To-Your-Project">
+    <meta property="og:site_name" content="Lin Shiwei">
+    <meta property="og:description" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="为未勾选“ Using CoreData ”的项目添加 CoreData 支持">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lin Shiwei" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.ico">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.ico">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+        <div>
+		    
+			<div id="imglogo">
+				<a href="/"><img src="/assets/img/logo.png" alt="Lin Shiwei" title="Lin Shiwei"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lin Shiwei">Lin Shiwei</a></h1>
+				<h2 class="blog-motto">A technology blog for myself.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>	
+</div>
+    </header>
+    <div id="container">
+      
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+	<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/tutorial/2016/09/09/Adding-CoreData-To-Your-Project" title="为未勾选“ Using CoreData ”的项目添加 CoreData 支持" itemprop="url">为未勾选“ Using CoreData ”的项目添加 CoreData 支持</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-09 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-09-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<h2 id="section">前言</h2>
+
+<p><a href="https://developer.apple.com/library/watchos/documentation/Cocoa/Conceptual/CoreData/index.html">CoreData</a> 作为一个官方的数据存储框架，具有很高的性能。在应用开发中，涉及到大量数据时，常常会使用它作为数据存储。
+在 Xcode 中，新建项目时，有一个“ Using CoreData ”选项。勾选这个选项后，Xcode 会在建立项目时自动为你配置好 CoreData 的使用环境，非常方便。
+但是当建立项目时未勾选“ Using CoreData ”，想在已有的项目中使用 CoreData ，就需要自己手动配置。本文主要介绍了手动配置 CoreData 的方法。</p>
+
+<h2 id="coredata">手动配置 CoreData</h2>
+
+<h3 id="coredata-">添加 CoreData 框架</h3>
+
+<p>在项目属性页 General 里的 Linked Frameworks and Libraries 中添加 CoreData.framework 。</p>
+
+<h3 id="coredata--1">添加 CoreData 模型文件</h3>
+
+<p>在 Xcode 左侧的导航栏的项目文件夹上点击右键，选择“ New File… ”，在弹出的对话框中选择“ iOS -&gt; Core Data -&gt; Data Model ”添加一个 CoreData 模型文件，在这个文件里可以添加自定义的模型对象。</p>
+
+<h3 id="coredata--2">添加 CoreData 配置代码</h3>
+
+<p>在 AppDelegate.swift 中，import UIKit 下面导入 CoreData ：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">CoreData</span>
+</code></pre>
+</div>
+
+<p>最后一个大括号前面添加以下 CoreData 配置代码，注意要把代码中的 <code class="highlighter-rouge">YourDataModelName</code> 替换成刚刚新建的模型文件名：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">// MARK: - Core Data stack</span>
+    
+    <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">applicationDocumentsDirectory</span><span class="p">:</span> <span class="kt">NSURL</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">// The directory the application uses to store the Core Data store file. This code uses a directory named "lsw.self.MyGraphics" in the application's documents Application Support directory.</span>
+        <span class="k">let</span> <span class="nv">urls</span> <span class="o">=</span> <span class="kt">NSFileManager</span><span class="o">.</span><span class="nf">defaultManager</span><span class="p">()</span><span class="o">.</span><span class="kt">URLsForDirectory</span><span class="p">(</span><span class="o">.</span><span class="kt">DocumentDirectory</span><span class="p">,</span> <span class="nv">inDomains</span><span class="p">:</span> <span class="o">.</span><span class="kt">UserDomainMask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">urls</span><span class="p">[</span><span class="n">urls</span><span class="o">.</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">}()</span>
+    
+    <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">managedObjectModel</span><span class="p">:</span> <span class="kt">NSManagedObjectModel</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">// The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.</span>
+        <span class="k">let</span> <span class="nv">modelURL</span> <span class="o">=</span> <span class="kt">NSBundle</span><span class="o">.</span><span class="nf">mainBundle</span><span class="p">()</span><span class="o">.</span><span class="kt">URLForResource</span><span class="p">(</span><span class="s">"YourDataModelName"</span><span class="p">,</span> <span class="nv">withExtension</span><span class="p">:</span> <span class="s">"momd"</span><span class="p">)</span><span class="o">!</span>
+        <span class="k">return</span> <span class="kt">NSManagedObjectModel</span><span class="p">(</span><span class="nv">contentsOfURL</span><span class="p">:</span> <span class="n">modelURL</span><span class="p">)</span><span class="o">!</span>
+    <span class="p">}()</span>
+    
+    <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">persistentStoreCoordinator</span><span class="p">:</span> <span class="kt">NSPersistentStoreCoordinator</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">// The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.</span>
+        <span class="c1">// Create the coordinator and store</span>
+        <span class="k">let</span> <span class="nv">coordinator</span> <span class="o">=</span> <span class="kt">NSPersistentStoreCoordinator</span><span class="p">(</span><span class="nv">managedObjectModel</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">managedObjectModel</span><span class="p">)</span>
+        <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">applicationDocumentsDirectory</span><span class="o">.</span><span class="kt">URLByAppendingPathComponent</span><span class="p">(</span><span class="s">"SingleViewCoreData.sqlite"</span><span class="p">)</span>
+        <span class="k">var</span> <span class="nv">failureReason</span> <span class="o">=</span> <span class="s">"There was an error creating or loading the application's saved data."</span>
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="n">coordinator</span><span class="o">.</span><span class="nf">addPersistentStoreWithType</span><span class="p">(</span><span class="kt">NSSQLiteStoreType</span><span class="p">,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="kt">URL</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+            <span class="c1">// Report any error we got.</span>
+            <span class="k">var</span> <span class="nv">dict</span> <span class="o">=</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]()</span>
+            <span class="n">dict</span><span class="p">[</span><span class="kt">NSLocalizedDescriptionKey</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Failed to initialize the application's saved data"</span>
+            <span class="n">dict</span><span class="p">[</span><span class="kt">NSLocalizedFailureReasonErrorKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">failureReason</span>
+            
+            <span class="n">dict</span><span class="p">[</span><span class="kt">NSUnderlyingErrorKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">error</span> <span class="k">as</span> <span class="kt">NSError</span>
+            <span class="k">let</span> <span class="nv">wrappedError</span> <span class="o">=</span> <span class="kt">NSError</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"YOUR_ERROR_DOMAIN"</span><span class="p">,</span> <span class="nv">code</span><span class="p">:</span> <span class="mi">9999</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="n">dict</span><span class="p">)</span>
+            <span class="c1">// Replace this with code to handle the error appropriately.</span>
+            <span class="c1">// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</span>
+            <span class="kt">NSLog</span><span class="p">(</span><span class="s">"Unresolved error </span><span class="se">\(</span><span class="n">wrappedError</span><span class="se">)</span><span class="s">, </span><span class="se">\(</span><span class="n">wrappedError</span><span class="o">.</span><span class="n">userInfo</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">abort</span><span class="p">()</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">coordinator</span>
+    <span class="p">}()</span>
+    
+    <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">managedObjectContext</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.</span>
+        <span class="k">let</span> <span class="nv">coordinator</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">persistentStoreCoordinator</span>
+        <span class="k">var</span> <span class="nv">managedObjectContext</span> <span class="o">=</span> <span class="kt">NSManagedObjectContext</span><span class="p">(</span><span class="nv">concurrencyType</span><span class="p">:</span> <span class="o">.</span><span class="kt">MainQueueConcurrencyType</span><span class="p">)</span>
+        <span class="n">managedObjectContext</span><span class="o">.</span><span class="n">persistentStoreCoordinator</span> <span class="o">=</span> <span class="n">coordinator</span>
+        <span class="k">return</span> <span class="n">managedObjectContext</span>
+    <span class="p">}()</span>
+    
+    <span class="c1">// MARK: - Core Data Saving support</span>
+    
+    <span class="kd">func</span> <span class="nf">saveContext</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">managedObjectContext</span><span class="o">.</span><span class="n">hasChanges</span> <span class="p">{</span>
+            <span class="k">do</span> <span class="p">{</span>
+                <span class="k">try</span> <span class="n">managedObjectContext</span><span class="o">.</span><span class="nf">save</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+                <span class="c1">// Replace this implementation with code to handle the error appropriately.</span>
+                <span class="c1">// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</span>
+                <span class="k">let</span> <span class="nv">nserror</span> <span class="o">=</span> <span class="n">error</span> <span class="k">as</span> <span class="kt">NSError</span>
+                <span class="kt">NSLog</span><span class="p">(</span><span class="s">"Unresolved error </span><span class="se">\(</span><span class="n">nserror</span><span class="se">)</span><span class="s">, </span><span class="se">\(</span><span class="n">nserror</span><span class="o">.</span><span class="n">userInfo</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                <span class="nf">abort</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+</code></pre>
+</div>
+
+<h3 id="coredata-1">使用 CoreData</h3>
+
+<p>进行以上配置后，就可以在项目文件中使用 CoreData 了，记得在文件开头 import CoreData ：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">CoreData</span>
+</code></pre>
+</div>
+
+<p>Enjoy yourself~</p>
+
+  
+	</div>
+	<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#swift">swift</a>
+  
+  <a href="/tags/#iOS">iOS</a>
+  
+  <a href="/tags/#CoreData">CoreData</a>
+  
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="/tutorial/2016/09/09/Adding-CoreData-To-Your-Project" data-title="为未勾选“ Using CoreData ”的项目添加 CoreData 支持 | Lin Shiwei" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>   
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar" title="iOS ：自定义 searchController 和 searchBar">
+  <strong>上一篇：</strong><br/>
+  <span>
+  iOS ：自定义 searchController 和 searchBar</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="_posts/2016-09-09-Adding-CoreData-To-Your-Project.md" data-title="为未勾选“ Using CoreData ”的项目添加 CoreData 支持" data-url="/tutorial/2016/09/09/Adding-CoreData-To-Your-Project"></div>
+</section>
+
+
+</div>  
+
+      
+      
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/#Introduction" title="Introduction">Introduction<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/#github" title="github">github<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#tensorflow" title="tensorflow">tensorflow<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#jekyll" title="jekyll">jekyll<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#GithubPages" title="GithubPages">GithubPages<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Carthage" title="Carthage">Carthage<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#swift" title="swift">swift<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#iOS" title="iOS">iOS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchBar" title="UISearchBar">UISearchBar<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchController" title="UISearchController">UISearchController<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#CoreData" title="CoreData">CoreData<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I'm Lin Shiwei in Nankai University, Tianjin, China. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5394744443" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LinShiwei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/5713554" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/linsw" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:linshiweicn@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+	<!--
+			<%  Array.prototype.S=String.fromCharCode(2);
+			  Array.prototype.in_array=function(e){
+    			var r=new RegExp(this.S+e+this.S);
+    			return (r.test(this.S+this.join(this.S)+this.S));
+				};
+				var cc = new Array('by','by-nc','by-nc-nd','by-nc-sa','by-nd','by-sa','zero'); %>
+		<% if (cc.in_array(theme.creative_commons) ) { %>
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/<%= theme.creative_commons %>/4.0" class="cc-opacity" target="_blank">
+            <img src="<%- config.root %>img/cc-<%= theme.creative_commons %>.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    <% } %>
+				-->
+
+		<p class="copyright">
+		Powered by <a href="http://jekyllrb.com" target="_blank" title="jekyll">jekyll</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016
+		
+		<a href="about" target="_blank" title="linshiwei">linshiwei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/js/jquery.imagesloaded.min.js"></script>
+<script src="/assets/js/gallery.js"></script>
+<script src="/assets/js/jquery.qrcode-0.12.0.min.js"></script>
+<script src="/assets/js/toc.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+});
+</script>
+
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"linsw"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<!--
+
+-->
+
+
+
+
+<link rel="stylesheet" href="/assets/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/assets/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      if ($(this).hasClass('emoji')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-80935640-1', '');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5d8208f7dc706aebe63a2bfe1e7a0651' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+  </body>
+ </html>
+
