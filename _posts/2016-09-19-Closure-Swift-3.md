@@ -2,6 +2,7 @@
 published: true
 layout: post
 title: Swift 3.0 ：理解 Closure 
+category: Experience
 tags: 
   - swift
   - iOS
