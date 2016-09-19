@@ -12,6 +12,7 @@
 /rss.xml
 /sitemap.txt
 
+/2016/09/19/Closure-Swift-3
 /tutorial/2016/09/09/Adding-CoreData-To-Your-Project
 /tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar
 /tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard
