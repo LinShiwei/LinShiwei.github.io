@@ -5,8 +5,8 @@
         <description>Lin Shiwei - linshiwei</description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Mon, 19 Sep 2016 23:20:40 +0800</lastBuildDate>
-        <pubDate>Mon, 19 Sep 2016 23:20:40 +0800</pubDate>
+        <lastBuildDate>Mon, 19 Sep 2016 23:27:52 +0800</lastBuildDate>
+        <pubDate>Mon, 19 Sep 2016 23:27:52 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -167,8 +167,8 @@
 &lt;p&gt;关于 Closure ，&lt;a href=&quot;https://github.com/LinShiwei/linshiwei.github.io/tree/master/lsw_codesource&quot;&gt;这里&lt;/a&gt;有一个 Swift playground ，里面有一些例子可以参考。&lt;/p&gt;
 
 </description>
-                <link>/2016/09/19/Closure-Swift-3</link>
-                <guid>/2016/09/19/Closure-Swift-3</guid>
+                <link>/tutorial/2016/09/19/Closure-Swift-3</link>
+                <guid>/tutorial/2016/09/19/Closure-Swift-3</guid>
                 <pubDate>Mon, 19 Sep 2016 00:00:00 +0800</pubDate>
         </item>
 

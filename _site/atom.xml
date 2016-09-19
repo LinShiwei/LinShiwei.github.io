@@ -4,7 +4,7 @@
  <title>Lin Shiwei</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-09-19T23:20:40+08:00</updated>
+ <updated>2016-09-19T23:27:52+08:00</updated>
  <id></id>
  <author>
    <name>linshiwei</name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Swift 3.0 ：理解 Closure</title>
-   <link href="/2016/09/19/Closure-Swift-3"/>
+   <link href="/tutorial/2016/09/19/Closure-Swift-3"/>
    <updated>2016-09-19T00:00:00+08:00</updated>
-   <id>/2016/09/19/Closure-Swift-3</id>
+   <id>/tutorial/2016/09/19/Closure-Swift-3</id>
    <content type="html">&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;Closure 是一个函数块，在 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94&quot;&gt;Swift 3.0 的官方文档&lt;/a&gt;里有详细的说明。从 Swift 2.3 到 Swift 3.0 ，Closure 也有了一些变化。本文主要通过一些例子，谈谈自己的理解。&lt;/p&gt;
