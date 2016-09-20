@@ -4,7 +4,7 @@
  <title>Lin Shiwei</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-09-19T23:27:52+08:00</updated>
+ <updated>2016-09-20T09:16:58+08:00</updated>
  <id></id>
  <author>
    <name>linshiwei</name>
@@ -14,10 +14,26 @@
  
  <entry>
    <title>Swift 3.0 ：理解 Closure</title>
-   <link href="/tutorial/2016/09/19/Closure-Swift-3"/>
+   <link href="/experience/2016/09/19/Closure-Swift-3"/>
    <updated>2016-09-19T00:00:00+08:00</updated>
-   <id>/tutorial/2016/09/19/Closure-Swift-3</id>
-   <content type="html">&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
+   <id>/experience/2016/09/19/Closure-Swift-3</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#closure-的表达形式&quot;&gt;Closure 的表达形式&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#排序函数&quot;&gt;排序函数&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#@autoclosure-和-@escaping&quot;&gt;@autoclosure 和 @escaping&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#closure-playground&quot;&gt;Closure playground&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;Closure 是一个函数块，在 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94&quot;&gt;Swift 3.0 的官方文档&lt;/a&gt;里有详细的说明。从 Swift 2.3 到 Swift 3.0 ，Closure 也有了一些变化。本文主要通过一些例子，谈谈自己的理解。&lt;/p&gt;
 
@@ -109,6 +125,21 @@
 
 &lt;p&gt;注意，这里指的是标记参数的类型，在 Swift 3 之前，它们是用来标记参数的。&lt;/p&gt;
 
+&lt;p&gt;Swift 2.3 及之前版本：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;swift
+func doSomething(withParameter parameter: Int, @escaping completion: () -&amp;gt; ()) {
+    // ...
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Swift 3.0：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;doSomething&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withParameter&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;用 &lt;code class=&quot;highlighter-rouge&quot;&gt;@autoclosure&lt;/code&gt; 标记 clousre 参数的类型后，在函数调用的时候就可以去掉 closure 的花括号，把 closure 以其返回值的形式传入函数中，以下是不带 &lt;code class=&quot;highlighter-rouge&quot;&gt;@autoclosure&lt;/code&gt; 和带 &lt;code class=&quot;highlighter-rouge&quot;&gt;@autoclosure&lt;/code&gt; 的参数类型及其使用：&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// customersInLine is [&quot;Alex&quot;, &quot;Ewa&quot;, &quot;Barry&quot;, &quot;Daniella&quot;]&lt;/span&gt;
@@ -179,7 +210,24 @@
    <link href="/tutorial/2016/09/09/Adding-CoreData-To-Your-Project"/>
    <updated>2016-09-09T00:00:00+08:00</updated>
    <id>/tutorial/2016/09/09/Adding-CoreData-To-Your-Project</id>
-   <content type="html">&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#手动配置-coredata&quot;&gt;手动配置 CoreData&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#添加-coredata-框架&quot;&gt;添加 CoreData 框架&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#添加-coredata-模型文件&quot;&gt;添加 CoreData 模型文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#添加-coredata-配置代码&quot;&gt;添加 CoreData 配置代码&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#使用-coredata&quot;&gt;使用 CoreData&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://developer.apple.com/library/watchos/documentation/Cocoa/Conceptual/CoreData/index.html&quot;&gt;CoreData&lt;/a&gt; 作为一个官方的数据存储框架，具有很高的性能。在应用开发中，涉及到大量数据时，常常会使用它作为数据存储。
 在 Xcode 中，新建项目时，有一个“ Using CoreData ”选项。勾选这个选项后，Xcode 会在建立项目时自动为你配置好 CoreData 的使用环境，非常方便。
@@ -289,7 +337,18 @@
    <link href="/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar"/>
    <updated>2016-09-07T00:00:00+08:00</updated>
    <id>/tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar</id>
-   <content type="html">&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#背景&quot;&gt;背景&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#教程：自定义-searchbar-和-searchcontroller&quot;&gt;教程：自定义 searchBar 和 searchController&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#核心思路&quot;&gt;核心思路&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
 
 &lt;p&gt;在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的&lt;a href=&quot;https://github.com/LinShiwei/WeatherDemo&quot;&gt;天气 APP&lt;/a&gt;。CocoaTouch 自带的 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchController&lt;/code&gt;，包含了一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar: UISearchBar&lt;/code&gt; 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
 但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？&lt;/p&gt;
@@ -402,7 +461,20 @@
    <link href="/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard"/>
    <updated>2016-09-02T00:00:00+08:00</updated>
    <id>/tutorial/2016/09/02/UISearchBar-use-becomeFirstResponder-to-get-focused-and-wake-up-keyboard</id>
-   <content type="html">&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#背景&quot;&gt;背景&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#问题描述&quot;&gt;问题描述&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#原因分析&quot;&gt;原因分析&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#解决方法&quot;&gt;解决方法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#结语&quot;&gt;结语&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;背景&lt;/h2&gt;
 
 &lt;p&gt;当我们使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;UISearchBar&lt;/code&gt; 时，常常会想当 &lt;code class=&quot;highlighter-rouge&quot;&gt;searchBar&lt;/code&gt; 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
 从 Apple 的官方文档中，我们知道：&lt;/p&gt;
@@ -486,7 +558,23 @@
    <link href="/tutorial/2016/07/30/Let-your-framework-support-carthage"/>
    <updated>2016-07-30T00:00:00+08:00</updated>
    <id>/tutorial/2016/07/30/Let-your-framework-support-carthage</id>
-   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#前提条件&quot;&gt;前提条件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#第一步：为项目新建target&quot;&gt;第一步：为项目新建Target&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#第二步：选择framework包含的文件&quot;&gt;第二步：选择framework包含的文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#第三步：分享target&quot;&gt;第三步：分享target&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#第四步：生成framework&quot;&gt;第四步：生成framework&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#第五步：测试framework&quot;&gt;第五步：测试framework&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#最后一步：生成release&quot;&gt;最后一步：生成release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考&lt;a href=&quot;https://github.com/Carthage/Carthage&quot;&gt;这里&lt;/a&gt;。
 我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？&lt;strong&gt;本文将主要介绍为已有的项目添加Carthage支持。&lt;/strong&gt;&lt;/p&gt;
@@ -582,7 +670,26 @@
    <link href="/tutorial/2016/07/20/Add-google-analytics-to-your-jekyll-website"/>
    <updated>2016-07-20T00:00:00+08:00</updated>
    <id>/tutorial/2016/07/20/Add-google-analytics-to-your-jekyll-website</id>
-   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#method&quot;&gt;Method&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-one&quot;&gt;Step One&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-two&quot;&gt;Step Two&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-three&quot;&gt;Step Three&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-four&quot;&gt;Step Four&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#final-step&quot;&gt;Final Step&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ending&quot;&gt;Ending&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit &lt;a href=&quot;https://en.wikipedia.org/wiki/Google_Analytics&quot;&gt;here&lt;/a&gt; for more information.&lt;/p&gt;
 
@@ -662,7 +769,25 @@
    <link href="/tutorial/2016/07/19/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-macOS"/>
    <updated>2016-07-19T00:00:00+08:00</updated>
    <id>/tutorial/2016/07/19/Using-Jekyll-and-Github-Pages-to-build-your-own-blog-[macOS]</id>
-   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#method&quot;&gt;Method&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-one&quot;&gt;Step One&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-two&quot;&gt;Step Two&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-three&quot;&gt;Step Three&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-four&quot;&gt;Step Four&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ending&quot;&gt;Ending&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://pages.github.com&quot;&gt;GithubPages&lt;/a&gt; is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.&lt;/p&gt;
 
@@ -748,7 +873,24 @@
    <link href="/tutorial/2016/07/13/Train-mnist-using-your-own-images"/>
    <updated>2016-07-13T00:00:00+08:00</updated>
    <id>/tutorial/2016/07/13/Train-mnist-using-your-own-images</id>
-   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#method&quot;&gt;Method&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-one&quot;&gt;Step One&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-two&quot;&gt;Step Two&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#step-three&quot;&gt;Step Three&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#example-results&quot;&gt;Example results&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;In &lt;a href=&quot;http://www.tensorflow.org&quot;&gt;tensorflow.org&lt;/a&gt; there are &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html&quot;&gt;MNIST For ML Beginners&lt;/a&gt; and &lt;a href=&quot;https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html&quot;&gt;Deep MNIST for Experts&lt;/a&gt; for learning.&lt;/p&gt;
 
