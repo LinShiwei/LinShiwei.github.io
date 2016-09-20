@@ -11,6 +11,18 @@ time: 2016.09.09 12:22:00
 excerpt: CoreData 作为一个官方的数据存储框架，具有很高的性能。新建项目时，勾选 Using CoreData 能够让 Xcode 自动配置 CoreData 框架，但有时侯会忘记勾选这个选项，这时候就需要自己配置 CoreData 了。
 ---
 
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#前言)
+- [手动配置 CoreData](#手动配置-coredata)
+    - [添加 CoreData 框架](#添加-coredata-框架)
+    - [添加 CoreData 模型文件](#添加-coredata-模型文件)
+    - [添加 CoreData 配置代码](#添加-coredata-配置代码)
+    - [使用 CoreData](#使用-coredata)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## 前言
 
 [CoreData](https://developer.apple.com/library/watchos/documentation/Cocoa/Conceptual/CoreData/index.html) 作为一个官方的数据存储框架，具有很高的性能。在应用开发中，涉及到大量数据时，常常会使用它作为数据存储。

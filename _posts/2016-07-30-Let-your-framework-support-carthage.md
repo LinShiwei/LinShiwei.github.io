@@ -10,6 +10,20 @@ tags:
 time: 2016.07.30 20:00:00
 excerpt: Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？本文将主要介绍为已有的项目添加Carthage支持。
 ---
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [Introduction](#introduction)
+- [前提条件](#前提条件)
+- [第一步：为项目新建Target](#第一步：为项目新建target)
+- [第二步：选择framework包含的文件](#第二步：选择framework包含的文件)
+- [第三步：分享target](#第三步：分享target)
+- [第四步：生成framework](#第四步：生成framework)
+- [第五步：测试framework](#第五步：测试framework)
+- [最后一步：生成release](#最后一步：生成release)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## Introduction
 
 Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考[这里](https://github.com/Carthage/Carthage)。

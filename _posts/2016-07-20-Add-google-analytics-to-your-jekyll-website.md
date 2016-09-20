@@ -9,6 +9,20 @@ tags:
 time: 2016.07.20 20:00:00
 excerpt: Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic.In this post, we are going to add goole analytics to a jekyll website.
 ---
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Method](#method)
+    - [Step One](#step-one)
+    - [Step Two](#step-two)
+    - [Step Three](#step-three)
+    - [Step Four](#step-four)
+    - [Final Step](#final-step)
+- [Ending](#ending)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## Introduction
 
 Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit [here](https://en.wikipedia.org/wiki/Google_Analytics) for more information.

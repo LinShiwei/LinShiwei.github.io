@@ -6,9 +6,21 @@ category: Experience
 tags: 
   - swift
   - iOS
+  - Closure
 time: 2016.09.19 19:22:00
 excerpt: Closure 是一个函数块，在 Swift 3.0 的官方文档里有详细的说明。从 Swift 2.3 到 Swift 3.0 ，Closure 也有了一些变化。本文主要通过一些例子，谈谈自己的理解。
 ---
+
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#前言)
+- [Closure 的表达形式](#closure-的表达形式)
+    - [排序函数](#排序函数)
+- [@autoclosure 和 @escaping](#@autoclosure-和-@escaping)
+- [Closure playground](#closure-playground)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## 前言
 
@@ -95,6 +107,21 @@ let numberc = num.mySort(clo:<)
 > **Swift 3: closure parameters attributes are now applied to the parameter type, and not the parameter itself**
 
 注意，这里指的是标记参数的类型，在 Swift 3 之前，它们是用来标记参数的。
+
+Swift 2.3 及之前版本：
+```swift
+func doSomething(withParameter parameter: Int, @escaping completion: () -> ()) {
+    // ...
+}
+```
+
+Swift 3.0：
+
+```swift
+func doSomething(withParameter parameter: Int, completion: @escaping () -> ()) {
+    // ...
+}
+```
 
 用 `@autoclosure` 标记 clousre 参数的类型后，在函数调用的时候就可以去掉 closure 的花括号，把 closure 以其返回值的形式传入函数中，以下是不带 `@autoclosure` 和带 `@autoclosure` 的参数类型及其使用：
 

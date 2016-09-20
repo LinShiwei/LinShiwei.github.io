@@ -8,6 +8,18 @@ tags:
 time: 2016.07.13 20:00:00
 excerpt: In tensorflow.org there are "MNIST for beginners" and "Deep MNIST for experts" for learning. In these tutorials, the training source is from MNIST. It is awesome, containing thousands of images. But there are some situations that we want to use our own images for training...
 ---
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Method](#method)
+    - [Step One](#step-one)
+    - [Step Two](#step-two)
+    - [Step Three](#step-three)
+- [Example results](#example-results)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## Introduction
 
 In [tensorflow.org](http://www.tensorflow.org) there are [MNIST For ML Beginners](https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html) and [Deep MNIST for Experts](https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html) for learning. 

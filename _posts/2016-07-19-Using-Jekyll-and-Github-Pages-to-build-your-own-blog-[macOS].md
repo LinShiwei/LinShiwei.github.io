@@ -11,6 +11,19 @@ time: 2016.07.19 20:00:00
 excerpt: GithubPages is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.Jekyll is a tool for building GithubPages, which is also simple and easy to understand.
 ---
 
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Method](#method)
+    - [Step One](#step-one)
+    - [Step Two](#step-two)
+    - [Step Three](#step-three)
+    - [Step Four](#step-four)
+- [Ending](#ending)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## Introduction
 
 [GithubPages](https://pages.github.com) is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.

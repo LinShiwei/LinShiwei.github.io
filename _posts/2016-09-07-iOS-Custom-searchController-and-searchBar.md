@@ -12,6 +12,15 @@ time: 2016.09.07 13:19:00
 excerpt: 在 iOS app 中，搜索功能非常常见，UISearchBar 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？
 ---
 
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [背景](#背景)
+- [教程：自定义 searchBar 和 searchController](#教程：自定义-searchbar-和-searchcontroller)
+- [核心思路](#核心思路)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## 背景
 
 在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的[天气 APP](https://github.com/LinShiwei/WeatherDemo)。CocoaTouch 自带的 `UISearchController`，包含了一个 `searchBar: UISearchBar` 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。

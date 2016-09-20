@@ -12,6 +12,17 @@ time: 2016.09.02 09:23:00
 excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。但是某些情况下，使用 becomeFirstResponder 并不能实现我们的目标。
 ---
 
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [背景](#背景)
+- [问题描述](#问题描述)
+- [原因分析](#原因分析)
+- [解决方法](#解决方法)
+- [结语](#结语)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
 ## 背景
 
 当我们使用 `UISearchBar` 时，常常会想当 `searchBar` 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
