@@ -13,26 +13,26 @@ excerpt: Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目�
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [前提条件](#前提条件)
-- [第一步：为项目新建Target](#第一步：为项目新建target)
-- [第二步：选择framework包含的文件](#第二步：选择framework包含的文件)
-- [第三步：分享target](#第三步：分享target)
-- [第四步：生成framework](#第四步：生成framework)
-- [第五步：测试framework](#第五步：测试framework)
-- [最后一步：生成release](#最后一步：生成release)
+- [Introduction](#1)
+- [前提条件](#2)
+- [第一步：为项目新建Target](#3)
+- [第二步：选择framework包含的文件](#4)
+- [第三步：分享target](#5)
+- [第四步：生成framework](#6)
+- [第五步：测试framework](#7)
+- [最后一步：生成release](#8)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## Introduction
+## <a id="1"></a>Introduction
 
 Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考[这里](https://github.com/Carthage/Carthage)。
 我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？**本文将主要介绍为已有的项目添加Carthage支持。**
 
-## 前提条件
+## <a id="2"></a>前提条件
 如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用`public`修饰，因为各个类和变量的默认修饰符是`internal`，如果直接生成`.framework`的话，是没办法使用这些类和变量的。
 
-## 第一步：为项目新建Target
+## <a id="3"></a>第一步：为项目新建Target
 原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：
 
 ![image](/images/carthageSupport13.png)
@@ -45,19 +45,19 @@ Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变�
 
 ![image](/images/carthageSupport11.png)
 
-## 第二步：选择framework包含的文件
+## <a id="4"></a>第二步：选择framework包含的文件
 在项目的target中选中刚刚新建的framework target，在`Build Phases`里，确保添加了需要编译到framework里面的文件：
 
 ![image](/images/carthageSupport10.png)
 
-## 第三步：分享target
+## <a id="5"></a>第三步：分享target
 在左上角停止按钮旁，点击target，选择`Manage Schemes`，勾选要分享的Scheme：
 
 ![image](/images/carthageSupport9.png)
 
 ![image](/images/carthageSupport8.png)
 
-## 第四步：生成framework
+## <a id="6"></a>第四步：生成framework
 在项目的根目录里打开终端，运行
 
 ```ruby
@@ -69,7 +69,7 @@ $ carthage build --no-skip-current
 Carthage/Build/iOS/
 ```
 
-## 第五步：测试framework
+## <a id="7"></a>第五步：测试framework
 这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。
 新建一个test项目，把刚刚生成的`.framework`拖到test项目左边的navigation栏里：
 
@@ -87,7 +87,7 @@ Carthage/Build/iOS/
 
 之后就可以测试framework了，可以写一些代码，看看framework里的东西能不能用。
 
-## 最后一步：生成release
+## <a id="8"></a>最后一步：生成release
 到Github网页上，在项目的release页面，新建一个release，并给这个release一个版本号，如v1.0：
 
 ![image](/images/carthageSupport3.png)

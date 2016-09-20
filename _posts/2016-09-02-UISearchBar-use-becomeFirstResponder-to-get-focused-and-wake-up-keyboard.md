@@ -15,15 +15,15 @@ excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时�
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [背景](#背景)
-- [问题描述](#问题描述)
-- [原因分析](#原因分析)
-- [解决方法](#解决方法)
-- [结语](#结语)
+- [背景](#1)
+- [问题描述](#2)
+- [原因分析](#3)
+- [解决方法](#4)
+- [结语](#5)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## 背景
+## <a id="1"></a>背景
 
 当我们使用 `UISearchBar` 时，常常会想当 `searchBar` 出现时，自动获得焦点并唤起键盘，这样就能省去用户手动点击搜索框准备输入这个步骤。
 从 Apple 的官方文档中，我们知道：
@@ -36,7 +36,7 @@ excerpt: 当我们使用 UISearchBar 时，常常会想当 searchBar 出现时�
 
 因此，我们只需要关注如何使 `UISearchBar` 获得焦点。但是某些情况下，使用 `becomeFirstResponder` 并不能实现我们的目标。下面我们将在实例中解决这个问题。 
 
-## 问题描述
+## <a id="2"></a>问题描述
 
 在目前我正在开发的**天气APP（源码请看[这里](https://github.com/LinShiwei/WeatherDemo)）**中，主界面的左侧有一个 `tableView` 用于显示不同的城市，其中有一个 `tableViewCell`，当点击它的时候，会出现另一个 `viewController` 供用户添加新的城市。
 
@@ -57,7 +57,7 @@ searchController.searchBar.becomeFirstResponder()
 
 但是运行结果表明，只激活了 `searchController`，而没有把焦点定位到 `searchBar` 上。
 
-## 原因分析
+## <a id="3"></a>原因分析
 
 在官方文档里有如下描述：
 
@@ -71,7 +71,7 @@ searchController.searchBar.becomeFirstResponder()
 
 因为，在 `viewDidLoad()` 的时候，`searchController` 也刚刚初始化，必需得等到 `searchController` 初始化完毕，呈现出来的时候，才能为 `searchBar` 设置焦点。
 
-## 解决方法
+## <a id="4"></a>解决方法
 
 为了在 `searchController` 初始化之后，再进行 `searchBar` 焦点设置，我们可以为 `viewController_A` 声明 `UISearchControllerDelegate`，并在 `didPresentSearchController` 中添加焦点设置代码，如下：
 
@@ -85,7 +85,7 @@ extension ViewController_A : UISearchControllerDelegate {
 
 这样就能在出现 `viewController_A` 后，自动将焦点定位到 `searchBar` 并唤起键盘。
 
-## 结语
+## <a id="5"></a>结语
 
 这其实是 `View` 和 `ViewController` 的**生命周期（cycle）**的问题，在周期的各个阶段，会触发相应的事件，可以进行相应的设置。
 

@@ -15,18 +15,18 @@ excerpt: 在 iOS app 中，搜索功能非常常见，UISearchBar 为开发者�
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [背景](#背景)
-- [教程：自定义 searchBar 和 searchController](#教程：自定义-searchbar-和-searchcontroller)
-- [核心思路](#核心思路)
+- [背景](#1)
+- [教程：自定义 searchBar 和 searchController](#2)
+- [核心思路](#3)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## 背景
+## <a id="1"></a>背景
 
 在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的[天气 APP](https://github.com/LinShiwei/WeatherDemo)。CocoaTouch 自带的 `UISearchController`，包含了一个 `searchBar: UISearchBar` 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
 但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？
 
-## 教程：自定义 searchBar 和 searchController
+## <a id="2"></a>教程：自定义 searchBar 和 searchController
 
 在官方文档中 `UISearchController` 这一部分有下面一句话：
 
@@ -36,7 +36,7 @@ excerpt: 在 iOS app 中，搜索功能非常常见，UISearchBar 为开发者�
 
  **详细的教程和步骤请参考[这里](http://www.appcoda.com/custom-search-bar-tutorial/)。**
 
-## 核心思路
+## <a id="3"></a>核心思路
 
 详细的步骤上面的链接已经给出，但是教程篇幅较长，内容很多。光看教程很容易只知其然而不知其所以然。下面我大致介绍一下，整个自定义过程的**核心思路**。
 

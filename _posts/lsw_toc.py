@@ -1,5 +1,5 @@
 import os
-
+from helper import*
 def countingX_InLine(line):
 	count = 0
 	while line[count:count+1] == '#' and count < len(line):
@@ -21,28 +21,36 @@ def correctLineFormatOffset(lineFormat):
 	
 def generateLineWith(fm):
 	tocLinePrefix = '    ' * (fm[0]-1)
-	tags = '' 
-	for index in range(len(fm[1])):
-		if fm[1][index] == ' ':
-			tags = tags + '-'
-		else:
-			tags = tags + fm[1][index]
-	return tocLinePrefix +'- ['+ fm[1] +']'+'(#'+tags.lower() +')\n'
+	return tocLinePrefix +'- ['+ fm[1] +']'+'(#'+fm[2] +')\n'
 
 
 def addTOCtoFileLines(mdFileLines):
 	toc = [tocMark1,'\n','## Table of Contents\n']
 	insertIndex = -1
 	originTocLineFormat = []
+	titleLines = []
+	titleIndices = []
+	counts = []
 	for index in range(len(mdFileLines)):
 		count = countingX_InLine(mdFileLines[index])
 		if count > 0:
 			if insertIndex == -1:
 				insertIndex = index
-			originTocLineFormat.append([count,mdFileLines[index]])
+			counts.append(count)
+			titleIndices.append(index)
+	
 	if insertIndex == -1:
 		return mdFileLines
 	else:
+		sectionNumbers = generateSectionNumbersWithXCounts(counts)
+		for index in range(len(titleIndices)):
+			mdFileLines[titleIndices[index]] = deleteALabelInLine(mdFileLines[titleIndices[index]])
+			titleLines.append(mdFileLines[titleIndices[index]])
+			mdFileLines[titleIndices[index]] = insertALabelInLine(mdFileLines[titleIndices[index]],counts[index],sectionNumbers[index])
+
+		for index in range(len(counts)):
+			originTocLineFormat.append([counts[index],titleLines[index],sectionNumbers[index]])
+
 		correctTocLineFormat = correctLineFormatOffset(originTocLineFormat)
 		for fm in correctTocLineFormat:
 			toc.append(generateLineWith(fm))

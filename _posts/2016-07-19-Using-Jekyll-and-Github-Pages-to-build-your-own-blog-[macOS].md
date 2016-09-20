@@ -14,17 +14,17 @@ excerpt: GithubPages is now a easy way to build a website for you and your proje
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Method](#method)
-    - [Step One](#step-one)
-    - [Step Two](#step-two)
-    - [Step Three](#step-three)
-    - [Step Four](#step-four)
-- [Ending](#ending)
+- [Introduction](#1)
+- [Method](#2)
+    - [Step One](#21)
+    - [Step Two](#22)
+    - [Step Three](#23)
+    - [Step Four](#24)
+- [Ending](#3)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## Introduction
+## <a id="1"></a>Introduction
 
 [GithubPages](https://pages.github.com) is now a easy way to build a website for you and your project. The code of your website is stored in the Github so it is convenient for you to edit and push your posts.
 
@@ -34,9 +34,9 @@ My blog, this website, is build using Jekll and GithubPages. You can get its ori
 
 Now let's strat building your own blog. The following guideline is in macOS environment.
 
-## Method
+## <a id="2"></a>Method
 
-### Step One
+### <a id="21"></a>Step One
 
 You should have an account in [Github](https://github.com) and create a new repository base on your github username. [Here](https://pages.github.com) is the guideline in GithubPages website. The name of your repository maybe `your-username.github.io`. Make sure the name is correct. Then in the repository's setting page: 
 
@@ -50,7 +50,7 @@ Here you can launch automatic page generator to generate your site quickly. But 
 
 After creating the repository, your should clone it to your mac. I suggest your using [Github Desktop](https://desktop.github.com) to do it. 
 
-### Step Two
+### <a id="22"></a>Step Two
 
 In Terminal, using the following code to install jekyll:
 
@@ -64,7 +64,7 @@ If your have enabled password in you mac. You may use this instead:
 $ sudo gem install jekyll
 ```
 
-### Step Three
+### <a id="23"></a>Step Three
 
 After installing jekyll, you can download some jekyll template from [Jekyll Theme](http://jekyllthemes.org) and choose the one your like most. And copy all the files in the folder to the repository folder your create in Step One:
 
@@ -86,7 +86,7 @@ In this step, due to the template your choose, you may need to install some othe
 
 After jekyll serve successfully, a website will run in `http://localhost:4000/` by default for developing.
 
-### Step Four
+### <a id="24"></a>Step Four
 
 Until now, the blog has been built. You can commit the change to `master` of your repository and visit your blog at url such as `your-username.github.io`.
 
@@ -98,7 +98,7 @@ Basically, to add a post to your blog, you can write a post in `Markdown` gramma
 
 For more information about the files and folders in a jekyll template, you can read documents [here](https://jekyllrb.com/docs/structure/).
 
-## Ending
+## <a id="3"></a>Ending
 
 There are lots of things you can do with the jekyll template such as adding google analytics, disqus supporting and so on. We will discuss them in the future posts. Here we just talk about the base of building a blog. It's easy only if your have done it. Hope you enjoy it.
 

@@ -14,23 +14,23 @@ excerpt: Closure 是一个函数块，在 Swift 3.0 的官方文档里有详细�
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [前言](#前言)
-- [Closure 的表达形式](#closure-的表达形式)
-    - [排序函数](#排序函数)
-- [@autoclosure 和 @escaping](#@autoclosure-和-@escaping)
-- [Closure playground](#closure-playground)
+- [前言](#1)
+- [Closure 的表达形式](#2)
+    - [排序函数](#21)
+- [@autoclosure 和 @escaping](#3)
+- [Closure playground](#4)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## 前言
+## <a id="1"></a>前言
 
 Closure 是一个函数块，在 [Swift 3.0 的官方文档](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94)里有详细的说明。从 Swift 2.3 到 Swift 3.0 ，Closure 也有了一些变化。本文主要通过一些例子，谈谈自己的理解。
 
-## Closure 的表达形式
+## <a id="2"></a>Closure 的表达形式
 
 Closure 其实就是一段函数。当一个函数的使用范围比较小，没有必要为它进行明确的冗长的声明，这时候，就可以用 Closure 来实现这个函数的功能，使代码更加紧凑，清晰。
 
-### 排序函数
+### <a id="21"></a>排序函数
 
 在官方文档里，通过 `sorted(by:)` 函数来描述 Closure 的运作过程，一个 closure 作为 `sorted(by:)` 的参数传入，最终达到利用这个 closure 排序进行的目的。但是 `sorted(by:)` 函数具体的实现并没有给出，因此，对于初学者来说，并不清楚 `sorted(by:)` 函数对 closure 做了什么。在这里就通过自己的一个例子来说明，Closure 到底是怎么运作的。
 
@@ -96,7 +96,7 @@ let numberc = num.mySort(clo:<)
 
 具体的简化过程及解释请参考官方文档。
 
-## @autoclosure 和 @escaping
+## <a id="3"></a>@autoclosure 和 @escaping
 
 `@autoclosure` 和 `@escaping` 可以用来标记 closure 参数的类型。
 
@@ -179,7 +179,7 @@ class SomeClass {
 // 摘录来自: Apple Inc. “The Swift Programming Language (Swift 3)”。 iBooks. 
 ```
 
-## Closure playground
+## <a id="4"></a>Closure playground
 
 关于 Closure ，[这里](https://github.com/LinShiwei/linshiwei.github.io/tree/master/lsw_codesource)有一个 Swift playground ，里面有一些例子可以参考。
 

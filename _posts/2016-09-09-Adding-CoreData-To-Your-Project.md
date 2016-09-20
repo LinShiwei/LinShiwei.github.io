@@ -14,32 +14,32 @@ excerpt: CoreData 作为一个官方的数据存储框架，具有很高的性�
 <!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
 ## Table of Contents
-- [前言](#前言)
-- [手动配置 CoreData](#手动配置-coredata)
-    - [添加 CoreData 框架](#添加-coredata-框架)
-    - [添加 CoreData 模型文件](#添加-coredata-模型文件)
-    - [添加 CoreData 配置代码](#添加-coredata-配置代码)
-    - [使用 CoreData](#使用-coredata)
+- [前言](#1)
+- [手动配置 CoreData](#2)
+    - [添加 CoreData 框架](#21)
+    - [添加 CoreData 模型文件](#22)
+    - [添加 CoreData 配置代码](#23)
+    - [使用 CoreData](#24)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-## 前言
+## <a id="1"></a>前言
 
 [CoreData](https://developer.apple.com/library/watchos/documentation/Cocoa/Conceptual/CoreData/index.html) 作为一个官方的数据存储框架，具有很高的性能。在应用开发中，涉及到大量数据时，常常会使用它作为数据存储。
 在 Xcode 中，新建项目时，有一个“ Using CoreData ”选项。勾选这个选项后，Xcode 会在建立项目时自动为你配置好 CoreData 的使用环境，非常方便。
 但是当建立项目时未勾选“ Using CoreData ”，想在已有的项目中使用 CoreData ，就需要自己手动配置。本文主要介绍了手动配置 CoreData 的方法。
 
-## 手动配置 CoreData
+## <a id="2"></a>手动配置 CoreData
 
-### 添加 CoreData 框架
+### <a id="21"></a>添加 CoreData 框架
 
 在项目属性页 General 里的 Linked Frameworks and Libraries 中添加 CoreData.framework 。
 
-### 添加 CoreData 模型文件
+### <a id="22"></a>添加 CoreData 模型文件
 
 在 Xcode 左侧的导航栏的项目文件夹上点击右键，选择“ New File... ”，在弹出的对话框中选择“ iOS -> Core Data -> Data Model ”添加一个 CoreData 模型文件，在这个文件里可以添加自定义的模型对象。
 
-### 添加 CoreData 配置代码
+### <a id="23"></a>添加 CoreData 配置代码
 
 在 AppDelegate.swift 中，import UIKit 下面导入 CoreData ：
 
@@ -115,7 +115,7 @@ import CoreData
 
 ```
 
-### 使用 CoreData
+### <a id="24"></a>使用 CoreData
 
 进行以上配置后，就可以在项目文件中使用 CoreData 了，记得在文件开头 import CoreData ：
 
