@@ -111,19 +111,19 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#背景">背景</a></li>
-  <li><a href="#教程：自定义-searchbar-和-searchcontroller">教程：自定义 searchBar 和 searchController</a></li>
-  <li><a href="#核心思路">核心思路</a></li>
+  <li><a href="#1">背景</a></li>
+  <li><a href="#2">教程：自定义 searchBar 和 searchController</a></li>
+  <li><a href="#3">核心思路</a></li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="section">背景</h2>
+<h2 id="a-id1a"><a id="1"></a>背景</h2>
 
 <p>在 iOS app 中，搜索功能非常常见，如：各类网络视频 APP ，字典类 APP ，以及我最近正在做的<a href="https://github.com/LinShiwei/WeatherDemo">天气 APP</a>。CocoaTouch 自带的 <code class="highlighter-rouge">UISearchController</code>，包含了一个 <code class="highlighter-rouge">searchBar: UISearchBar</code> 为开发者提供了基本的 UI ，它具有默认的外观，并已经配置了一些现成的函数和委托（delegate）。
 但是这个默认的 searchBar 是只读的，并不能更改它的外观。那我们该怎样自定义 searchBar 呢？</p>
 
-<h2 id="searchbar--searchcontroller">教程：自定义 searchBar 和 searchController</h2>
+<h2 id="a-id2a-searchbar--searchcontroller"><a id="2"></a>教程：自定义 searchBar 和 searchController</h2>
 
 <p>在官方文档中 <code class="highlighter-rouge">UISearchController</code> 这一部分有下面一句话：</p>
 
@@ -135,7 +135,7 @@
 
 <p> <strong>详细的教程和步骤请参考<a href="http://www.appcoda.com/custom-search-bar-tutorial/">这里</a>。</strong></p>
 
-<h2 id="section-1">核心思路</h2>
+<h2 id="a-id3a"><a id="3"></a>核心思路</h2>
 
 <p>详细的步骤上面的链接已经给出，但是教程篇幅较长，内容很多。光看教程很容易只知其然而不知其所以然。下面我大致介绍一下，整个自定义过程的<strong>核心思路</strong>。</p>
 

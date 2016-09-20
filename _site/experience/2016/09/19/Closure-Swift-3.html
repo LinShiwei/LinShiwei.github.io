@@ -111,27 +111,27 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#前言">前言</a></li>
-  <li><a href="#closure-的表达形式">Closure 的表达形式</a>
+  <li><a href="#1">前言</a></li>
+  <li><a href="#2">Closure 的表达形式</a>
     <ul>
-      <li><a href="#排序函数">排序函数</a></li>
+      <li><a href="#21">排序函数</a></li>
     </ul>
   </li>
-  <li><a href="#@autoclosure-和-@escaping">@autoclosure 和 @escaping</a></li>
-  <li><a href="#closure-playground">Closure playground</a></li>
+  <li><a href="#3">@autoclosure 和 @escaping</a></li>
+  <li><a href="#4">Closure playground</a></li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="section">前言</h2>
+<h2 id="a-id1a"><a id="1"></a>前言</h2>
 
 <p>Closure 是一个函数块，在 <a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94">Swift 3.0 的官方文档</a>里有详细的说明。从 Swift 2.3 到 Swift 3.0 ，Closure 也有了一些变化。本文主要通过一些例子，谈谈自己的理解。</p>
 
-<h2 id="closure-">Closure 的表达形式</h2>
+<h2 id="a-id2aclosure-"><a id="2"></a>Closure 的表达形式</h2>
 
 <p>Closure 其实就是一段函数。当一个函数的使用范围比较小，没有必要为它进行明确的冗长的声明，这时候，就可以用 Closure 来实现这个函数的功能，使代码更加紧凑，清晰。</p>
 
-<h3 id="section-1">排序函数</h3>
+<h3 id="a-id21a"><a id="21"></a>排序函数</h3>
 
 <p>在官方文档里，通过 <code class="highlighter-rouge">sorted(by:)</code> 函数来描述 Closure 的运作过程，一个 closure 作为 <code class="highlighter-rouge">sorted(by:)</code> 的参数传入，最终达到利用这个 closure 排序进行的目的。但是 <code class="highlighter-rouge">sorted(by:)</code> 函数具体的实现并没有给出，因此，对于初学者来说，并不清楚 <code class="highlighter-rouge">sorted(by:)</code> 函数对 closure 做了什么。在这里就通过自己的一个例子来说明，Closure 到底是怎么运作的。</p>
 
@@ -199,7 +199,7 @@
 
 <p>具体的简化过程及解释请参考官方文档。</p>
 
-<h2 id="autoclosure--escaping">@autoclosure 和 @escaping</h2>
+<h2 id="a-id3aautoclosure--escaping"><a id="3"></a>@autoclosure 和 @escaping</h2>
 
 <p><code class="highlighter-rouge">@autoclosure</code> 和 <code class="highlighter-rouge">@escaping</code> 可以用来标记 closure 参数的类型。</p>
 
@@ -288,7 +288,7 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 </code></pre>
 </div>
 
-<h2 id="closure-playground">Closure playground</h2>
+<h2 id="a-id4aclosure-playground"><a id="4"></a>Closure playground</h2>
 
 <p>关于 Closure ，<a href="https://github.com/LinShiwei/linshiwei.github.io/tree/master/lsw_codesource">这里</a>有一个 Swift playground ，里面有一些例子可以参考。</p>
 

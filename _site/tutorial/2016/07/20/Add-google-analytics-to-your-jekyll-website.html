@@ -111,30 +111,30 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#method">Method</a>
+  <li><a href="#1">Introduction</a></li>
+  <li><a href="#2">Method</a>
     <ul>
-      <li><a href="#step-one">Step One</a></li>
-      <li><a href="#step-two">Step Two</a></li>
-      <li><a href="#step-three">Step Three</a></li>
-      <li><a href="#step-four">Step Four</a></li>
-      <li><a href="#final-step">Final Step</a></li>
+      <li><a href="#21">Step One</a></li>
+      <li><a href="#22">Step Two</a></li>
+      <li><a href="#23">Step Three</a></li>
+      <li><a href="#24">Step Four</a></li>
+      <li><a href="#25">Final Step</a></li>
     </ul>
   </li>
-  <li><a href="#ending">Ending</a></li>
+  <li><a href="#3">Ending</a></li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="introduction">Introduction</h2>
+<h2 id="a-id1aintroduction"><a id="1"></a>Introduction</h2>
 
 <p>Google Analytics is a freemium web analytics service offered by Google that tracks and reports website traffic. You can visit <a href="https://en.wikipedia.org/wiki/Google_Analytics">here</a> for more information.</p>
 
 <p>In this post, we are going to add goole analytics to a jekyll website. <a href="http://linshiwei.github.io">This blog</a> is an example website, having contained google analytics code already.</p>
 
-<h2 id="method">Method</h2>
+<h2 id="a-id2amethod"><a id="2"></a>Method</h2>
 
-<h3 id="step-one">Step One</h3>
+<h3 id="a-id21astep-one"><a id="21"></a>Step One</h3>
 
 <p>To add google analytics, you should visit <a href="https://www.google.com/intl/en_uk/analytics/#?modal_active=none">google analytics</a> website and sign up a google account:</p>
 
@@ -144,7 +144,7 @@
 
 <p>For Chinese version, you can visit <a href="https://www.google.com/intl/zh-CN/analytics/">here</a>. If you have had a google account, you can log in and go to next step.</p>
 
-<h3 id="step-two">Step Two</h3>
+<h3 id="a-id22astep-two"><a id="22"></a>Step Two</h3>
 
 <p>After you have a google account and log in google analytics website, you need to follow the guide to register for google analytics.</p>
 
@@ -160,7 +160,7 @@
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.30.07.png" alt="image" /></p>
 
-<h3 id="step-three">Step Three</h3>
+<h3 id="a-id23astep-three"><a id="23"></a>Step Three</h3>
 
 <p>Copy the tracking code, create a <code class="highlighter-rouge">google-analytics.html</code> file in your jekyll website’s <code class="highlighter-rouge">_includes</code> folder:</p>
 
@@ -170,7 +170,7 @@
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/linshiwei.github.io/master/images/屏幕快照 2016-07-20 09.32.53.png" alt="image" /></p>
 
-<h3 id="step-four">Step Four</h3>
+<h3 id="a-id24astep-four"><a id="24"></a>Step Four</h3>
 
 <p>After creating <code class="highlighter-rouge">google-analytics.html</code> with tracking code from google analytics website, you can open the <code class="highlighter-rouge">footer.html</code> file in <code class="highlighter-rouge">_include</code> folder and add  <code class="highlighter-rouge">include google-analytics.html</code> in it like the following:</p>
 
@@ -178,7 +178,7 @@
 
 <p>This step will simply add analytics code to all pages in your website, which helps google to analyse.</p>
 
-<h3 id="final-step">Final Step</h3>
+<h3 id="a-id25afinal-step"><a id="25"></a>Final Step</h3>
 
 <p>We have added analytics code to website step by step. Now in Terminal of your website folder,let’s run:</p>
 
@@ -192,7 +192,7 @@
 </code></pre>
 </div>
 
-<h2 id="ending">Ending</h2>
+<h2 id="a-id3aending"><a id="3"></a>Ending</h2>
 
 <p>If you use github to manage your website code, you can use github desktop to commit changes to <code class="highlighter-rouge">master</code>. The google analytics will work in no time. You can see the analytics report in your google analytics page.</p>
 

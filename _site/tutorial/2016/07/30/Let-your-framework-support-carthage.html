@@ -111,27 +111,27 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#前提条件">前提条件</a></li>
-  <li><a href="#第一步：为项目新建target">第一步：为项目新建Target</a></li>
-  <li><a href="#第二步：选择framework包含的文件">第二步：选择framework包含的文件</a></li>
-  <li><a href="#第三步：分享target">第三步：分享target</a></li>
-  <li><a href="#第四步：生成framework">第四步：生成framework</a></li>
-  <li><a href="#第五步：测试framework">第五步：测试framework</a></li>
-  <li><a href="#最后一步：生成release">最后一步：生成release</a></li>
+  <li><a href="#1">Introduction</a></li>
+  <li><a href="#2">前提条件</a></li>
+  <li><a href="#3">第一步：为项目新建Target</a></li>
+  <li><a href="#4">第二步：选择framework包含的文件</a></li>
+  <li><a href="#5">第三步：分享target</a></li>
+  <li><a href="#6">第四步：生成framework</a></li>
+  <li><a href="#7">第五步：测试framework</a></li>
+  <li><a href="#8">最后一步：生成release</a></li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="introduction">Introduction</h2>
+<h2 id="a-id1aintroduction"><a id="1"></a>Introduction</h2>
 
 <p>Carthage作为Cocoa的依赖管理器，相比于CocoaPods，对项目的改变更少。Carthage的安装可以参考<a href="https://github.com/Carthage/Carthage">这里</a>。
 我们可以很方便地管理第三方依赖，但是该如何让自己写的框架支持Carthage，供其他人使用呢？<strong>本文将主要介绍为已有的项目添加Carthage支持。</strong></p>
 
-<h2 id="section">前提条件</h2>
+<h2 id="a-id2a"><a id="2"></a>前提条件</h2>
 <p>如果是第一次写框架(framework)，要记得将需要暴露给用户的接口(interface)用<code class="highlighter-rouge">public</code>修饰，因为各个类和变量的默认修饰符是<code class="highlighter-rouge">internal</code>，如果直接生成<code class="highlighter-rouge">.framework</code>的话，是没办法使用这些类和变量的。</p>
 
-<h2 id="target">第一步：为项目新建Target</h2>
+<h2 id="a-id3atarget"><a id="3"></a>第一步：为项目新建Target</h2>
 <p>原有的项目已经有一个target了，要生成framework的话，就需要在新建一个framework的target。如下图：</p>
 
 <p><img src="/images/carthageSupport13.png" alt="image" /></p>
@@ -144,19 +144,19 @@
 
 <p><img src="/images/carthageSupport11.png" alt="image" /></p>
 
-<h2 id="framework">第二步：选择framework包含的文件</h2>
+<h2 id="a-id4aframework"><a id="4"></a>第二步：选择framework包含的文件</h2>
 <p>在项目的target中选中刚刚新建的framework target，在<code class="highlighter-rouge">Build Phases</code>里，确保添加了需要编译到framework里面的文件：</p>
 
 <p><img src="/images/carthageSupport10.png" alt="image" /></p>
 
-<h2 id="target-1">第三步：分享target</h2>
+<h2 id="a-id5atarget"><a id="5"></a>第三步：分享target</h2>
 <p>在左上角停止按钮旁，点击target，选择<code class="highlighter-rouge">Manage Schemes</code>，勾选要分享的Scheme：</p>
 
 <p><img src="/images/carthageSupport9.png" alt="image" /></p>
 
 <p><img src="/images/carthageSupport8.png" alt="image" /></p>
 
-<h2 id="framework-1">第四步：生成framework</h2>
+<h2 id="a-id6aframework"><a id="6"></a>第四步：生成framework</h2>
 <p>在项目的根目录里打开终端，运行</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="err">$</span> <span class="n">carthage</span> <span class="n">build</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">skip</span><span class="o">-</span><span class="n">current</span>
@@ -168,7 +168,7 @@
 </code></pre>
 </div>
 
-<h2 id="framework-2">第五步：测试framework</h2>
+<h2 id="a-id7aframework"><a id="7"></a>第五步：测试framework</h2>
 <p>这一步只是为了检验framework是否可用，虽然不做也是可以的，但是以防万一还是测试一下吧。
 新建一个test项目，把刚刚生成的<code class="highlighter-rouge">.framework</code>拖到test项目左边的navigation栏里：</p>
 
@@ -186,7 +186,7 @@
 
 <p>之后就可以测试framework了，可以写一些代码，看看framework里的东西能不能用。</p>
 
-<h2 id="release">最后一步：生成release</h2>
+<h2 id="a-id8arelease"><a id="8"></a>最后一步：生成release</h2>
 <p>到Github网页上，在项目的release页面，新建一个release，并给这个release一个版本号，如v1.0：</p>
 
 <p><img src="/images/carthageSupport3.png" alt="image" /></p>

@@ -111,36 +111,36 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#前言">前言</a></li>
-  <li><a href="#手动配置-coredata">手动配置 CoreData</a>
+  <li><a href="#1">前言</a></li>
+  <li><a href="#2">手动配置 CoreData</a>
     <ul>
-      <li><a href="#添加-coredata-框架">添加 CoreData 框架</a></li>
-      <li><a href="#添加-coredata-模型文件">添加 CoreData 模型文件</a></li>
-      <li><a href="#添加-coredata-配置代码">添加 CoreData 配置代码</a></li>
-      <li><a href="#使用-coredata">使用 CoreData</a></li>
+      <li><a href="#21">添加 CoreData 框架</a></li>
+      <li><a href="#22">添加 CoreData 模型文件</a></li>
+      <li><a href="#23">添加 CoreData 配置代码</a></li>
+      <li><a href="#24">使用 CoreData</a></li>
     </ul>
   </li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="section">前言</h2>
+<h2 id="a-id1a"><a id="1"></a>前言</h2>
 
 <p><a href="https://developer.apple.com/library/watchos/documentation/Cocoa/Conceptual/CoreData/index.html">CoreData</a> 作为一个官方的数据存储框架，具有很高的性能。在应用开发中，涉及到大量数据时，常常会使用它作为数据存储。
 在 Xcode 中，新建项目时，有一个“ Using CoreData ”选项。勾选这个选项后，Xcode 会在建立项目时自动为你配置好 CoreData 的使用环境，非常方便。
 但是当建立项目时未勾选“ Using CoreData ”，想在已有的项目中使用 CoreData ，就需要自己手动配置。本文主要介绍了手动配置 CoreData 的方法。</p>
 
-<h2 id="coredata">手动配置 CoreData</h2>
+<h2 id="a-id2a-coredata"><a id="2"></a>手动配置 CoreData</h2>
 
-<h3 id="coredata-">添加 CoreData 框架</h3>
+<h3 id="a-id21a-coredata-"><a id="21"></a>添加 CoreData 框架</h3>
 
 <p>在项目属性页 General 里的 Linked Frameworks and Libraries 中添加 CoreData.framework 。</p>
 
-<h3 id="coredata--1">添加 CoreData 模型文件</h3>
+<h3 id="a-id22a-coredata-"><a id="22"></a>添加 CoreData 模型文件</h3>
 
 <p>在 Xcode 左侧的导航栏的项目文件夹上点击右键，选择“ New File… ”，在弹出的对话框中选择“ iOS -&gt; Core Data -&gt; Data Model ”添加一个 CoreData 模型文件，在这个文件里可以添加自定义的模型对象。</p>
 
-<h3 id="coredata--2">添加 CoreData 配置代码</h3>
+<h3 id="a-id23a-coredata-"><a id="23"></a>添加 CoreData 配置代码</h3>
 
 <p>在 AppDelegate.swift 中，import UIKit 下面导入 CoreData ：</p>
 
@@ -216,7 +216,7 @@
 </code></pre>
 </div>
 
-<h3 id="coredata-1">使用 CoreData</h3>
+<h3 id="a-id24a-coredata"><a id="24"></a>使用 CoreData</h3>
 
 <p>进行以上配置后，就可以在项目文件中使用 CoreData 了，记得在文件开头 import CoreData ：</p>
 

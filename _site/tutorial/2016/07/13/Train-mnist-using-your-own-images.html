@@ -111,20 +111,20 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#method">Method</a>
+  <li><a href="#1">Introduction</a></li>
+  <li><a href="#2">Method</a>
     <ul>
-      <li><a href="#step-one">Step One</a></li>
-      <li><a href="#step-two">Step Two</a></li>
-      <li><a href="#step-three">Step Three</a></li>
+      <li><a href="#21">Step One</a></li>
+      <li><a href="#22">Step Two</a></li>
+      <li><a href="#23">Step Three</a></li>
     </ul>
   </li>
-  <li><a href="#example-results">Example results</a></li>
+  <li><a href="#3">Example results</a></li>
 </ul>
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
 
-<h2 id="introduction">Introduction</h2>
+<h2 id="a-id1aintroduction"><a id="1"></a>Introduction</h2>
 
 <p>In <a href="http://www.tensorflow.org">tensorflow.org</a> there are <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html">MNIST For ML Beginners</a> and <a href="https://www.tensorflow.org/versions/r0.9/tutorials/mnist/pros/index.html">Deep MNIST for Experts</a> for learning.</p>
 
@@ -132,9 +132,9 @@
 
 <p>But there are some situations that we want to use our own images for training. I have searched on the Internet and could hardly find the direct way to convert images into MNIST Database format. So I just do it myself and have found another way to create my data files and train it in the tensorflow.</p>
 
-<h2 id="method">Method</h2>
+<h2 id="a-id2amethod"><a id="2"></a>Method</h2>
 
-<h3 id="step-one">Step One</h3>
+<h3 id="a-id21astep-one"><a id="21"></a>Step One</h3>
 
 <p>You should first have some images for training. You can use your own images or use <a href="https://github.com/LinShiwei/TensorflowLearning/tree/master/trainYourOwnMnist/numberImage">my images</a> for a try.</p>
 
@@ -142,7 +142,7 @@
 
 <p><img src="https://raw.githubusercontent.com/LinShiwei/TensorflowLearning/master/trainYourOwnMnist/introductionImage/imageSample.png" alt="image" /></p>
 
-<h3 id="step-two">Step Two</h3>
+<h3 id="a-id22astep-two"><a id="22"></a>Step Two</h3>
 
 <p>I have writed some Matlab code to convert your images into image data and create label data. These data are in binary format and have <code class="highlighter-rouge">.txt</code> suffix. Here shows the data format in these data file.</p>
 
@@ -168,11 +168,11 @@
 
 <p>Until now, the training files are ready.(training files can be find in this repository)</p>
 
-<h3 id="step-three">Step Three</h3>
+<h3 id="a-id23astep-three"><a id="23"></a>Step Three</h3>
 
 <p>I have done some changes to tensorflow’s mnist example code. You can use <code class="highlighter-rouge">lswBeginnerMnist.py</code> for simple mnist training or use <code class="highlighter-rouge">lswDeepMnist.py</code> for deep mnist training.</p>
 
-<h2 id="example-results">Example results</h2>
+<h2 id="a-id3aexample-results"><a id="3"></a>Example results</h2>
 
 <p>Result of <a href="https://github.com/LinShiwei/TensorflowLearning/blob/master/trainYourOwnMnist/lswBeginnerMnist.py">lswBeginnerMnist.py</a> training , 29 images.</p>
 
