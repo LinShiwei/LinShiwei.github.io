@@ -156,10 +156,18 @@ serve(customer: customersInLine.remove(at: 0))
 
 也就是说，现在 closure 作为函数的参数，默认是 @noescaping 类型的。
 
-`@escaping` 标记表示 closure 可以在函数运行结束后再执行，而 `@noescaping` 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行：
+`@escaping` 标记表示 closure 在函数运行结束后再执行，而 `@noescaping` 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行。
+
+`UIView` 中的 animate 函数，它的 completion handle 就是 @escaping 的。在通常的书写代码的界面中，并没有显式表出来：
 
 ```swift
 class func animate(withDuration duration: TimeInterval, animations: () -> Void, completion: ((Bool) -> Void)? = nil)
+```
+
+但在定义中，可以看出：
+
+```swift
+open class func animate(withDuration duration: TimeInterval, animations: @escaping () -> Swift.Void, completion: (@escaping (Bool) -> Swift.Void)? = nil)
 ```
 
 需要注意的是，当 closure 的类型用 `@escaping` 标记之后，在 closure 内使用类的属性或方法时，需要用 `self` 标明。
