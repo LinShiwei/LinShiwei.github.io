@@ -109,6 +109,7 @@ let numberc = num.mySort(clo:<)
 注意，这里指的是标记参数的类型，在 Swift 3 之前，它们是用来标记参数的。
 
 Swift 2.3 及之前版本：
+
 ```swift
 func doSomething(withParameter parameter: Int, @escaping completion: () -> ()) {
     // ...
