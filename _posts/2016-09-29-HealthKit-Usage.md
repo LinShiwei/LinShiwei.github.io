@@ -11,13 +11,23 @@ time: 2016.09.29 15:22:00
 excerpt: 随着人们对健康生活的日益关注，运动、健康类的 APP 也越来越多。使用 HealthKit 是这类 APP 获取数据的来源之一。因此，开发者有必要熟悉 HealthKit 。
 ---
 
-## 前言
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#1)
+- [配置 HealthKit](#2)
+- [数据获取](#3)
+- [与 Core Motion 比较](#4)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## <a id="1"></a>前言
 
 HealthKit 储存了 iPhone 和 iWatch 上的健康数据，对于开发者而言，能够很方便地获取相关数据，同时它还具有完善的隐私保护机制，使用户能够对每一项数据进行授权。
 
 [这里](https://github.com/LinShiwei/HealthyDay)是一个使用 HealthKit 的跑步类 APP ，HealthKit 配置及使用过程与下面的描述一致，可供参考。
 
-## 配置 HealthKit
+## <a id="2"></a>配置 HealthKit
 
 通过一下几个步骤，就能够完成 HealthKit 的配置。
 
@@ -45,22 +55,22 @@ func requestAuthorization(toShare typesToShare: Set<HKSampleType>?, read typesTo
 
 当用户授权后就可以开始获取数据。APP 并不能知道用户已授权或是禁止授权。不管授权结果如何，获取数据的过程都能够进行，只不过当禁止授权时，获取到的数据为空。
 
-## 数据获取
+## <a id="3"></a>数据获取
 
-1. 声明 HKSampleQuery 实例
+- 声明 HKSampleQuery 实例
     - 声明一个 HKSampleQuery 实例，需要包含 HKSampleType 、NSPredicate 、limit 、NSSortDescriptor 和 resultsHandler。它们分别对应需要获取的数据类型、过滤条件、数据数量、排序方式以及结果的处理。
 
 ```swift
 init(sampleType: HKSampleType, predicate: NSPredicate?, limit: Int, sortDescriptors: [NSSortDescriptor]?, resultsHandler: (HKSampleQuery, [HKSample]?, Error?) -> Void)
 ```
 
-2. 有了 HKSampleQuery 实例后，如：sampleQuery ，使用 healthStore 获取数据：
+- 有了 HKSampleQuery 实例后，如：sampleQuery ，使用 healthStore 获取数据：
 
 ```swift
 healthStore.execute(sampleQuery)
 ``` 
 
-## 与 Core Motion 比较
+## <a id="4"></a>与 Core Motion 比较
 
 HealthKit 和 Core Motion 都可以用来获取运动数据。但它们的侧重点不同，应根据 APP 的需求，选择合适的框架。
 
