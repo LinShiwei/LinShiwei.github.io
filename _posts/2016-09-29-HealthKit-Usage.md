@@ -17,6 +17,8 @@ excerpt: 随着人们对健康生活的日益关注，运动、健康类的 APP 
 - [前言](#1)
 - [配置 HealthKit](#2)
 - [数据获取](#3)
+    - [声明 HKSampleQuery 实例](#31)
+    - [执行获取过程](#32)
 - [与 Core Motion 比较](#4)
 
 <!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
@@ -57,14 +59,17 @@ func requestAuthorization(toShare typesToShare: Set<HKSampleType>?, read typesTo
 
 ## <a id="3"></a>数据获取
 
-- 声明 HKSampleQuery 实例
-    - 声明一个 HKSampleQuery 实例，需要包含 HKSampleType 、NSPredicate 、limit 、NSSortDescriptor 和 resultsHandler。它们分别对应需要获取的数据类型、过滤条件、数据数量、排序方式以及结果的处理。
+### <a id="31"></a>声明 HKSampleQuery 实例
+
+声明一个 HKSampleQuery 实例，需要包含 HKSampleType 、NSPredicate 、limit 、NSSortDescriptor 和 resultsHandler。它们分别对应需要获取的数据类型、过滤条件、数据数量、排序方式以及结果的处理。
 
 ```swift
 init(sampleType: HKSampleType, predicate: NSPredicate?, limit: Int, sortDescriptors: [NSSortDescriptor]?, resultsHandler: (HKSampleQuery, [HKSample]?, Error?) -> Void)
 ```
 
-- 有了 HKSampleQuery 实例后，如：sampleQuery ，使用 healthStore 获取数据：
+### <a id="32"></a>执行获取过程
+
+有了 HKSampleQuery 实例后，如：sampleQuery ，使用 healthStore 获取数据：
 
 ```swift
 healthStore.execute(sampleQuery)
