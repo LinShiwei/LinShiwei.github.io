@@ -11,7 +11,21 @@ time: 2016.11.05 09:22:00
 excerpt: 在应用开发的过程中，涉及网络，常常就需要通过一些 HTTP 请求从网上获取数据。很多网络服务器（Web server）提供了 URL 类型的 API，通过访问特定的 URL，就能从服务器返回数据。本文将用一个简单的例子，介绍这种服务器程序的构建。
 ---
 
-# 前言
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#1)
+- [问题及需求分析](#2)
+    - [API ](#21)
+    - [JSON 数据](#22)
+- [实现](#3)
+    - [本地服务器开发环境：MAMP](#31)
+    - [后台数据库 MySQL](#32)
+    - [服务器程序](#33)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+# <a id="1"></a>前言
 
 在网上，有很多服务商提供了数据的API（Application Programming Interface），这些 API 可以是 URL 形式的，如下：
 
@@ -21,9 +35,9 @@ http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=b1b15e88fa79722
 
 本文旨在通过一个例子简要介绍这种服务器程序的构建，最终完成一个服务器程序，实现通过 URL 与服务器通信，服务器返回 JSON 格式的数据。
 
-# 问题及需求分析
+# <a id="2"></a>问题及需求分析
 
-## API 
+## <a id="21"></a>API 
 
 观察上面的 URL，我们可以发现它可以分为两个部分。
 
@@ -54,14 +68,14 @@ http://localhost:8888/temperature.php?key=lsw&query=set&value=27.1
 
 URL 中的 temperature.php 就是我们即将编写的网页文件。key 和 query 是两个参数，在 query=set 时，还应带有 value 参数。返回的数据类型是 JSON，以 status 标志操作是否成功，以及附带有信息或数据。
 
-## JSON 数据
+## <a id="22"></a>JSON 数据
 
 >**[JSON](http://baike.baidu.com/link?url=vAIdH3CjSpssVA3Xh3KoBWFTjfdNwGcL9eD7QspsbyDdLPMq76QYBM0I61VUj2aomAJlJyFqoXRo8HVG6qwl-K)**(JavaScript Object Notation) 是一种轻量级的数据交换格式。它基于ECMAScript的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C、C++、C#、Java、JavaScript、Perl、Python等）。这些特性使JSON成为理想的数据交换语言。 易于人阅读和编写，同时也易于机器解析和生成(一般用于提升网络传输速率)。
 
 JSON 数据是可以带有数据类型的，如上面返回示例中的 value 是一个 double 类型的数据。
 
-# 实现
-## 本地服务器开发环境：MAMP
+# <a id="3"></a>实现
+## <a id="31"></a>本地服务器开发环境：MAMP
 
 [MAMP](https://www.mamp.info/en/) 是经典本地服务器环境的 Mac OS 软件。MAMP 这几个首字母代表苹果的 Mac OS 系统上的 Macintosh、Apache、MySQL 和 PHP。在 Windows 系统上也有相应的开发环境，WAMP。这里以 MAMP 为例进行说明。
 
@@ -70,7 +84,7 @@ MAMP 分免费版和专业版，我们目前只需要用到免费版。安装完
 在 MAMP 的 Preferences.. -> Web Server -> Document Foot 可以定位到服务器源文件目录。服务器的程序就保存在这个目录里。
 
 
-## 后台数据库 MySQL
+## <a id="32"></a>后台数据库 MySQL
 
 为了存储数据，服务器需要有一个数据库，并实现与数据库之间的通信。首先我们用 MAMP 运行本地的服务器，在打开的导航网页中打开数据库的管理页面。
 
@@ -82,7 +96,7 @@ MAMP 分免费版和专业版，我们目前只需要用到免费版。安装完
 
 这样就完成了数据库的配置，目前只需要储存温度信心，因此只配置这几个条目。
 
-## 服务器程序
+## <a id="33"></a>服务器程序
 
 有了数据库，接下来就要写服务器程序了。服务器程序需要完成以下几个部分的内容：
 
