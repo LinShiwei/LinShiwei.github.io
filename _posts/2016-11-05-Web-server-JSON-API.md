@@ -51,7 +51,7 @@ http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=b1b15e88fa79722
 
 假设我们的 API 如下：
 
-```
+```a
 获取最近的一个温度数据 API：
 http://localhost:8888/temperature.php?key=lsw&query=get
 返回示例（JSON）：
