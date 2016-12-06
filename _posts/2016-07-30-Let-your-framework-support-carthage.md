@@ -1,7 +1,7 @@
 ---
 published: true
 layout: post
-title: 让现有的Swift项目支持Carthage 
+title: 让现有的 Swift 项目支持 Carthage 
 category: Tutorial
 tags: 
   - github
