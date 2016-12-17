@@ -10,7 +10,18 @@ time: 2016.12.13 09:22:00
 excerpt: 本地化是将一个 App 的语言文字转换成多种语言的过程，如：原来只支持一种语言的 App，经过本地化后，能够支持多种语言。本地化有助于让更多人使用你的 App，让 App 国际化。
 ---
 
-# 前言
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#1)
+- [本地化](#2)
+    - [Storyboard](#21)
+    - [Info.plist](#22)
+    - [代码中的本地化（少量）](#23)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+# <a id="1"></a>前言
 
 本地化是将一个 App 的语言文字转换成多种语言的过程，如：原来只支持一种语言的 App，经过本地化后，能够支持多种语言。
 
@@ -34,9 +45,9 @@ excerpt: 本地化是将一个 App 的语言文字转换成多种语言的过程
 
 接下去将针对这三个方面进行讨论。
 
-# 本地化
+# <a id="2"></a>本地化
 
-## Storyboard
+## <a id="21"></a>Storyboard
 
 本地化的第一步：勾选 `Use Base Internationalization`。如下图，在项目的 Info 页面底部：
 
@@ -58,7 +69,7 @@ Main.strings 里包含了从 Main.storyboard 中提取出的可本地化的元�
 
 ![](/images/Localizing_5.png)
 
-## Info.plist
+## <a id="22"></a>Info.plist
 
 Info.plist 中常常会包含有对 App 进行描述的文字。对于 Info.plist 的本地化，**不要点击 `Localize...`**(Xcode8)：
 
@@ -80,7 +91,7 @@ CFBundleDisplayName = "TextEdit";
 
 这样在 App 运行时，会根据系统选择的语言读取相应 Info.plist 里的配置。
 
-## 代码中的本地化（少量）
+## <a id="23"></a>代码中的本地化（少量）
 
 当代码中仅有少量内容需要本地化时，可以使用下面代码获取当前系统的语言，再根据不同语言使用相应的代码：
 
@@ -98,7 +109,7 @@ let languageID = Bundle.main.preferredLocalizations.first
 
 使用以上方法基本上可以完成普通 App 的本地化，重度本地化请参考官方文档 [Internationalization and Localization Guide](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPInternational/Introduction/Introduction.html#//apple_ref/doc/uid/10000171i-CH1-SW1)。
 
-**附上一个已实现中英文本地化的 App 源码：[ColorPicker](https://github.com/LinShiwei/ColorPicker)**，已上架 AppStoreL：[链接](https://itunes.apple.com/cn/app/colorpicker-pick-color-easily/id1183292373?mt=8)。
+**附上一个已实现中英文本地化的 App 源码：[ColorPicker](https://github.com/LinShiwei/ColorPicker)**，已上架 AppStore：[链接](https://itunes.apple.com/cn/app/colorpicker-pick-color-easily/id1183292373?mt=8)。
 
 **有任何疑问的话，欢迎在下方评论区讨论。**
 
