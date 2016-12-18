@@ -65,7 +65,7 @@ Main.strings 里包含了从 Main.storyboard 中提取出的可本地化的元�
 
 ![](/images/Localizing_4.png)
 
-本地化 storyboard 中的内容后，可以在 Assistant Editor 中预览本地化效果（打开 Assistant Editor 后，选择 Preview，在右下角可以选择模拟的语言）：
+本地化 storyboard 中的内容后，可以在 Assistant Editor 中预览本地化效果（打开 Assistant Editor 后，选择 Preview，在右下角可以选择模拟的语言，还可以使用自带的伪代码调试界面）：
 
 ![](/images/Localizing_5.png)
 
@@ -75,7 +75,7 @@ Info.plist 中常常会包含有对 App 进行描述的文字。对于 Info.plis
 
 ![](/images/Localizing_6.png)
 
-而应该在项目中 `New File...`，新建一个 InfoPlist.strings 文件：
+而应该在项目中 `New File...`，新建一个 InfoPlist.strings 文件，并在 File Inspector 的 Localization 里选择本地化语言：
 
 ![](/images/Localizing_7.png)
 
