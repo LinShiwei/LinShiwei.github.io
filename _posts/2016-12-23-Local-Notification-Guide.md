@@ -73,5 +73,47 @@ center.setNotificationCategories([generalCategory, expiredCategory])
 
 五、管理推送消息。我们可以给用户推送消息，也可以管理已经推送或将要推送的消息。当一条消息已经不具备时效性，那么我们就应该把它从通知栏中消除。使用：`removeDeliveredNotificationsWithIdentifiers:` 或 `removePendingNotificationsWithIdentifiers:`。
 
+### 本地消息推送
+
+下面的代码是实现了一个负责推送消息的对象，它包含了**请求推送**和**创建推送消息**的方法。
+
+```
+import UIKit
+import UserNotifications
+
+internal class LocalNotificationManager: NSObject {
+    static let shared = LocalNotificationManager()
+    private let notificationCenter = UNUserNotificationCenter.current()
+    private override init(){
+        super.init()        
+    }
+    //用于请求推送权限
+    internal func requestAuthorization(){
+        notificationCenter.requestAuthorization(options: [.alert, .sound]){ (granted, error) in
+            if(granted&&error == nil){
+                
+            }else{
+                
+            }
+        }
+    }
+    //用于创建推送消息（创建的消息将在调用函数后十秒发出）
+    internal func createNewNotification(){     
+        let content = UNMutableNotificationContent()
+        content.title = NSString.localizedUserNotificationString(forKey: "Alarm", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey: "WakeUp", arguments: nil)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        let request = UNNotificationRequest(identifier: "MyNotification", content: content, trigger: trigger)
+        
+        notificationCenter.add(request){(error) in
+            if let _ = error {
+                assertionFailure()
+            }
+        }
+    }
+}
+```
+
+
 **有任何疑问的话，欢迎在下方评论区讨论。**
 
