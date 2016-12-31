@@ -1,7 +1,7 @@
 ---
 published: true
 layout: post
-title: iOS：KVO 指南
+title: iOS：KVO 实现观察者模式
 category: Tutorial
 tags: 
   - iOS
@@ -12,7 +12,23 @@ time: 2016.12.29 09:22:00
 excerpt: 在 Apple 的应用开发里 KVO（Key-value observing）提供了一个途径，使对象（观察者）能够观察其他对象（被观察者）的属性，当被观察者的属性发生变化时，观察者就会被告知该变化。KVO 能够很方便地完成不同对象之间的通信，尤其是当对象之间的关系很复杂的时候。
 ---
 
-# 前言
+<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+## Table of Contents
+- [前言](#1)
+- [KVO 简介](#2)
+    - [前提条件](#21)
+    - [适用场景](#22)
+- [实现 KVO：注册观察者和观察者方法](#3)
+    - [基本流程](#31)
+        - [添加观察者](#311)
+        - [观察响应方法：](#312)
+        - [移除观察者](#313)
+- [总结](#4)
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+# <a id="1"></a>前言
 
 在 iOS 开发中，常常需要在不同的对象、不同的视图（View）或不同的视图控制器（ViewController）之间通信，传递数据。主要的实现方法有：
 
@@ -22,17 +38,17 @@ excerpt: 在 Apple 的应用开发里 KVO（Key-value observing）提供了一�
 
 这些方法各有优劣，在不同的情况下选用合适的方法是最好的。因此掌握这些方法，才能更好地应对各种开发难题。KVO 是本文关注的重点。
 
-# KVO 简介
+# <a id="2"></a>KVO 简介
 
 在 Apple 的应用开发里 KVO 提供了一个途径，使对象（观察者）能够观察其他对象（被观察者）的属性，当被观察者的属性发生变化时，观察者就会被告知该变化。这其实就对应**设计模式**中的观察者模式。
 
 > 观察者：Observer，the observing object；被观察者：the observed object
  
-## 前提条件
+## <a id="21"></a>前提条件
 
 在实现 KVO 之前，需要确保被观察的对象是支持 KVO 的。通常继承自 NSObject 的对象都会自动支持 KVO。对于非继承自 NSObject 的类，也可以[手动实现 KVO 支持](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE)。
 
-## 适用场景
+## <a id="22"></a>适用场景
 
 KVO 能很方便地实现模型（Model）和控制器（Controller）之间的通信。主要的应用场景有：
 
@@ -40,15 +56,15 @@ KVO 能很方便地实现模型（Model）和控制器（Controller）之间的�
 
 KVO 能够实现一对多、多对多、多对一的观察。也就是说，KVO 没有限制观察者和被观察者的数量。当同时观察多个对象时，不但对象本身发生改变时会告知观察者，而且被观察对象发生替换、删除或插入等操作时也会告知观察者。
 
-# 实现 KVO：注册观察者和观察者方法
+# <a id="3"></a>实现 KVO：注册观察者和观察者方法
 
-## 基本流程
+## <a id="31"></a>基本流程
 
 1. 添加观察者：`addObserver:forKeyPath:options:context: `；
 2. 实现观察响应方法：`observeValueForKeyPath:ofObject:change:context: `；
 3. 在观察者 deallocted 之前移除观察者： `removeObserver:forKeyPath:` ；
 
-### 添加观察者
+### <a id="311"></a>添加观察者
 
 > observedObject.addObserver:forKeyPath:options:context:
 
@@ -74,7 +90,7 @@ class ObservedObjectClass: NSObject {
 - context：可选的参数，会随着观察消息传递，用于区分接收该消息的观察者。一般情况下，只需通过 keyPath 就可以判断接收消息的观察者。但是当父类子类都观察了同一个 keyPath 时，仅靠 keyPath 就无法判断消息该传给子类，还是传给父类。
 - addObserver 并不会维持对观察者、被观察者和 Context 的强引用。如果需要的话，要自行维持对它们的强引用。
 
-### 观察响应方法：
+### <a id="312"></a>观察响应方法：
 
 > 所有的观察者都必须实现观察响应方法：
 > observeValueForKeyPath:ofObject:change:context:
@@ -94,7 +110,7 @@ class ObservedObjectClass: NSObject {
 - 如果接收到的观察者消息于当前的 Context 不符，就需要把消息传给 父类，直到寻找到对应的 Context。
 - 如果一个消息传到了 NSObject 仍然没有找到它的观察者，那么就会抛出异常：NSInternalInconsistencyException。
 
-### 移除观察者
+### <a id="313"></a>移除观察者
 
 当一个对象不再需要观察另一个对象时，就需要移除观察。
 
@@ -108,7 +124,7 @@ class ObservedObjectClass: NSObject {
 - 观察者不会在 dealloc 的时候自动移除。因此最晚必须在观察者 dealloc 时移除它。
 - 系统没有自带的方法用于判断一个对象是否注册为观察者，因此尽量在初始化的时候注册观察者，在 dealloc 时移除。
 
-# 总结
+# <a id="4"></a>总结
 
 KVO 能够在复杂的关系网中直接观察某个对象，合理的使用 KVO 能够简化代码。但是 KVO 也有很多坑，稍有不慎就会抛出异常或者无法建立观察。在实践中，还是应该选择合适的方法来完成对象间的通信，熟练应对各种情况。 
   
