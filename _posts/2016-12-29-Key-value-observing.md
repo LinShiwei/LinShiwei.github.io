@@ -85,7 +85,7 @@ class ObservedObjectClass: NSObject {
     - NSKeyValueObservingOptionOld: 获取变化前的数据
     - NSKeyValueObservingOptionNew: 获取变化后的数据
     - NSKeyValueObservingOptionInitial: 获取设置观察者时被观察者的初始数据，即在 addObserver 函数调用完成前，被观察者的数据。
-    - NSKeyValueObservingOptionPrior: 在变化前发送消息
+    - NSKeyValueObservingOptionPrior: 在变化前后分别发送消息（共发送两次消息）
 
 - context：可选的参数，会随着观察消息传递，用于区分接收该消息的观察者。一般情况下，只需通过 keyPath 就可以判断接收消息的观察者。但是当父类子类都观察了同一个 keyPath 时，仅靠 keyPath 就无法判断消息该传给子类，还是传给父类。
 - addObserver 并不会维持对观察者、被观察者和 Context 的强引用。如果需要的话，要自行维持对它们的强引用。

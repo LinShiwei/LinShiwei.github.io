@@ -1,0 +1,683 @@
+
+        <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>iOS：为 App 添加内购买项目 | Lin Shiwei</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="linshiwei">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="website">
+    
+    <meta property="og:title" content="iOS：为 App 添加内购买项目">
+    <meta property="og:url" content="/tutorial/2017/03/01/iOS-in-app-purchase">
+    <meta property="og:site_name" content="Lin Shiwei">
+    <meta property="og:description" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS：为 App 添加内购买项目">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lin Shiwei" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.ico">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.ico">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+        <div>
+		    
+			<div id="imglogo">
+				<a href="/"><img src="/assets/img/logo.png" alt="Lin Shiwei" title="Lin Shiwei"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lin Shiwei">Lin Shiwei</a></h1>
+				<h2 class="blog-motto">A technology blog for myself.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>	
+</div>
+    </header>
+    <div id="container">
+      
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+	<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/tutorial/2017/03/01/iOS-in-app-purchase" title="iOS：为 App 添加内购买项目" itemprop="url">iOS：为 App 添加内购买项目</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
+		
+  <p class="article-time">
+    <time datetime="2017-03-01 00:00:00 +0800" itemprop="datePublished"> 发表于 2017-03-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+  <li><a href="#1">前言</a></li>
+  <li><a href="#2">必要的准备</a></li>
+  <li><a href="#3">内购买项目的用户界面</a></li>
+  <li><a href="#4">在 iTunesConnect 上新建内购买项目</a></li>
+  <li><a href="#5">完成内购买相关代码</a></li>
+  <li><a href="#6">内购买测试</a></li>
+  <li><a href="#7">结语</a></li>
+</ul>
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h2 id="a-id1a"><a id="1"></a>前言</h2>
+<p>在 AppStore 里，付费应用的下载量往往比免费应用的下载量少的多。上架过应用的开发者，可能会有这样的体会：当一个应用免费的时候，每天能有几十上百次的下载，但是一旦设置为收费的时候，下载量立即暴跌，即使只设成了一元，可能好几星期都没人下载。</p>
+
+<p>收费的应用不好做，与其长时间零下载，还不如设置为免费，每天看看下载量来的舒服。</p>
+
+<p>但是作为一个开发者，开发免费应用的动力，显然比不上开发收费应用。应用免费了，开发的动力也少了。因此，我们可以考虑在应用里面加入内购买项目，通过免费下载吸引用户，再用内购买项目让用户按需购买，自己赚点零花钱。</p>
+
+<p>本文将用一个真实的例子（已上架 AppStore：<a href="https://itunes.apple.com/cn/app/catch-%E6%8D%95%E6%8D%89%E7%A8%8D%E7%BA%B5%E5%8D%B3%E9%80%9D%E7%9A%84%E7%81%B5%E6%84%9F/id1193123297?mt=8">Catch - 捕捉稍纵即逝的灵感</a>），介绍为 App 添加内购买项目的流程。</p>
+
+<h2 id="a-id2a"><a id="2"></a>必要的准备</h2>
+
+<p>添加内购买项目之前，需要有一个付费的开发者账号，并在开发者账号的“协议、税务和银行业务”里完善银行卡等信息，否则 Apple 无法将应用的收入转给你。</p>
+
+<p>你还需要准备一个已上架或者未上架的应用，应用在首次添加内购买项目时需要与新的应用版本一起提交审核。</p>
+
+<h2 id="a-id3a"><a id="3"></a>内购买项目的用户界面</h2>
+
+<p>在添加内购买项目前，你需要在你的应用里，自己设计好商品展示的界面，Apple 只负责购买的流程。这个界面在接下去新建内购买项目时也会用到。</p>
+
+<p>下图是一个实际应用的内购商品展示界面：</p>
+
+<p><img src="/images/in_app_purchase1.png" alt="" /></p>
+
+<h2 id="a-id4a-itunesconnect-"><a id="4"></a>在 iTunesConnect 上新建内购买项目</h2>
+
+<p>接下来，在 iTunesConnect 上的应用页面，选择“功能”－“App 内购买项目“，点击加号新建项目，如下图：</p>
+
+<p><img src="/images/in_app_purchase2.png" alt="" /></p>
+
+<p>之后会要求选择内购买项目的类型，这里以“消费型项目”为例。在接下来的表里填写相应的信息。产品 ID 一般以 App 的 Bundle ID 为前缀再加上自定义的产品后缀，如：com.self.purchase1。在审核信息里上传刚刚的内购商品展示界面，供审查员审核。其他信息自行填写即可。</p>
+
+<p><img src="/images/in_app_purchase3.png" alt="" /></p>
+
+<p>新建内购买项目后，在内购买项目列表里显示为“准备提交”状态。现在在准备提交的 App 版本中添加刚刚新建的内购买项目。</p>
+
+<p><img src="/images/in_app_purchase4.png" alt="" /></p>
+
+<h2 id="a-id5a"><a id="5"></a>完成内购买相关代码</h2>
+
+<p>关于内购买的代码，本文将使用一个现成的框架：<a href="https://github.com/bizz84/SwiftyStoreKit">SwiftyStoreKit</a>，这样有利于理清思路。对于直接使用 StoreKit 完成整个内购买的流程，将在下一篇文章里讨论。</p>
+
+<p>首先在项目里添加 SwiftyStoreKit 框架。具体添加的方法上面的链接里已有说明。
+总共的代码有三部分，如下：</p>
+
+<p>一、获取商品信息，用于在界面上显示：</p>
+
+<pre><code class="language-a">SwiftyStoreKit.retrieveProductsInfo([productID]) {[weak self ] result in
+    if let product = result.retrievedProducts.first {
+        let priceString = product.localizedPrice!
+        print("Product: \(product.localizedDescription), price: \(priceString)")
+    }else if let invalidProductId = result.invalidProductIDs.first {
+        print("Could not retrieve product info .Invalid product identifier: \(invalidProductId)")
+    }else {
+        print("Error: \(result.error)")
+    }
+}
+</code></pre>
+
+<p>商品信息包括商品的价格和名称，保存在 <code class="highlighter-rouge">SKProduct</code> 对象里。汇率的问题 Apple 已经帮我们处理好，商品的名称会根据我们在 iTunesConect 里填写的本地化信息自动选择，因此我们只需要直接使用 <code class="highlighter-rouge">localizedPrice</code> 和 <code class="highlighter-rouge">localizedTitle</code> 或 <code class="highlighter-rouge">localizedDescription</code>。</p>
+
+<p>二、购买商品（当用户点击购买后）：</p>
+
+<pre><code class="language-a">func purchase(_ productID: String) {
+    SwiftyStoreKit.purchaseProduct(productID, atomically: true) { [weak self] result in
+        if case .success(let product) = result {
+        // Deliver content from server, then:
+        if product.needsFinishTransaction {
+            SwiftyStoreKit.finishTransaction(product.transaction)
+            }
+        }
+        if let alert = self?.alertForPurchaseResult(result) {
+            self?.showAlert(alert)
+        }
+    }
+}
+</code></pre>
+
+<p><code class="highlighter-rouge">productID</code> 就是内购买项目的 ID，如：com.self.appname.purchase1。<code class="highlighter-rouge">productID</code> 可以事先在程序中定义，如果想从网络上获取 <code class="highlighter-rouge">productID</code> 的话，只能从自己的服务器中获取，iTunesConnect 并不提供获取内购买商品列表的 API。</p>
+
+<p>三、完成购买事务：</p>
+
+<pre><code class="language-a">func completeIAPTransactions() {
+    SwiftyStoreKit.completeTransactions(atomically: true) { products in
+        for product in products {
+            if product.transaction.transactionState == .purchased || product.transaction.transactionState == .restored {
+                if product.needsFinishTransaction {
+                // Deliver content from server, then:
+                    SwiftyStoreKit.finishTransaction(product.transaction)
+                }
+                print("purchased: \(product.productId)")
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>在 application:didFinishLaunchingWithOptions 里调用上述的函数。因为 Apple 建议在 app 载入的时候为购买事务添加一个观察者：</p>
+
+<blockquote>
+  <p>Adding your app’s observer at launch ensures that it will persist during all launches of your app, thus allowing your app to receive all the payment queue notifications.</p>
+</blockquote>
+
+<p>SwiftyStoreKit 用 completeTransactions 函数实现了这个功能。这样，如果在载入的时候有任何进行中的事务，就可以对它们进行处理，更新 app 的状态和 UI。</p>
+
+<h2 id="a-id6a"><a id="6"></a>内购买测试</h2>
+
+<p>完成内购买的代码后，在提交审核之前，还应该对它进行测试。Apple 为应用内购买项目提供了沙箱（sandbox）测试，让你使用虚拟的货币模拟内购过程。</p>
+
+<p>a) 在 iTunesConnect 的“用户与职能”里添加沙箱技术测试员。</p>
+
+<p><img src="/images/in_app_purchase5.png" alt="" /></p>
+
+<p>b) 在 iPhone 设置里的 “iTunes Store 与 App Store” 将原来的账号注销。但是不要登陆测试员的账号。</p>
+
+<p>c) 打开待测试内购买的 app，点击内购买的项目进行购买。这时候，会提示登录 App Store，使用沙箱测试员的账号登录。</p>
+
+<p><img src="/images/in_app_purchase6.jpeg" alt="" /></p>
+
+<p>d) 之后会弹出购买信息确认窗口，注意窗口内的提示信息 “Environment: Sandbox“，表示是在沙箱中测试，购买的货币是虚拟的。如果没有这一行的话，则是在真实的环境中进行交易，使用的就是真实的货币了。</p>
+
+<p><img src="/images/in_app_purchase7.jpeg" alt="" /></p>
+
+<p><img src="/images/in_app_purchase8.jpeg" alt="" /></p>
+
+<h2 id="a-id7a"><a id="7"></a>结语</h2>
+
+<p>测试完成后就可以提交审核了。如果是首次添加内购买项目，记得在 app 审核页添加内购项目一起提交审核。当再次添加内购买项目，就可以独立审核内购买项目，而无需提交新的 app 版本。当然，这样做的前提是 app 能够从自己的服务器上获取内购买项目的 productID，否则 app 无法获取新内购买项目的信息。</p>
+
+<p>本文是以消费性内购买项目为例，对于其他类型的内购买项目，方法大同小异，更多的信息请参考<a href="https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction.html#//apple_ref/doc/uid/TP40008267">官方文档</a>。</p>
+
+<p><strong>有任何疑问的话，欢迎在下方评论区讨论。</strong></p>
+
+  
+	</div>
+	<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#iOS">iOS</a>
+  
+  <a href="/tags/#swift">swift</a>
+  
+  <a href="/tags/#In-app purchase">In-app purchase</a>
+  
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="/tutorial/2017/03/01/iOS-in-app-purchase" data-title="iOS：为 App 添加内购买项目 | Lin Shiwei" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>   
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/12/29/Key-value-observing" title="iOS：KVO 实现观察者模式">
+  <strong>上一篇：</strong><br/>
+  <span>
+  iOS：KVO 实现观察者模式</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="_posts/2017-03-01-iOS-in-app-purchase.md" data-title="iOS：为 App 添加内购买项目" data-url="/tutorial/2017/03/01/iOS-in-app-purchase"></div>
+</section>
+
+
+</div>  
+
+      
+      
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/#Introduction" title="Introduction">Introduction<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Experience" title="Experience">Experience<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/#github" title="github">github<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#tensorflow" title="tensorflow">tensorflow<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#jekyll" title="jekyll">jekyll<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#GithubPages" title="GithubPages">GithubPages<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Carthage" title="Carthage">Carthage<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#swift" title="swift">swift<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#iOS" title="iOS">iOS<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchBar" title="UISearchBar">UISearchBar<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchController" title="UISearchController">UISearchController<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#CoreData" title="CoreData">CoreData<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Closure" title="Closure">Closure<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#HealthKit" title="HealthKit">HealthKit<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UnsafePointer" title="UnsafePointer">UnsafePointer<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#LOT" title="LOT">LOT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Arduino" title="Arduino">Arduino<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#PHP" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#JSON" title="JSON">JSON<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Web server" title="Web server">Web server<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Xcode" title="Xcode">Xcode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UserNotifications" title="UserNotifications">UserNotifications<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#KVO" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#objective-c" title="objective-c">objective-c<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#In-app purchase" title="In-app purchase">In-app purchase<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I'm Lin Shiwei in Nankai University, Tianjin, China. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5394744443" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LinShiwei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/5713554" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/linsw" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:linshiweicn@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+	<!--
+			<%  Array.prototype.S=String.fromCharCode(2);
+			  Array.prototype.in_array=function(e){
+    			var r=new RegExp(this.S+e+this.S);
+    			return (r.test(this.S+this.join(this.S)+this.S));
+				};
+				var cc = new Array('by','by-nc','by-nc-nd','by-nc-sa','by-nd','by-sa','zero'); %>
+		<% if (cc.in_array(theme.creative_commons) ) { %>
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/<%= theme.creative_commons %>/4.0" class="cc-opacity" target="_blank">
+            <img src="<%- config.root %>img/cc-<%= theme.creative_commons %>.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    <% } %>
+				-->
+
+		<p class="copyright">
+		Powered by <a href="http://jekyllrb.com" target="_blank" title="jekyll">jekyll</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016
+		
+		<a href="about" target="_blank" title="linshiwei">linshiwei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/js/jquery.imagesloaded.min.js"></script>
+<script src="/assets/js/gallery.js"></script>
+<script src="/assets/js/jquery.qrcode-0.12.0.min.js"></script>
+<script src="/assets/js/toc.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+});
+</script>
+
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"linsw"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<!--
+
+-->
+
+
+
+
+<link rel="stylesheet" href="/assets/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/assets/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      if ($(this).hasClass('emoji')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-80935640-1', '');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5d8208f7dc706aebe63a2bfe1e7a0651' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+  </body>
+ </html>
+

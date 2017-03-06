@@ -1,0 +1,742 @@
+
+        <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>PHP：构建 JSON 数据接口的 Web 服务器 | Lin Shiwei</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="linshiwei">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="website">
+    
+    <meta property="og:title" content="PHP：构建 JSON 数据接口的 Web 服务器">
+    <meta property="og:url" content="/tutorial/2016/11/05/Web-server-JSON-API">
+    <meta property="og:site_name" content="Lin Shiwei">
+    <meta property="og:description" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PHP：构建 JSON 数据接口的 Web 服务器">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lin Shiwei" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.ico">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.ico">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+        <div>
+		    
+			<div id="imglogo">
+				<a href="/"><img src="/assets/img/logo.png" alt="Lin Shiwei" title="Lin Shiwei"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lin Shiwei">Lin Shiwei</a></h1>
+				<h2 class="blog-motto">A technology blog for myself.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>	
+</div>
+    </header>
+    <div id="container">
+      
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+	<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/tutorial/2016/11/05/Web-server-JSON-API" title="PHP：构建 JSON 数据接口的 Web 服务器" itemprop="url">PHP：构建 JSON 数据接口的 Web 服务器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
+		
+  <p class="article-time">
+    <time datetime="2016-11-05 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-11-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+  <li><a href="#1">前言</a></li>
+  <li><a href="#2">问题及需求分析</a>
+    <ul>
+      <li><a href="#21">API </a></li>
+      <li><a href="#22">JSON 数据</a></li>
+    </ul>
+  </li>
+  <li><a href="#3">实现</a>
+    <ul>
+      <li><a href="#31">本地服务器开发环境：MAMP</a></li>
+      <li><a href="#32">后台数据库 MySQL</a></li>
+      <li><a href="#33">服务器程序</a></li>
+    </ul>
+  </li>
+</ul>
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h1 id="a-id1a"><a id="1"></a>前言</h1>
+
+<p>在网上，有很多服务商提供了数据的API（Application Programming Interface），这些 API 可以是 URL 形式的，如下：</p>
+
+<p>http://api.openweathermap.org/data/2.5/weather?q=London,uk&amp;appid=b1b15e88fa797225412429c1c50c122a1</p>
+
+<p>在浏览器访问上面这个链接，服务器就会返回数据。返回的数据类型有很多种，如：JSON，XML等。</p>
+
+<p>本文旨在通过一个例子简要介绍这种服务器程序的构建，最终完成一个服务器程序，实现通过 URL 与服务器通信，服务器返回 JSON 格式的数据。</p>
+
+<h1 id="a-id2a"><a id="2"></a>问题及需求分析</h1>
+
+<h2 id="a-id21aapi"><a id="21"></a>API</h2>
+
+<p>观察上面的 URL，我们可以发现它可以分为两个部分。</p>
+
+<p>一是主机地址：<code class="highlighter-rouge">http://api.openweathermap.org/data/2.5/weather</code>。</p>
+
+<p>二是参数：<code class="highlighter-rouge">q=London,uk&amp;appid=b1b15e88fa797225412429c1c50c122a1</code>。</p>
+
+<p>主机地址和参数之间用 <code class="highlighter-rouge">?</code> 隔开。参数又可以分为多个独立的参数。在这个 URL 中，共包含了两个参数，分别是 <code class="highlighter-rouge">q</code> 和 <code class="highlighter-rouge">appid</code>，等号后面是参数的值。</p>
+
+<p>我们要做的是一个<strong>物联网温度传感器的后台服务器</strong>，即根据不同的 URL，返回温度数据或储存温度数据。</p>
+
+<p>假设我们的 API 如下：</p>
+
+<pre><code class="language-a">获取最近的一个温度数据 API：
+http://localhost:8888/temperature.php?key=lsw&amp;query=get
+返回示例（JSON）：
+成功：{"status":true,"date":"2016-11-17 19:13:09","value":32.63}
+失败：{"status”:false,”message”:”*"}
+备注：”value” 的数据类型是 double
+
+上传一个温度数据 API：
+http://localhost:8888/temperature.php?key=lsw&amp;query=set&amp;value=27.1
+返回示例（JSON）：
+成功：{"status":true,"message":"setting success"}
+失败：{"status”:false,”message”:”*"}
+</code></pre>
+
+<p>URL 中的 temperature.php 就是我们即将编写的网页文件。key 和 query 是两个参数，在 query=set 时，还应带有 value 参数。返回的数据类型是 JSON，以 status 标志操作是否成功，以及附带有信息或数据。</p>
+
+<h2 id="a-id22ajson-"><a id="22"></a>JSON 数据</h2>
+
+<blockquote>
+  <p><strong><a href="http://baike.baidu.com/link?url=vAIdH3CjSpssVA3Xh3KoBWFTjfdNwGcL9eD7QspsbyDdLPMq76QYBM0I61VUj2aomAJlJyFqoXRo8HVG6qwl-K">JSON</a></strong>(JavaScript Object Notation) 是一种轻量级的数据交换格式。它基于ECMAScript的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C、C++、C#、Java、JavaScript、Perl、Python等）。这些特性使JSON成为理想的数据交换语言。 易于人阅读和编写，同时也易于机器解析和生成(一般用于提升网络传输速率)。</p>
+</blockquote>
+
+<p>JSON 数据是可以带有数据类型的，如上面返回示例中的 value 是一个 double 类型的数据。</p>
+
+<h1 id="a-id3a"><a id="3"></a>实现</h1>
+<p>## <a id="31"></a>本地服务器开发环境：MAMP</p>
+
+<p><a href="https://www.mamp.info/en/">MAMP</a> 是经典本地服务器环境的 Mac OS 软件。MAMP 这几个首字母代表苹果的 Mac OS 系统上的 Macintosh、Apache、MySQL 和 PHP。在 Windows 系统上也有相应的开发环境，WAMP。这里以 MAMP 为例进行说明。</p>
+
+<p>MAMP 分免费版和专业版，我们目前只需要用到免费版。安装完成后运行，点击 Start Servers 就可以运行本地的服务器。默认的本地服务器地址是：<code class="highlighter-rouge">http://localhost:8888</code>。</p>
+
+<p>在 MAMP 的 Preferences.. -&gt; Web Server -&gt; Document Foot 可以定位到服务器源文件目录。服务器的程序就保存在这个目录里。</p>
+
+<h2 id="a-id32a-mysql"><a id="32"></a>后台数据库 MySQL</h2>
+
+<p>为了存储数据，服务器需要有一个数据库，并实现与数据库之间的通信。首先我们用 MAMP 运行本地的服务器，在打开的导航网页中打开数据库的管理页面。</p>
+
+<p><img src="/images/JSONWebServer_mysql.png" alt="MySQL" /></p>
+
+<p>新建一个名为 <code class="highlighter-rouge">temperatureData</code> 的数据库，再新建一个数据表 <code class="highlighter-rouge">temperature</code>，并添加如下字段：</p>
+
+<p><img src="/images/JSONWebServer_table.png" alt="数据表" /></p>
+
+<p>这样就完成了数据库的配置，目前只需要储存温度信心，因此只配置这几个条目。</p>
+
+<h2 id="a-id33a"><a id="33"></a>服务器程序</h2>
+
+<p>有了数据库，接下来就要写服务器程序了。服务器程序需要完成以下几个部分的内容：</p>
+
+<ol>
+  <li>连接数据库，与数据库通信，实现数据的读取与存储。</li>
+  <li>获取 URL 中的参数，根据不同的参数和参数值执行相应的操作。</li>
+  <li>封装要返回的信息，以 JSON 形式返回。</li>
+</ol>
+
+<p>具体的程序如下，在关键的地方以注释的方式进行说明。</p>
+
+<div class="language-php highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+    <span class="c1">//函数：用于把数据封装为 JSON 格式
+</span>    <span class="k">function</span> <span class="nf">echoJSON</span><span class="p">(</span><span class="nv">$withStatus</span><span class="p">,</span><span class="nv">$andMessage</span><span class="p">){</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'status'</span> <span class="o">=&gt;</span> <span class="nv">$withStatus</span><span class="p">,</span> <span class="s1">'message'</span> <span class="o">=&gt;</span> <span class="nv">$andMessage</span><span class="p">);</span>
+        <span class="nv">$jsonstring</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="nb">header</span><span class="p">(</span><span class="s1">'Content-Type: application/json'</span><span class="p">);</span>
+        <span class="k">echo</span> <span class="nv">$jsonstring</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 配置数据库
+</span>    <span class="nv">$user</span> <span class="o">=</span> <span class="s1">'root'</span><span class="p">;</span>
+    <span class="nv">$password</span> <span class="o">=</span> <span class="s1">'root'</span><span class="p">;</span>
+    <span class="nv">$db</span> <span class="o">=</span> <span class="s1">'temperatureData'</span><span class="p">;</span>
+    <span class="nv">$host</span> <span class="o">=</span> <span class="s1">'localhost'</span><span class="p">;</span>
+    <span class="nv">$port</span> <span class="o">=</span> <span class="mi">8889</span><span class="p">;</span>
+    <span class="nv">$link</span> <span class="o">=</span> <span class="nx">mysqli_init</span><span class="p">();</span>
+    <span class="nv">$success</span> <span class="o">=</span> <span class="nx">mysqli_real_connect</span><span class="p">(</span>
+                                   <span class="nv">$link</span><span class="p">,</span>
+                                   <span class="nv">$host</span><span class="p">,</span>
+                                   <span class="nv">$user</span><span class="p">,</span>
+                                   <span class="nv">$password</span><span class="p">,</span>
+                                   <span class="nv">$db</span><span class="p">,</span>
+                                   <span class="nv">$port</span>
+                                   <span class="p">);</span>
+    <span class="nv">$privateKey</span> <span class="o">=</span> <span class="s2">"lsw"</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$success</span><span class="p">){</span>
+    <span class="c1">//与数据库连接成功后，获取 URL 中的参数值，根据参数执行相应的程序。如：$_GET["key"] 用于获取 URL 中 "key" 的参数值。
+</span>        <span class="nv">$key</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"key"</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">$key</span> <span class="o">==</span> <span class="nv">$privateKey</span><span class="p">){</span>
+            <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"query"</span><span class="p">];</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="nv">$query</span><span class="p">){</span>
+                <span class="k">case</span> <span class="s2">"get"</span><span class="o">:</span>
+                    <span class="nv">$result</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="s2">"SELECT * FROM `Temperature`"</span><span class="p">);</span>
+                    <span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+                    
+                    <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'status'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'date'</span> <span class="o">=&gt;</span> <span class="nv">$row</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">],</span> <span class="s1">'value'</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">double</span><span class="p">)</span><span class="nv">$row</span><span class="p">[</span><span class="s2">"Value"</span><span class="p">]);</span>
+                    <span class="nv">$jsonstring</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+                    <span class="nb">header</span><span class="p">(</span><span class="s1">'Content-Type: application/json'</span><span class="p">);</span>
+                    <span class="k">echo</span> <span class="nv">$jsonstring</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="s2">"set"</span><span class="o">:</span>
+                    <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"value"</span><span class="p">];</span>
+                    <span class="nv">$valueDouble</span> <span class="o">=</span> <span class="p">(</span><span class="nx">double</span><span class="p">)</span><span class="nv">$value</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="nv">$valueDouble</span><span class="p">){</span>
+                        <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="s2">"DELETE FROM `Temperature` WHERE 1"</span><span class="p">);</span>
+                        <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="s2">"INSERT INTO `Temperature`(`Date`, `Value`) VALUES (CURRENT_TIMESTAMP,</span><span class="nv">$valueDouble</span><span class="s2">);"</span><span class="p">);</span>
+                        <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'status'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'message'</span> <span class="o">=&gt;</span> <span class="s1">'setting success'</span><span class="p">);</span>
+                        <span class="nv">$jsonstring</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+                        <span class="nb">header</span><span class="p">(</span><span class="s1">'Content-Type: application/json'</span><span class="p">);</span>
+                        <span class="k">echo</span> <span class="nv">$jsonstring</span><span class="p">;</span>
+                    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                        <span class="nx">echoJSON</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">"invalid value"</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">default</span><span class="o">:</span>
+                    <span class="nx">echoJSON</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">"unsupported query"</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">echoJSON</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">"invalid key"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="nx">echoJSON</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">"Connect Error: "</span> <span class="o">.</span> <span class="nx">mysqli_connect_error</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="c1">// 关闭数据库连接。
+</span>    <span class="nx">mysqli_close</span><span class="p">(</span><span class="nv">$link</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+</div>
+
+<p>在服务器目录里新建一个 <code class="highlighter-rouge">temperature.php</code> 文件，将上述程序复制到文件中保存。用 MAMP 运行服务器，下面将检验我们服务器的配置情况。</p>
+
+<p>在浏览器中访问：http://localhost:8888/temperature.php?key=lsw&amp;query=get 就能获取数据库中的温度信息。如果数据库中还没有温度信息，则会返回如下结果：</p>
+
+<div class="language-php highlighter-rouge"><pre class="highlight"><code>{"status":true,"date":null,"value":0}
+</code></pre>
+</div>
+
+<p>在浏览器中显示如下：</p>
+
+<p><img src="/images/JSONWebServer_json.png" alt="JSON" /></p>
+
+<p>完整的程序请看<a href="https://github.com/LinShiwei/LswApacheServer/blob/master/temperature.php">这里</a>。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>关于如何使用这个 Web 服务器完成物联网温度传感器，请参考：[LOT</td>
+      <td>物联网 温度传感器](http://linshiwei.site/tutorial/2016/11/02/LOT-thermometer)。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>有任何疑问的话，欢迎在下方评论区讨论。</strong></p>
+
+  
+	</div>
+	<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#PHP">PHP</a>
+  
+  <a href="/tags/#JSON">JSON</a>
+  
+  <a href="/tags/#Web server">Web server</a>
+  
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="/tutorial/2016/11/05/Web-server-JSON-API" data-title="PHP：构建 JSON 数据接口的 Web 服务器 | Lin Shiwei" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>   
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/11/02/LOT-thermometer" title="LOT|物联网 温度传感器">
+  <strong>上一篇：</strong><br/>
+  <span>
+  LOT|物联网 温度传感器</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/tutorial/2016/12/13/Localizing-your-app"  title="Localization：本地化 iOS 应用">
+ <strong>下一篇：</strong><br/> 
+ <span>Localization：本地化 iOS 应用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="_posts/2016-11-05-Web-server-JSON-API.md" data-title="PHP：构建 JSON 数据接口的 Web 服务器" data-url="/tutorial/2016/11/05/Web-server-JSON-API"></div>
+</section>
+
+
+</div>  
+
+      
+      
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/#Introduction" title="Introduction">Introduction<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Experience" title="Experience">Experience<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/#github" title="github">github<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#tensorflow" title="tensorflow">tensorflow<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#jekyll" title="jekyll">jekyll<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#GithubPages" title="GithubPages">GithubPages<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Carthage" title="Carthage">Carthage<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#swift" title="swift">swift<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#iOS" title="iOS">iOS<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchBar" title="UISearchBar">UISearchBar<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchController" title="UISearchController">UISearchController<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#CoreData" title="CoreData">CoreData<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Closure" title="Closure">Closure<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#HealthKit" title="HealthKit">HealthKit<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UnsafePointer" title="UnsafePointer">UnsafePointer<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#LOT" title="LOT">LOT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Arduino" title="Arduino">Arduino<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#PHP" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#JSON" title="JSON">JSON<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Web server" title="Web server">Web server<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Xcode" title="Xcode">Xcode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UserNotifications" title="UserNotifications">UserNotifications<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#KVO" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#objective-c" title="objective-c">objective-c<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#In-app purchase" title="In-app purchase">In-app purchase<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I'm Lin Shiwei in Nankai University, Tianjin, China. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5394744443" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LinShiwei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/5713554" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/linsw" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:linshiweicn@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+	<!--
+			<%  Array.prototype.S=String.fromCharCode(2);
+			  Array.prototype.in_array=function(e){
+    			var r=new RegExp(this.S+e+this.S);
+    			return (r.test(this.S+this.join(this.S)+this.S));
+				};
+				var cc = new Array('by','by-nc','by-nc-nd','by-nc-sa','by-nd','by-sa','zero'); %>
+		<% if (cc.in_array(theme.creative_commons) ) { %>
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/<%= theme.creative_commons %>/4.0" class="cc-opacity" target="_blank">
+            <img src="<%- config.root %>img/cc-<%= theme.creative_commons %>.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    <% } %>
+				-->
+
+		<p class="copyright">
+		Powered by <a href="http://jekyllrb.com" target="_blank" title="jekyll">jekyll</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016
+		
+		<a href="about" target="_blank" title="linshiwei">linshiwei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/js/jquery.imagesloaded.min.js"></script>
+<script src="/assets/js/gallery.js"></script>
+<script src="/assets/js/jquery.qrcode-0.12.0.min.js"></script>
+<script src="/assets/js/toc.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+});
+</script>
+
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"linsw"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<!--
+
+-->
+
+
+
+
+<link rel="stylesheet" href="/assets/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/assets/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      if ($(this).hasClass('emoji')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-80935640-1', '');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5d8208f7dc706aebe63a2bfe1e7a0651' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+  </body>
+ </html>
+

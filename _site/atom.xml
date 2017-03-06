@@ -4,13 +4,1429 @@
  <title>Lin Shiwei</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-09-20T15:25:21+08:00</updated>
+ <updated>2017-03-06T21:13:45+08:00</updated>
  <id></id>
  <author>
    <name>linshiwei</name>
    <email>linshiweicn@163.com</email>
  </author>
 
+ 
+ <entry>
+   <title>iOS：为 App 添加内购买项目</title>
+   <link href="/tutorial/2017/03/01/iOS-in-app-purchase"/>
+   <updated>2017-03-01T00:00:00+08:00</updated>
+   <id>/tutorial/2017/03/01/iOS-in-app-purchase</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;必要的准备&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;内购买项目的用户界面&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4&quot;&gt;在 iTunesConnect 上新建内购买项目&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5&quot;&gt;完成内购买相关代码&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#6&quot;&gt;内购买测试&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#7&quot;&gt;结语&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;
+&lt;p&gt;在 AppStore 里，付费应用的下载量往往比免费应用的下载量少的多。上架过应用的开发者，可能会有这样的体会：当一个应用免费的时候，每天能有几十上百次的下载，但是一旦设置为收费的时候，下载量立即暴跌，即使只设成了一元，可能好几星期都没人下载。&lt;/p&gt;
+
+&lt;p&gt;收费的应用不好做，与其长时间零下载，还不如设置为免费，每天看看下载量来的舒服。&lt;/p&gt;
+
+&lt;p&gt;但是作为一个开发者，开发免费应用的动力，显然比不上开发收费应用。应用免费了，开发的动力也少了。因此，我们可以考虑在应用里面加入内购买项目，通过免费下载吸引用户，再用内购买项目让用户按需购买，自己赚点零花钱。&lt;/p&gt;
+
+&lt;p&gt;本文将用一个真实的例子（已上架 AppStore：&lt;a href=&quot;https://itunes.apple.com/cn/app/catch-%E6%8D%95%E6%8D%89%E7%A8%8D%E7%BA%B5%E5%8D%B3%E9%80%9D%E7%9A%84%E7%81%B5%E6%84%9F/id1193123297?mt=8&quot;&gt;Catch - 捕捉稍纵即逝的灵感&lt;/a&gt;），介绍为 App 添加内购买项目的流程。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id2a&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;必要的准备&lt;/h2&gt;
+
+&lt;p&gt;添加内购买项目之前，需要有一个付费的开发者账号，并在开发者账号的“协议、税务和银行业务”里完善银行卡等信息，否则 Apple 无法将应用的收入转给你。&lt;/p&gt;
+
+&lt;p&gt;你还需要准备一个已上架或者未上架的应用，应用在首次添加内购买项目时需要与新的应用版本一起提交审核。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id3a&quot;&gt;&lt;a id=&quot;3&quot;&gt;&lt;/a&gt;内购买项目的用户界面&lt;/h2&gt;
+
+&lt;p&gt;在添加内购买项目前，你需要在你的应用里，自己设计好商品展示的界面，Apple 只负责购买的流程。这个界面在接下去新建内购买项目时也会用到。&lt;/p&gt;
+
+&lt;p&gt;下图是一个实际应用的内购商品展示界面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id4a-itunesconnect-&quot;&gt;&lt;a id=&quot;4&quot;&gt;&lt;/a&gt;在 iTunesConnect 上新建内购买项目&lt;/h2&gt;
+
+&lt;p&gt;接下来，在 iTunesConnect 上的应用页面，选择“功能”－“App 内购买项目“，点击加号新建项目，如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后会要求选择内购买项目的类型，这里以“消费型项目”为例。在接下来的表里填写相应的信息。产品 ID 一般以 App 的 Bundle ID 为前缀再加上自定义的产品后缀，如：com.self.purchase1。在审核信息里上传刚刚的内购商品展示界面，供审查员审核。其他信息自行填写即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;新建内购买项目后，在内购买项目列表里显示为“准备提交”状态。现在在准备提交的 App 版本中添加刚刚新建的内购买项目。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id5a&quot;&gt;&lt;a id=&quot;5&quot;&gt;&lt;/a&gt;完成内购买相关代码&lt;/h2&gt;
+
+&lt;p&gt;关于内购买的代码，本文将使用一个现成的框架：&lt;a href=&quot;https://github.com/bizz84/SwiftyStoreKit&quot;&gt;SwiftyStoreKit&lt;/a&gt;，这样有利于理清思路。对于直接使用 StoreKit 完成整个内购买的流程，将在下一篇文章里讨论。&lt;/p&gt;
+
+&lt;p&gt;首先在项目里添加 SwiftyStoreKit 框架。具体添加的方法上面的链接里已有说明。
+总共的代码有三部分，如下：&lt;/p&gt;
+
+&lt;p&gt;一、获取商品信息，用于在界面上显示：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-a&quot;&gt;SwiftyStoreKit.retrieveProductsInfo([productID]) {[weak self ] result in
+    if let product = result.retrievedProducts.first {
+        let priceString = product.localizedPrice!
+        print(&quot;Product: \(product.localizedDescription), price: \(priceString)&quot;)
+    }else if let invalidProductId = result.invalidProductIDs.first {
+        print(&quot;Could not retrieve product info .Invalid product identifier: \(invalidProductId)&quot;)
+    }else {
+        print(&quot;Error: \(result.error)&quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;商品信息包括商品的价格和名称，保存在 &lt;code class=&quot;highlighter-rouge&quot;&gt;SKProduct&lt;/code&gt; 对象里。汇率的问题 Apple 已经帮我们处理好，商品的名称会根据我们在 iTunesConect 里填写的本地化信息自动选择，因此我们只需要直接使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;localizedPrice&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;localizedTitle&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;localizedDescription&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;二、购买商品（当用户点击购买后）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-a&quot;&gt;func purchase(_ productID: String) {
+    SwiftyStoreKit.purchaseProduct(productID, atomically: true) { [weak self] result in
+        if case .success(let product) = result {
+        // Deliver content from server, then:
+        if product.needsFinishTransaction {
+            SwiftyStoreKit.finishTransaction(product.transaction)
+            }
+        }
+        if let alert = self?.alertForPurchaseResult(result) {
+            self?.showAlert(alert)
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;productID&lt;/code&gt; 就是内购买项目的 ID，如：com.self.appname.purchase1。&lt;code class=&quot;highlighter-rouge&quot;&gt;productID&lt;/code&gt; 可以事先在程序中定义，如果想从网络上获取 &lt;code class=&quot;highlighter-rouge&quot;&gt;productID&lt;/code&gt; 的话，只能从自己的服务器中获取，iTunesConnect 并不提供获取内购买商品列表的 API。&lt;/p&gt;
+
+&lt;p&gt;三、完成购买事务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-a&quot;&gt;func completeIAPTransactions() {
+    SwiftyStoreKit.completeTransactions(atomically: true) { products in
+        for product in products {
+            if product.transaction.transactionState == .purchased || product.transaction.transactionState == .restored {
+                if product.needsFinishTransaction {
+                // Deliver content from server, then:
+                    SwiftyStoreKit.finishTransaction(product.transaction)
+                }
+                print(&quot;purchased: \(product.productId)&quot;)
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 application:didFinishLaunchingWithOptions 里调用上述的函数。因为 Apple 建议在 app 载入的时候为购买事务添加一个观察者：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Adding your app’s observer at launch ensures that it will persist during all launches of your app, thus allowing your app to receive all the payment queue notifications.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;SwiftyStoreKit 用 completeTransactions 函数实现了这个功能。这样，如果在载入的时候有任何进行中的事务，就可以对它们进行处理，更新 app 的状态和 UI。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id6a&quot;&gt;&lt;a id=&quot;6&quot;&gt;&lt;/a&gt;内购买测试&lt;/h2&gt;
+
+&lt;p&gt;完成内购买的代码后，在提交审核之前，还应该对它进行测试。Apple 为应用内购买项目提供了沙箱（sandbox）测试，让你使用虚拟的货币模拟内购过程。&lt;/p&gt;
+
+&lt;p&gt;a) 在 iTunesConnect 的“用户与职能”里添加沙箱技术测试员。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;b) 在 iPhone 设置里的 “iTunes Store 与 App Store” 将原来的账号注销。但是不要登陆测试员的账号。&lt;/p&gt;
+
+&lt;p&gt;c) 打开待测试内购买的 app，点击内购买的项目进行购买。这时候，会提示登录 App Store，使用沙箱测试员的账号登录。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase6.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;d) 之后会弹出购买信息确认窗口，注意窗口内的提示信息 “Environment: Sandbox“，表示是在沙箱中测试，购买的货币是虚拟的。如果没有这一行的话，则是在真实的环境中进行交易，使用的就是真实的货币了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase7.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/in_app_purchase8.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id7a&quot;&gt;&lt;a id=&quot;7&quot;&gt;&lt;/a&gt;结语&lt;/h2&gt;
+
+&lt;p&gt;测试完成后就可以提交审核了。如果是首次添加内购买项目，记得在 app 审核页添加内购项目一起提交审核。当再次添加内购买项目，就可以独立审核内购买项目，而无需提交新的 app 版本。当然，这样做的前提是 app 能够从自己的服务器上获取内购买项目的 productID，否则 app 无法获取新内购买项目的信息。&lt;/p&gt;
+
+&lt;p&gt;本文是以消费性内购买项目为例，对于其他类型的内购买项目，方法大同小异，更多的信息请参考&lt;a href=&quot;https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction.html#//apple_ref/doc/uid/TP40008267&quot;&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>iOS：KVO 实现观察者模式</title>
+   <link href="/tutorial/2016/12/29/Key-value-observing"/>
+   <updated>2016-12-29T00:00:00+08:00</updated>
+   <id>/tutorial/2016/12/29/Key-value-observing</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;KVO 简介&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21&quot;&gt;前提条件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22&quot;&gt;适用场景&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;实现 KVO：注册观察者和观察者方法&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#31&quot;&gt;基本流程&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#311&quot;&gt;添加观察者&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#312&quot;&gt;观察响应方法：&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#313&quot;&gt;移除观察者&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h1 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;在 iOS 开发中，常常需要在不同的对象、不同的视图（View）或不同的视图控制器（ViewController）之间通信，传递数据。主要的实现方法有：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;直接通过 superView 或 subView 传递数据，或者在类中添加其他对象的引用。方法直接但效率低、容易使代码混乱，难以处理复杂的关系。&lt;/li&gt;
+  &lt;li&gt;通过自带的或自定义的 delegate 协议通信。效率较高，能完成复杂的通信及执行复杂的操作，代码结构较好，但是代码量比较大。&lt;/li&gt;
+  &lt;li&gt;使用 KVO（Key-value observing）。能够穿越复杂的关系网，直接观察其他对象的属性，获取信息，根据所观察对象的变化进行响应，代码量少。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些方法各有优劣，在不同的情况下选用合适的方法是最好的。因此掌握这些方法，才能更好地应对各种开发难题。KVO 是本文关注的重点。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id2akvo-&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;KVO 简介&lt;/h1&gt;
+
+&lt;p&gt;在 Apple 的应用开发里 KVO 提供了一个途径，使对象（观察者）能够观察其他对象（被观察者）的属性，当被观察者的属性发生变化时，观察者就会被告知该变化。这其实就对应&lt;strong&gt;设计模式&lt;/strong&gt;中的观察者模式。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;观察者：Observer，the observing object；被观察者：the observed object&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;a-id21a&quot;&gt;&lt;a id=&quot;21&quot;&gt;&lt;/a&gt;前提条件&lt;/h2&gt;
+
+&lt;p&gt;在实现 KVO 之前，需要确保被观察的对象是支持 KVO 的。通常继承自 NSObject 的对象都会自动支持 KVO。对于非继承自 NSObject 的类，也可以&lt;a href=&quot;https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE&quot;&gt;手动实现 KVO 支持&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id22a&quot;&gt;&lt;a id=&quot;22&quot;&gt;&lt;/a&gt;适用场景&lt;/h2&gt;
+
+&lt;p&gt;KVO 能很方便地实现模型（Model）和控制器（Controller）之间的通信。主要的应用场景有：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/kvo1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;KVO 能够实现一对多、多对多、多对一的观察。也就是说，KVO 没有限制观察者和被观察者的数量。当同时观察多个对象时，不但对象本身发生改变时会告知观察者，而且被观察对象发生替换、删除或插入等操作时也会告知观察者。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id3a-kvo&quot;&gt;&lt;a id=&quot;3&quot;&gt;&lt;/a&gt;实现 KVO：注册观察者和观察者方法&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-id31a&quot;&gt;&lt;a id=&quot;31&quot;&gt;&lt;/a&gt;基本流程&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;添加观察者：&lt;code class=&quot;highlighter-rouge&quot;&gt;addObserver:forKeyPath:options:context: &lt;/code&gt;；&lt;/li&gt;
+  &lt;li&gt;实现观察响应方法：&lt;code class=&quot;highlighter-rouge&quot;&gt;observeValueForKeyPath:ofObject:change:context: &lt;/code&gt;；&lt;/li&gt;
+  &lt;li&gt;在观察者 deallocted 之前移除观察者： &lt;code class=&quot;highlighter-rouge&quot;&gt;removeObserver:forKeyPath:&lt;/code&gt; ；&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-id311a&quot;&gt;&lt;a id=&quot;311&quot;&gt;&lt;/a&gt;添加观察者&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;observedObject.addObserver:forKeyPath:options:context:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;注意：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;调用该函数的 observedObject 是被观察者，参数 addObserver 后面的是观察者；&lt;/li&gt;
+  &lt;li&gt;forKeyPath 参数是 String 类型的，代表 observedObject 的属性，私有属性也可以观察，但是在 Swift 中需要把被观察对象的属性用 &lt;code class=&quot;highlighter-rouge&quot;&gt;dynamic&lt;/code&gt; 标记，如：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ObservedObjectClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSObject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//在 Swift 中要用 dynamic 标记被观察的属性&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;dynamic&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;observedProperty&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;options：可以选择获取的数据包含哪些内容，获取的数据是以字典的形式传递的。
+    &lt;ul&gt;
+      &lt;li&gt;NSKeyValueObservingOptionOld: 获取变化前的数据&lt;/li&gt;
+      &lt;li&gt;NSKeyValueObservingOptionNew: 获取变化后的数据&lt;/li&gt;
+      &lt;li&gt;NSKeyValueObservingOptionInitial: 获取设置观察者时被观察者的初始数据，即在 addObserver 函数调用完成前，被观察者的数据。&lt;/li&gt;
+      &lt;li&gt;NSKeyValueObservingOptionPrior: 在变化前后分别发送消息（共发送两次消息）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;context：可选的参数，会随着观察消息传递，用于区分接收该消息的观察者。一般情况下，只需通过 keyPath 就可以判断接收消息的观察者。但是当父类子类都观察了同一个 keyPath 时，仅靠 keyPath 就无法判断消息该传给子类，还是传给父类。&lt;/li&gt;
+  &lt;li&gt;addObserver 并不会维持对观察者、被观察者和 Context 的强引用。如果需要的话，要自行维持对它们的强引用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;a-id312a&quot;&gt;&lt;a id=&quot;312&quot;&gt;&lt;/a&gt;观察响应方法：&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;所有的观察者都必须实现观察响应方法：
+observeValueForKeyPath:ofObject:change:context:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;change 是一个字典，包含了一系列键－值。
+    &lt;ul&gt;
+      &lt;li&gt;NSKeyValueChangeKindKey: 变化的类型&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeOldKey: 变化前的值&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeNewKey: 变化后的值&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeIndexesKey: 在所有变化中的坐标&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;NSKeyValueChangeKindKey 又包含了：
+    &lt;ul&gt;
+      &lt;li&gt;NSKeyValueChangeSetting&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeInsertion&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeRemoval&lt;/li&gt;
+      &lt;li&gt;NSKeyValueChangeReplacement&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;如果接收到的观察者消息于当前的 Context 不符，就需要把消息传给 父类，直到寻找到对应的 Context。&lt;/li&gt;
+  &lt;li&gt;如果一个消息传到了 NSObject 仍然没有找到它的观察者，那么就会抛出异常：NSInternalInconsistencyException。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;a-id313a&quot;&gt;&lt;a id=&quot;313&quot;&gt;&lt;/a&gt;移除观察者&lt;/h3&gt;
+
+&lt;p&gt;当一个对象不再需要观察另一个对象时，就需要移除观察。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;observedObject.removeObserver:forKeyPath:context:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这个方法和添加观察者的方法是对应的。&lt;/p&gt;
+
+&lt;p&gt;移除观察者需要注意以下几点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;一个对象如果没有注册成为观察者，那么当调用 removeObserver 移除它时，就会抛出异常。所以想要安全地移除观察者，可以使用 do、try、catch 来调用 removeObserver。&lt;/li&gt;
+  &lt;li&gt;观察者不会在 dealloc 的时候自动移除。因此最晚必须在观察者 dealloc 时移除它。&lt;/li&gt;
+  &lt;li&gt;系统没有自带的方法用于判断一个对象是否注册为观察者，因此尽量在初始化的时候注册观察者，在 dealloc 时移除。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;a-id4a&quot;&gt;&lt;a id=&quot;4&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;
+
+&lt;p&gt;KVO 能够在复杂的关系网中直接观察某个对象，合理的使用 KVO 能够简化代码。但是 KVO 也有很多坑，稍有不慎就会抛出异常或者无法建立观察。在实践中，还是应该选择合适的方法来完成对象间的通信，熟练应对各种情况。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>iOS 10：本地消息推送指南</title>
+   <link href="/tutorial/2016/12/23/Local-Notification-Guide"/>
+   <updated>2016-12-23T00:00:00+08:00</updated>
+   <id>/tutorial/2016/12/23/Local-Notification-Guide</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;iOS 消息推送的基础知识&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21&quot;&gt;推送方式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22&quot;&gt;管理消息推送&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;本地消息推送实现&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h1 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;Apple 应用的消息推送分为本地消息推送（Local Notification）和远程消息推送（Remote Notification）。当有新的消息时，可以通过本地或远程推送告知用户，即使 App 并未运行。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;本地消息推送不需要联网，由系统统一管理 App 推送的消息，App 只需与系统交互即可。本地消息推送适用于 iOS、tvOS 和 watchOS。&lt;/li&gt;
+  &lt;li&gt;远程消息推送需要连接网络，通过 App 或者后台服务器与 Apple Push Notification（APN） 通信，再由 APN 将消息推送到终端上。远程消息推送除了支持 iOS、tvOS 和 watchOS，还支持 macOS。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;本文将大体介绍消息推送的相关内容，并实现基本的本地消息推送。想直接看如何实现本地消息推送，请看&lt;strong&gt;“本地消息推送实现”&lt;/strong&gt;部分。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id2aios-&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;iOS 消息推送的基础知识&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-id21a&quot;&gt;&lt;a id=&quot;21&quot;&gt;&lt;/a&gt;推送方式&lt;/h2&gt;
+
+&lt;p&gt;尽管消息推送方式分为本地和远程，但是他们展现给用户的方式是一样的，因为它们默认使用的是系统提供的外观。主要的推送方式有：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通知、横幅&lt;/li&gt;
+  &lt;li&gt;应用图标标记&lt;/li&gt;
+  &lt;li&gt;带有声音的通知、横幅或标记&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;a-id22a&quot;&gt;&lt;a id=&quot;22&quot;&gt;&lt;/a&gt;管理消息推送&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;App must be configured at launch time to support local and remote notification.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;首先，我们需要在 &lt;code class=&quot;highlighter-rouge&quot;&gt;applicationDidFinishLaunching:&lt;/code&gt; 之前声明支持消息推送的方式。如果想在 App 运行后某个时间再进行声明的话，在此之前要避免推送消息。因为在声明支持消息推送之前，发送任何消息都是无效的。&lt;/p&gt;
+
+&lt;p&gt;当配置了消息推送的方式后，需要请求授权：&lt;code class=&quot;highlighter-rouge&quot;&gt;requestAuthorizationWithOptions:completionHandler:&lt;/code&gt;，第一次调用该方法时，系统会提示用户 App 需要推送消息，等待用户确认。系统自动保存用户的授权结果，当以后调用该方法时，就不会在出现提示了。&lt;/p&gt;
+
+&lt;p&gt;获得推送消息权限后，就需要考虑以下几个问题：&lt;/p&gt;
+
+&lt;p&gt;一、设定 Category。当 App 推送的消息很多，需要进行分类时，就需要设定 Category。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;generalCategory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;GENERAL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;intentIdentifiers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;customDismissAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;c1&quot;&gt;// Register the category.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;center&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNUserNotificationCenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setNotificationCategories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generalCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;设定消息的 Category 后，就可以添加自定义的行为（action），这样用户就可以在不打开 App 的情况下，对消息进行简单的操作。如果不为消息分配 Category，那么消息就会以默认的形式推送，不带有任何附加的行为。&lt;/p&gt;
+
+&lt;p&gt;二、为 Category 添加自定义的行为。每个 Category 最多可以包含四个自定义的行为。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;generalCategory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;GENERAL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;intentIdentifiers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;customDismissAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+&lt;span class=&quot;c1&quot;&gt;// Create the custom actions for the TIMER_EXPIRED category.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;snoozeAction&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;SNOOZE_ACTION&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Snooze&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationActionOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rawValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;stopAction&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;STOP_ACTION&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Stop&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreground&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ 
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;expiredCategory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;TIMER_EXPIRED&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;snoozeAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stopAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;intentIdentifiers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationCategoryOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rawValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+ 
+&lt;span class=&quot;c1&quot;&gt;// Register the notification categories.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;center&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNUserNotificationCenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setNotificationCategories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generalCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expiredCategory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;三、配置通知声音。本地和远程推送都可以自定义声音。自定义声音的音频编码形式可以是以下几种：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Linear PCM&lt;/li&gt;
+  &lt;li&gt;MA(IMA/ADPCM)&lt;/li&gt;
+  &lt;li&gt;uLaw&lt;/li&gt;
+  &lt;li&gt;aLaw&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;而音频文件应该为 &lt;code class=&quot;highlighter-rouge&quot;&gt;.aiff&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;.wav&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;.caf&lt;/code&gt; 文件。音频时长必须小于 30s，否则系统会使用默认的声音。Mac 里自带了 afconvert 音频格式转换工具。如在终端中输入如下代码，可以将 16-bit linear PCM 编码的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Submarine.aiff&lt;/code&gt; 文件转化为 IMA4 编码的 &lt;code class=&quot;highlighter-rouge&quot;&gt;.caf&lt;/code&gt; 文件：&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;afconvert&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/System/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Library&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Sounds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Submarine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aiff&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/Desktop/su&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;caf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ima4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;caff&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;四、管理推送设置。由于用户可以在设置里自由的打开或关闭 App 推送功能，在程序中，需要判断推送功能是否可用：&lt;code class=&quot;highlighter-rouge&quot;&gt;getNotificationSettingsWithCompletionHandler: &lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;五、管理推送消息。我们可以给用户推送消息，也可以管理已经推送或将要推送的消息。当一条消息已经不具备时效性，那么我们就应该把它从通知栏中消除。使用：&lt;code class=&quot;highlighter-rouge&quot;&gt;removeDeliveredNotificationsWithIdentifiers:&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;removePendingNotificationsWithIdentifiers:&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id3a&quot;&gt;&lt;a id=&quot;3&quot;&gt;&lt;/a&gt;本地消息推送实现&lt;/h1&gt;
+
+&lt;p&gt;下面的代码是实现了一个负责推送消息的对象，它包含了&lt;strong&gt;请求推送&lt;/strong&gt;和&lt;strong&gt;创建推送消息&lt;/strong&gt;的方法。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UIKit&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UserNotifications&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LocalNotificationManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSObject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;shared&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LocalNotificationManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;notificationCenter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNUserNotificationCenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//用于请求推送权限&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;requestAuthorization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;notificationCenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;requestAuthorization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sound&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]){&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;granted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;granted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+                
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//用于创建推送消息（创建的消息将在调用函数后十秒发出）&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createNewNotification&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;     
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNMutableNotificationContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;localizedUserNotificationString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;forKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Alarm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;localizedUserNotificationString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;forKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;WakeUp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;trigger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNTimeIntervalNotificationTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timeInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;repeats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotificationRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;MyNotification&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;trigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;trigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        
+        &lt;span class=&quot;n&quot;&gt;notificationCenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;assertionFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;有了上面管理消息推送的对象，实现简单的本地消息推送只需要以下两步：&lt;/p&gt;
+
+&lt;p&gt;一、在 AppDelegate.swift 里的 &lt;code class=&quot;highlighter-rouge&quot;&gt;application:willFinishLaunchingWithOptions:&lt;/code&gt; 调用  &lt;code class=&quot;highlighter-rouge&quot;&gt;requestAuthorization&lt;/code&gt; 请求授权：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UIApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;willFinishLaunchingWithOptions&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;launchOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;UIApplicationLaunchOptionsKey&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;LocalNotificationManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;requestAuthorization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;二、在要推送消息的地方调用：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;LocalNotificationManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shared&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;createNewNotification&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样就能收到推送的消息。
+当 App 在后台运行时，消息会以横幅的形式出现。
+当 App 在前台运行时，消息会直接传递给 App，默认状态下不出现横幅。想在前台运行时也出现横幅，可以实现 UNUserNotificationCenterDelegate 代理方法，在 completionHandler 里添加需要的推送形式：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;userNotificationCenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNUserNotificationCenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;willPresent&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;notification&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UNNotification&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;withCompletionHandler&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completionHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;UNNotificationPresentationOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;completionHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;UNNotificationPresentationOptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Localization：本地化 iOS 应用</title>
+   <link href="/tutorial/2016/12/13/Localizing-your-app"/>
+   <updated>2016-12-13T00:00:00+08:00</updated>
+   <id>/tutorial/2016/12/13/Localizing-your-app</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;本地化&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21&quot;&gt;Storyboard&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22&quot;&gt;Info.plist&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23&quot;&gt;代码中的本地化（少量）&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h1 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;本地化是将一个 App 的语言文字转换成多种语言的过程，如：原来只支持一种语言的 App，经过本地化后，能够支持多种语言。&lt;/p&gt;
+
+&lt;p&gt;本地化不只是单纯的翻译，它还包括以下内容：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;日期和时间格式。不同地区的日期时间格式不一样。&lt;/li&gt;
+  &lt;li&gt;文字的排版。如：有的语言是从右至左的阅读顺序。&lt;/li&gt;
+  &lt;li&gt;界面排版优化。同样的词汇在不同语言下长短不一，在 App 界面上显示效果不一样，需要用 Auto Layout 进行适配。&lt;/li&gt;
+  &lt;li&gt;代码的适配。当程序中需要根据语言文字进行分类、排序、搜索、解析等操作时，不同的语言需要有不同的处理方案。&lt;/li&gt;
+  &lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由于本地化涵盖了大量的内容，完整的文档请参考：&lt;a href=&quot;https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPInternational/Introduction/Introduction.html#//apple_ref/doc/uid/10000171i-CH1-SW1&quot;&gt;Internationalization and Localization Guide&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;本文针对的情况是：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;轻量级的本地化。需要本地化的内容较少，主要存在于：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Storyboard（Main，LaunchScreen）等 UI 元素中；&lt;/li&gt;
+  &lt;li&gt;Info.plist 文件中；&lt;/li&gt;
+  &lt;li&gt;代码里（较少）。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;接下去将针对这三个方面进行讨论。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id2a&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;本地化&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-id21astoryboard&quot;&gt;&lt;a id=&quot;21&quot;&gt;&lt;/a&gt;Storyboard&lt;/h2&gt;
+
+&lt;p&gt;本地化的第一步：勾选 &lt;code class=&quot;highlighter-rouge&quot;&gt;Use Base Internationalization&lt;/code&gt;。如下图，在项目的 Info 页面底部：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后在 Localizations 列表里添加需要本地化的语言。Xcode 项目的开发语言是 English，在这里添加的是 Chinese(Simplified)。添加时会提示勾选需要本地化的文件，可以勾选 Main.storyboard 和 LaunchScreen.storyboard。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后在导航栏里可以发现 Main.storyboard 和 LaunchScreen.storyboard 里分别包含了两个文件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Main.strings 里包含了从 Main.storyboard 中提取出的可本地化的元素，是一系列的键-值对和注释。在这个文件中，把需要本地化的内容进行翻译即可，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;本地化 storyboard 中的内容后，可以在 Assistant Editor 中预览本地化效果（打开 Assistant Editor 后，选择 Preview，在右下角可以选择模拟的语言，还可以使用自带的伪代码调试界面）：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id22ainfoplist&quot;&gt;&lt;a id=&quot;22&quot;&gt;&lt;/a&gt;Info.plist&lt;/h2&gt;
+
+&lt;p&gt;Info.plist 中常常会包含有对 App 进行描述的文字。对于 Info.plist 的本地化，&lt;strong&gt;不要点击 &lt;code class=&quot;highlighter-rouge&quot;&gt;Localize...&lt;/code&gt;&lt;/strong&gt;(Xcode8)：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;而应该在项目中 &lt;code class=&quot;highlighter-rouge&quot;&gt;New File...&lt;/code&gt;，新建一个 InfoPlist.strings 文件，并在 File Inspector 的 Localization 里选择本地化语言：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后在该文件中对需要本地化的 Info.plist 条目进行配置，如修改 App 的名称：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-a&quot;&gt;CFBundleDisplayName = &quot;TextEdit&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者修改其他的键值：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Localizing_8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样在 App 运行时，会根据系统选择的语言读取相应 Info.plist 里的配置。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id23a&quot;&gt;&lt;a id=&quot;23&quot;&gt;&lt;/a&gt;代码中的本地化（少量）&lt;/h2&gt;
+
+&lt;p&gt;当代码中仅有少量内容需要本地化时，可以使用下面代码获取当前系统的语言，再根据不同语言使用相应的代码：&lt;/p&gt;
+
+&lt;p&gt;Objective-C：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-Objective-C&quot;&gt;NSString *languageID = [[NSBundle mainBundle] preferredLocalizations].firstObject;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Swift：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;languageID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;preferredLocalizations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用以上方法基本上可以完成普通 App 的本地化，重度本地化请参考官方文档 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPInternational/Introduction/Introduction.html#//apple_ref/doc/uid/10000171i-CH1-SW1&quot;&gt;Internationalization and Localization Guide&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;附上一个已实现中英文本地化的 App 源码：&lt;a href=&quot;https://github.com/LinShiwei/ColorPicker&quot;&gt;ColorPicker&lt;/a&gt;&lt;/strong&gt;，已上架 AppStore：&lt;a href=&quot;https://itunes.apple.com/cn/app/colorpicker-pick-color-easily/id1183292373?mt=8&quot;&gt;链接&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>PHP：构建 JSON 数据接口的 Web 服务器</title>
+   <link href="/tutorial/2016/11/05/Web-server-JSON-API"/>
+   <updated>2016-11-05T00:00:00+08:00</updated>
+   <id>/tutorial/2016/11/05/Web-server-JSON-API</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;问题及需求分析&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21&quot;&gt;API &lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22&quot;&gt;JSON 数据&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;实现&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#31&quot;&gt;本地服务器开发环境：MAMP&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#32&quot;&gt;后台数据库 MySQL&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#33&quot;&gt;服务器程序&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h1 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;在网上，有很多服务商提供了数据的API（Application Programming Interface），这些 API 可以是 URL 形式的，如下：&lt;/p&gt;
+
+&lt;p&gt;http://api.openweathermap.org/data/2.5/weather?q=London,uk&amp;amp;appid=b1b15e88fa797225412429c1c50c122a1&lt;/p&gt;
+
+&lt;p&gt;在浏览器访问上面这个链接，服务器就会返回数据。返回的数据类型有很多种，如：JSON，XML等。&lt;/p&gt;
+
+&lt;p&gt;本文旨在通过一个例子简要介绍这种服务器程序的构建，最终完成一个服务器程序，实现通过 URL 与服务器通信，服务器返回 JSON 格式的数据。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id2a&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;问题及需求分析&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-id21aapi&quot;&gt;&lt;a id=&quot;21&quot;&gt;&lt;/a&gt;API&lt;/h2&gt;
+
+&lt;p&gt;观察上面的 URL，我们可以发现它可以分为两个部分。&lt;/p&gt;
+
+&lt;p&gt;一是主机地址：&lt;code class=&quot;highlighter-rouge&quot;&gt;http://api.openweathermap.org/data/2.5/weather&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;二是参数：&lt;code class=&quot;highlighter-rouge&quot;&gt;q=London,uk&amp;amp;appid=b1b15e88fa797225412429c1c50c122a1&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;主机地址和参数之间用 &lt;code class=&quot;highlighter-rouge&quot;&gt;?&lt;/code&gt; 隔开。参数又可以分为多个独立的参数。在这个 URL 中，共包含了两个参数，分别是 &lt;code class=&quot;highlighter-rouge&quot;&gt;q&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;appid&lt;/code&gt;，等号后面是参数的值。&lt;/p&gt;
+
+&lt;p&gt;我们要做的是一个&lt;strong&gt;物联网温度传感器的后台服务器&lt;/strong&gt;，即根据不同的 URL，返回温度数据或储存温度数据。&lt;/p&gt;
+
+&lt;p&gt;假设我们的 API 如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-a&quot;&gt;获取最近的一个温度数据 API：
+http://localhost:8888/temperature.php?key=lsw&amp;amp;query=get
+返回示例（JSON）：
+成功：{&quot;status&quot;:true,&quot;date&quot;:&quot;2016-11-17 19:13:09&quot;,&quot;value&quot;:32.63}
+失败：{&quot;status”:false,”message”:”*&quot;}
+备注：”value” 的数据类型是 double
+
+上传一个温度数据 API：
+http://localhost:8888/temperature.php?key=lsw&amp;amp;query=set&amp;amp;value=27.1
+返回示例（JSON）：
+成功：{&quot;status&quot;:true,&quot;message&quot;:&quot;setting success&quot;}
+失败：{&quot;status”:false,”message”:”*&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;URL 中的 temperature.php 就是我们即将编写的网页文件。key 和 query 是两个参数，在 query=set 时，还应带有 value 参数。返回的数据类型是 JSON，以 status 标志操作是否成功，以及附带有信息或数据。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id22ajson-&quot;&gt;&lt;a id=&quot;22&quot;&gt;&lt;/a&gt;JSON 数据&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://baike.baidu.com/link?url=vAIdH3CjSpssVA3Xh3KoBWFTjfdNwGcL9eD7QspsbyDdLPMq76QYBM0I61VUj2aomAJlJyFqoXRo8HVG6qwl-K&quot;&gt;JSON&lt;/a&gt;&lt;/strong&gt;(JavaScript Object Notation) 是一种轻量级的数据交换格式。它基于ECMAScript的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C、C++、C#、Java、JavaScript、Perl、Python等）。这些特性使JSON成为理想的数据交换语言。 易于人阅读和编写，同时也易于机器解析和生成(一般用于提升网络传输速率)。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;JSON 数据是可以带有数据类型的，如上面返回示例中的 value 是一个 double 类型的数据。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id3a&quot;&gt;&lt;a id=&quot;3&quot;&gt;&lt;/a&gt;实现&lt;/h1&gt;
+&lt;p&gt;## &lt;a id=&quot;31&quot;&gt;&lt;/a&gt;本地服务器开发环境：MAMP&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.mamp.info/en/&quot;&gt;MAMP&lt;/a&gt; 是经典本地服务器环境的 Mac OS 软件。MAMP 这几个首字母代表苹果的 Mac OS 系统上的 Macintosh、Apache、MySQL 和 PHP。在 Windows 系统上也有相应的开发环境，WAMP。这里以 MAMP 为例进行说明。&lt;/p&gt;
+
+&lt;p&gt;MAMP 分免费版和专业版，我们目前只需要用到免费版。安装完成后运行，点击 Start Servers 就可以运行本地的服务器。默认的本地服务器地址是：&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8888&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;在 MAMP 的 Preferences.. -&amp;gt; Web Server -&amp;gt; Document Foot 可以定位到服务器源文件目录。服务器的程序就保存在这个目录里。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id32a-mysql&quot;&gt;&lt;a id=&quot;32&quot;&gt;&lt;/a&gt;后台数据库 MySQL&lt;/h2&gt;
+
+&lt;p&gt;为了存储数据，服务器需要有一个数据库，并实现与数据库之间的通信。首先我们用 MAMP 运行本地的服务器，在打开的导航网页中打开数据库的管理页面。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/JSONWebServer_mysql.png&quot; alt=&quot;MySQL&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;新建一个名为 &lt;code class=&quot;highlighter-rouge&quot;&gt;temperatureData&lt;/code&gt; 的数据库，再新建一个数据表 &lt;code class=&quot;highlighter-rouge&quot;&gt;temperature&lt;/code&gt;，并添加如下字段：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/JSONWebServer_table.png&quot; alt=&quot;数据表&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就完成了数据库的配置，目前只需要储存温度信心，因此只配置这几个条目。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id33a&quot;&gt;&lt;a id=&quot;33&quot;&gt;&lt;/a&gt;服务器程序&lt;/h2&gt;
+
+&lt;p&gt;有了数据库，接下来就要写服务器程序了。服务器程序需要完成以下几个部分的内容：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;连接数据库，与数据库通信，实现数据的读取与存储。&lt;/li&gt;
+  &lt;li&gt;获取 URL 中的参数，根据不同的参数和参数值执行相应的操作。&lt;/li&gt;
+  &lt;li&gt;封装要返回的信息，以 JSON 形式返回。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;具体的程序如下，在关键的地方以注释的方式进行说明。&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//函数：用于把数据封装为 JSON 格式
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;echoJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$withStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$andMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;status&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$withStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;message&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$andMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;json_encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Content-Type: application/json&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 配置数据库
+&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;root&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;root&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;temperatureData&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8889&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysqli_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$success&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysqli_real_connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                   &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt;
+                                   &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$privateKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lsw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//与数据库连接成功后，获取 URL 中的参数值，根据参数执行相应的程序。如：$_GET[&quot;key&quot;] 用于获取 URL 中 &quot;key&quot; 的参数值。
+&lt;/span&gt;        &lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$privateKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;get&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysqli_query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SELECT * FROM `Temperature`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysqli_fetch_array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    
+                    &lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;status&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;date&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Date&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;value&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+                    &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;json_encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;nb&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Content-Type: application/json&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;set&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+                    &lt;span class=&quot;nv&quot;&gt;$valueDouble&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$valueDouble&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;mysqli_query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DELETE FROM `Temperature` WHERE 1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;mysqli_query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;INSERT INTO `Temperature`(`Date`, `Value`) VALUES (CURRENT_TIMESTAMP,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$valueDouble&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;);&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                        &lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;status&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;message&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;setting success&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                        &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;json_encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                        &lt;span class=&quot;nb&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Content-Type: application/json&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$jsonstring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;echoJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;invalid value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;echoJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unsupported query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;echoJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;invalid key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;echoJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connect Error: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysqli_connect_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 关闭数据库连接。
+&lt;/span&gt;    &lt;span class=&quot;nx&quot;&gt;mysqli_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在服务器目录里新建一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;temperature.php&lt;/code&gt; 文件，将上述程序复制到文件中保存。用 MAMP 运行服务器，下面将检验我们服务器的配置情况。&lt;/p&gt;
+
+&lt;p&gt;在浏览器中访问：http://localhost:8888/temperature.php?key=lsw&amp;amp;query=get 就能获取数据库中的温度信息。如果数据库中还没有温度信息，则会返回如下结果：&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{&quot;status&quot;:true,&quot;date&quot;:null,&quot;value&quot;:0}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在浏览器中显示如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/JSONWebServer_json.png&quot; alt=&quot;JSON&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;完整的程序请看&lt;a href=&quot;https://github.com/LinShiwei/LswApacheServer/blob/master/temperature.php&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;关于如何使用这个 Web 服务器完成物联网温度传感器，请参考：[LOT&lt;/td&gt;
+      &lt;td&gt;物联网 温度传感器](http://linshiwei.site/tutorial/2016/11/02/LOT-thermometer)。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>LOT|物联网 温度传感器</title>
+   <link href="/tutorial/2016/11/02/LOT-thermometer"/>
+   <updated>2016-11-02T00:00:00+08:00</updated>
+   <id>/tutorial/2016/11/02/LOT-thermometer</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;物联网温度传感器&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21&quot;&gt;传感器&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#211&quot;&gt;ESP8266&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href=&quot;#2111&quot;&gt;烧写固件，调试开发板&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;#2112&quot;&gt;用 Arduino 编程&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#212&quot;&gt;DS18B20&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22&quot;&gt;远程服务器&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#221&quot;&gt;方案一：ThingSpeak&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#222&quot;&gt;方案二：自己搭建服务端&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h1 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
+
+&lt;p&gt;前段时间从网上买了一个体重计，它自带了无线上网的功能，能够同步体重测量数据到网上。想到物联网已经有这么多产品了，于是就打算自己做一个物联网温度传感器。要做一个物联网的设备，不管是体重计还是温度传感器等等，首先要清楚物体是怎么联网的。&lt;/p&gt;
+
+&lt;p&gt;其中一种方式是通过 Wi-Fi 模块进行连接。配备有 Wi-Fi 模块的设备，能够搜索附近的无线热点，通过 Wi-Fi 用户名和密码连接 Wi-Fi。但是如何让设备知道所要连接的 Wi-Fi 和密码呢？&lt;/p&gt;
+
+&lt;p&gt;具体的方法可以参考这里：&lt;a href=&quot;http://www.jianshu.com/p/a852d5ca6a44&quot;&gt;智能家居第一步： WiFi 设备怎么连上网&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;由于我们要完成的是一个物联网温度传感器，我们选择一种相对简单、直接的方法：我们在程序里面直接设定好所要连接的 Wi-Fi 和密码，这样就能让传感器联网了。下面将会介绍具体的做法。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-id2a&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;物联网温度传感器&lt;/h1&gt;
+
+&lt;p&gt;物联网温度传感器分为两大部分。一是&lt;strong&gt;传感器&lt;/strong&gt;，用于采集和发送温度数据；二是&lt;strong&gt;远程服务器&lt;/strong&gt;，用于收集温度数据和根据请求返回温度数据。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id21a&quot;&gt;&lt;a id=&quot;21&quot;&gt;&lt;/a&gt;传感器&lt;/h2&gt;
+
+&lt;p&gt;对于传感器部分，需要一下材料：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ESP8266开发板（附带 Wi-Fi 模块和电源模块）;&lt;/li&gt;
+  &lt;li&gt;DS18B20（温度传感器）;&lt;/li&gt;
+  &lt;li&gt;连接线（USB线、导线）、电脑;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-id211aesp8266&quot;&gt;&lt;a id=&quot;211&quot;&gt;&lt;/a&gt;ESP8266&lt;/h3&gt;
+
+&lt;p&gt;ESP8266是一个小型的 Wi-Fi 模块，能够建立 Wi-Fi 热点和连接 Wi-Fi 热点，并且能够配置 Web Client 或 Web Server 。它在我们这个温度传感器中的作用就是，作为一个 Web Client ，在通过 Wi-Fi 联网后，实时向远程服务器发送本地的（温度）数据。&lt;/p&gt;
+
+&lt;p&gt;ESP8266有很多个型号，从 ESP-01 到 ESP-12F 。ESP-01 是最初的版本，它上面可用的 GPIO 引脚较少，而 ESP-12F 具有全部 GPIO 引脚。由于 ESP8266 的额定电压是 3.3V，而 USB 的电压是 5V ，因此如果要单独使用 ESP8266 的话，就需要外接电源转化模块。&lt;/p&gt;
+
+&lt;p&gt;我们选用的是 &lt;strong&gt;ESP-12E NodeMCU 开发板&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_mcu.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;开发板上集成了电源模块，因此我们可以直接用 USB 给开发板供电，来使用 ESP8266，而不需要额外的电源模块。&lt;/p&gt;
+
+&lt;p&gt;开发板上附带有 CP2102（高度集成的 USB-UART 桥接器）因此我们只需要用一根 USB 线连接开发板与电脑，就能实现供电和下载程序。CP2102 在 Mac 和 PC 有相应的驱动程序，安装好驱动程序后，连接电脑，电脑就能识别出它的串口号。在接下去的烧写固件和下载程序都需要用到这个串口。&lt;/p&gt;
+
+&lt;p&gt;将开发板连上电脑后，接下去我们将烧写固件，并下载程序到 ESP8266 里。&lt;/p&gt;
+
+&lt;h4 id=&quot;a-id2111a&quot;&gt;&lt;a id=&quot;2111&quot;&gt;&lt;/a&gt;烧写固件，调试开发板&lt;/h4&gt;
+
+&lt;p&gt;一、烧写固件&lt;/p&gt;
+
+&lt;p&gt;烧写固件（firmware）需要用到 &lt;a href=&quot;https://github.com/nodemcu/nodemcu-flasher&quot;&gt;ESP8266Flasher&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;首先，从 &lt;a href=&quot;https://github.com/nodemcu/nodemcu-firmware&quot;&gt;nodemcu-firmware&lt;/a&gt; 选择合适的固件，如：&lt;code class=&quot;highlighter-rouge&quot;&gt;nodemcu_float_0.9.6-dev_20150704.bin&lt;/code&gt; 。&lt;/p&gt;
+
+&lt;p&gt;然后打开 ESP8266，在 “Config” 页面选择需要烧写的固件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_flashConfig.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在 “Advanced” 页面设置好波特率，如：115200，一般这一页不需要修改。设置完成后，在 “Operation” 页面选择串口，点击 “Flash” 进行烧写。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_flashOperation.png&quot; alt=&quot;image&quot; /&gt;
+&lt;img src=&quot;/images/ESP8266_flashFlashing.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;二、调试开发板&lt;/p&gt;
+
+&lt;p&gt;烧写完成后，我们需要验证固件是否烧写成功。关闭烧写程序，重新连接开发板与计算机，打开调试软件，推荐使用 Tera Term。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_teratermConfig.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;初次打开 TeraTerm 需进行简单配置，在 “Serial” 选择相应的串口，点击 “OK” 进入主界面，此时输入：&lt;/p&gt;
+
+&lt;div class=&quot;language-lua highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello world&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;得到相应如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_teratermTest.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，烧写的固件已经运行在开发板中，下一步可以进行程序的编写和下载。&lt;/p&gt;
+
+&lt;h4 id=&quot;a-id2112a-arduino-&quot;&gt;&lt;a id=&quot;2112&quot;&gt;&lt;/a&gt;用 Arduino 编程&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在 Mac 和 PC 上都可以用 Arduino 为 ESP8166 编程。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;一、配置 Arduino ESP8266 开发平台&lt;/p&gt;
+
+&lt;p&gt;ESP8266 里的程序是支持 Lua 语言的。但是直接写 Lua 程序，然后通过其他的软件把程序下载到开发板上，这个过程并不容易。因为相应的开发软件并不好用，比如 ESPlorer，luatool，Lualoader。因此，我们选用 Arduino 来进行编程。一是因为 Arduino 用的比较多，比较专业，二是因为 Arduino 软件做的比较精致，上手相对容易一些。&lt;/p&gt;
+
+&lt;p&gt;Arduino 是开源软件，下载安装完成后，在”Presences”-&amp;gt;”Additional Board Manager URLs” 里填入 &lt;code class=&quot;highlighter-rouge&quot;&gt;http://arduino.esp8266.com/stable/package_esp8266com_index.json&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;然后从 “Tools”-&amp;gt;”Board”-&amp;gt;”Boards Manager” 打开 Boards Manager。搜索并安装 ESP8266 开发平台。安装完成后，记得在 “Tools”-&amp;gt;”Board” 菜单里选择和你开发板型号一致的开发平台。&lt;/p&gt;
+
+&lt;p&gt;对于 Arduino ESP8266 开发平台的配置还有疑问的话，可以参考 &lt;a href=&quot;https://github.com/esp8266/Arduino&quot;&gt;esp8266/Arduino&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;二、下载测试程序&lt;/p&gt;
+
+&lt;p&gt;连接开发板与电脑，在 Arduino 里选择相应的串口。将以下程序下载到开发板中，记得修改程序中 Wi-Fi 的名称和密码：&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Import required libraries
+&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;#include &quot;ESP8266WiFi.h&quot;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// WiFi parameters
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;YourWifiName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;WifiPassword&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Start Serial
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Connecting&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Connect to WiFi
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WL_CONNECTED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;WiFi connected&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Print the IP address
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localIP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;下载完成后，程序会自动运行。打开 “Tools”-&amp;gt;”Serial Monitor” 查看串口的状态。在串口监视器上，会显示 Wi-Fi 的连接情况，一旦连接成功，就会打印出 IP 地址。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_wifi.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;到这一步，我们已经完成了开发板的调试和程序下载。接下去我们将把 DS18B20 与 ESP8266 结合，实时发送温度数据到远程服务器。&lt;/p&gt;
+
+&lt;h3 id=&quot;a-id212ads18b20&quot;&gt;&lt;a id=&quot;212&quot;&gt;&lt;/a&gt;DS18B20&lt;/h3&gt;
+
+&lt;p&gt;DS18B20是常用的温度传感器，具有体积小，硬件开销低，抗干扰能力强，精度高的特点。&lt;/p&gt;
+
+&lt;p&gt;DS18B20 有三个管脚：GND、DQ、VDD。GND 接地，VDD 接 +3.3V，温度数据只靠 DQ 引脚传输。&lt;/p&gt;
+
+&lt;p&gt;我们选用的是带有上拉电阻的 DS18B20 模块，这样就不必自己外接上拉电阻。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_ds18b20.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;连线方式：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;NodeMCU 开发板 3v3 -&amp;gt; DS18B20 VDD&lt;/li&gt;
+  &lt;li&gt;NodeMCU 开发板 D1  -&amp;gt; DS18B20 DQ&lt;/li&gt;
+  &lt;li&gt;NodeMCU 开发板 GND -&amp;gt; DS18B20 GND&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;为了读取传感器上的温度数据，还需要在 Arduino 上安装 DallasTemperature 库。在 “Sketch” -&amp;gt; “Include Library” -&amp;gt; “Manage Libraries..” 中搜索 DallasTemperature 并安装。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id22a&quot;&gt;&lt;a id=&quot;22&quot;&gt;&lt;/a&gt;远程服务器&lt;/h2&gt;
+
+&lt;h3 id=&quot;a-id221athingspeak&quot;&gt;&lt;a id=&quot;221&quot;&gt;&lt;/a&gt;方案一：ThingSpeak&lt;/h3&gt;
+
+&lt;p&gt;物联网服务器可以选用现成的、也可以自己设计搭建。
+提供物联网服务的有 &lt;a href=&quot;https://thingspeak.com&quot;&gt;ThingSpeak&lt;/a&gt;，它提供了多种强大的物联网 API ，能够满足各种需求。这里我们简单介绍一下使用 Thingspeak 的物联网方案。&lt;/p&gt;
+
+&lt;p&gt;首先需要在 ThingSpeak 上注册帐号，获取帐号的 API key。然后使用下面的程序（需要修改 API key 以及 Wi-Fi 名称和密码）：&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;OneWire.h&amp;gt;
+#include &amp;lt;ESP8266WiFi.h&amp;gt;
+#include &amp;lt;ESP8266WebServer.h&amp;gt;
+#include &amp;lt;DallasTemperature.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define ONE_WIRE_BUS D1
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;api.thingspeak.com&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Your domain
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ApiKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;EWWXFA64H1U55QFZ&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/update?key=&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ApiKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&amp;amp;field1=&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;OneWire&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oneWire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ONE_WIRE_BUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;DallasTemperature&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oneWire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;YourWifiName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;WifiPassword&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Wait for connection
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WL_CONNECTED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Connected to &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;IP address: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localIP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;requestTemperatures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getTempCByIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;85.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;127.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;dtostrf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// send temperature to the serial console
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;WiFiClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpPort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;connection failed&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GET &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; HTTP/1.1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+               &lt;span class=&quot;s&quot;&gt;&quot;Host: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+               &lt;span class=&quot;s&quot;&gt;&quot;Connection: keep-alive&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;程序下载到开发板后，运行时，就会自动读取传感器的温度并上传到 ThingSpeak 上。通过 ThingSpeak 上数据读取的 API，就能在任何一台联网的设备上获得传感器的实时温度数据。&lt;/p&gt;
+
+&lt;h3 id=&quot;a-id222a&quot;&gt;&lt;a id=&quot;222&quot;&gt;&lt;/a&gt;方案二：自己搭建服务端&lt;/h3&gt;
+
+&lt;p&gt;ThingSpeak 是现成的物联网服务，不使用它的话，我们如何自己搭建自己的物联网服务端呢？&lt;/p&gt;
+
+&lt;p&gt;物联网温度传感器的服务端主要由一下几个部分构成：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;服务器主机&lt;/li&gt;
+  &lt;li&gt;服务器程序&lt;/li&gt;
+  &lt;li&gt;后台数据库&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;一、服务器主机&lt;/p&gt;
+
+&lt;p&gt;对与主机的选择，我们选用的是云主机，在淘宝上就可以购买到，选择动态 IP 的云主机即可。&lt;/p&gt;
+
+&lt;p&gt;二、服务器程序&lt;/p&gt;
+
+&lt;p&gt;服务器程序可以使用 PHP 编写，&lt;a href=&quot;https://github.com/LinShiwei/LswApacheServer&quot;&gt;这里&lt;/a&gt;是我编写的温度传感器服务器程序。程序中的 host 默认是 &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost&lt;/code&gt;，可供本地调试使用，当配合云主机使用时，需要改成云主机的地址。&lt;/p&gt;
+
+&lt;p&gt;如果是在 Mac 上调试服务器程序，推荐使用 MAMP。更多关于服务器程序的编写，可以参考另一篇文章&lt;a href=&quot;http://linshiwei.site/tutorial/2016/11/05/Web-server-JSON-API&quot;&gt;PHP：构建 JSON 数据接口的 Web 服务器&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;三、后台数据库&lt;/p&gt;
+
+&lt;p&gt;只有主机和程序还不够，还需要配置好后台服务器。淘宝上购买的云主机一般都配有 MySQL 数据库。在数据库中添加名为 &lt;code class=&quot;highlighter-rouge&quot;&gt;temperature&lt;/code&gt; 的表。然后在表中添加以下字段：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_database.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;结合服务器程序，就能根据接收的请求，进行数据的存储与读取。&lt;/p&gt;
+
+&lt;p&gt;搭建完自己的服务端后，需要对上面的 Arduino 程序稍作修改，如下（需要修改 host 为自己的服务器地址或域名）：&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;OneWire.h&amp;gt;
+#include &amp;lt;ESP8266WiFi.h&amp;gt;
+#include &amp;lt;ESP8266WebServer.h&amp;gt;
+#include &amp;lt;DallasTemperature.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define ONE_WIRE_BUS D1
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;YourDomain.com&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Your domain
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lsw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/temperature.php?key=&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&amp;amp;query=set&amp;amp;value=&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;OneWire&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oneWire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ONE_WIRE_BUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;DallasTemperature&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oneWire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;149149149&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ 
+ &lt;span class=&quot;n&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;softAP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ESPsoftAP_01&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;lsw-soft-AP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;softAPdisconnect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Ready&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Failed!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    
+  &lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Wait for connection
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WL_CONNECTED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Connected to &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;IP address: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WiFi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localIP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;requestTemperatures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DS18B20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getTempCByIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;85.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;127.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;dtostrf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// send temperature to the serial console
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;WiFiClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpPort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Serial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;connection failed&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GET &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperatureString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; HTTP/1.1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+               &lt;span class=&quot;s&quot;&gt;&quot;Host: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+               &lt;span class=&quot;s&quot;&gt;&quot;Connection: keep-alive&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r\n\r\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;将程序下载到开发板中运行，就能实时发送温度数据到服务器上了。
+实际运行效果如下（所连接的 Wi-Fi 名称是 “test”）：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ESP8266_final.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;有任何疑问的话，欢迎在下方评论区讨论。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Swift 3.0 ：UnsafePointer</title>
+   <link href="/experience/2016/10/01/Swift3-UnsafePointer"/>
+   <updated>2016-10-01T00:00:00+08:00</updated>
+   <id>/experience/2016/10/01/Swift3-UnsafePointer</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;Unsafe 结构体&lt;/a&gt;
+      - &lt;a href=&quot;#211&quot;&gt;1. Raw&lt;/a&gt;
+      - &lt;a href=&quot;#212&quot;&gt;2. Mutable&lt;/a&gt;
+      - &lt;a href=&quot;#213&quot;&gt;3. Buffer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;在用 Swift 进行 iOS 开发时，有时会需要调用一些 C++ 的 API，如：使用 OpenCV 。这时候经常需要使用指针，对内存进行访问和处理。&lt;/p&gt;
+
+&lt;p&gt;Swift 是支持指针的。在 3.0 版本之前，Swift 的指针 API 比较晦涩难懂，使用指针 API 时经常是只知其然而不知其所以然。但在 Swift 3.0 里，这部分内容有了重大的改善，变的更有条理更清晰了。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id2aunsafe-&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;Unsafe 结构体&lt;/h2&gt;
+
+&lt;p&gt;在 Swift 3.0 里，定义了如下有关指针的结构体：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;UnsafePointer&lt;/li&gt;
+  &lt;li&gt;UnsafeRawPointer&lt;/li&gt;
+  &lt;li&gt;UnsafeMutablePointer&lt;/li&gt;
+  &lt;li&gt;UnsafeMutableRawPointer&lt;/li&gt;
+  &lt;li&gt;UnsafeBufferPointer&lt;/li&gt;
+  &lt;li&gt;UnsafeMutableBufferPointer&lt;/li&gt;
+  &lt;li&gt;UnsafeBufferPointerIterator&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;它们都以 Unsafe 开头，表示使用这些结构体是很不安全的，使用时要谨慎。对于上面几个结构体，这里做出如下说明：&lt;/p&gt;
+
+&lt;h4 id=&quot;a-id211a1-raw&quot;&gt;&lt;a id=&quot;211&quot;&gt;&lt;/a&gt;1. Raw&lt;/h4&gt;
+&lt;p&gt;名称中含有 Raw 的表示指针指向的内存并没有被分配具体的数据类型。名称中不含 Raw 的表示指针指向的内存是有数据类型的。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeMutablePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;allocate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;capacity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 表示 ptr 指向一个内存地址，从这个地址开始，存放了一个 Int 类型的数据。&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rawPtr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeMutableRawPointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bitPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x608000008FD0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 表示 rawPtr 指向一个内存地址，从这个地址开始存放的数据类型未知。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;UnsafePointer 和 UnsafeRawPointer 的互相转化：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bitPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;rawPtr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeRawPointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;aaa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ptrAgain&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rawPtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;assumingMemoryBound&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;a-id212a2-mutable&quot;&gt;&lt;a id=&quot;212&quot;&gt;&lt;/a&gt;2. Mutable&lt;/h4&gt;
+&lt;p&gt;名称中带有 Mutable 的对应 Swift 中的 var ，不带 Mutable 的对应 let ，描述的是内存中的数据是否可变。例子如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeMutablePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;allocate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;capacity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 输出：50\n&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bitPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x608000008FD0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Error: Cannot assign to property:&#39;pointee&#39; is a get-only property&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;a-id213a3-buffer&quot;&gt;&lt;a id=&quot;213&quot;&gt;&lt;/a&gt;3. Buffer&lt;/h4&gt;
+&lt;p&gt;名称中含有 Buffer 的是用来沟通 Swift 的数组和指针。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeMutablePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;allocate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;capacity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;advanced&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;buffer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeBufferPointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 输出 0～9&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;deallocate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;capacity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;不仅可以用指针访问数组，还可以从数组获取指针：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;withUnsafeBufferPointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 1, 2, 3... &lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;更多的 Unsafe API 请参考官方文档。&lt;/strong&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>HealthKit 配置及使用</title>
+   <link href="/tutorial/2016/09/29/HealthKit-Usage"/>
+   <updated>2016-09-29T00:00:00+08:00</updated>
+   <id>/tutorial/2016/09/29/HealthKit-Usage</id>
+   <content type="html">&lt;!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;配置 HealthKit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;数据获取&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#31&quot;&gt;声明 HKSampleQuery 实例&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#32&quot;&gt;执行获取过程&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4&quot;&gt;与 Core Motion 比较&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. --&gt;
+
+&lt;h2 id=&quot;a-id1a&quot;&gt;&lt;a id=&quot;1&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;HealthKit 储存了 iPhone 和 iWatch 上的健康数据，对于开发者而言，能够很方便地获取相关数据，同时它还具有完善的隐私保护机制，使用户能够对每一项数据进行授权。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/LinShiwei/HealthyDay&quot;&gt;这里&lt;/a&gt;是一个使用 HealthKit 的跑步类 APP ，HealthKit 配置及使用过程与下面的描述一致，可供参考。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id2a-healthkit&quot;&gt;&lt;a id=&quot;2&quot;&gt;&lt;/a&gt;配置 HealthKit&lt;/h2&gt;
+
+&lt;p&gt;通过一下几个步骤，就能够完成 HealthKit 的配置。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在 Xcode 的项目配置页面，选择项目的 target ，在 Capabilities 页面打开 HealthKit 。&lt;/li&gt;
+  &lt;li&gt;在 target 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;info.plist&lt;/code&gt; 里添加两个 HealthKit 的 key 值，分别是：&lt;code class=&quot;highlighter-rouge&quot;&gt;Privacy - Health Share Usage Description&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;Privacy - Health Update Usage Description&lt;/code&gt; 。用于在授权界面进行描述，给用户提供信息。&lt;/li&gt;
+  &lt;li&gt;在需要使用 HealthKit 的文件里：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HealthKit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;声明一个且只有一个 HealthStore 实例：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;healthStore&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HKHealthStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;使用 HealthStore 的实例方法，请求用户授权：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;requestAuthorization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toShare&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;typesToShare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;HKSampleType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;typesToRead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;HKObjectType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;当调用这个方法后，会自动弹出授权界面，等待用户操作。之前在 &lt;code class=&quot;highlighter-rouge&quot;&gt;info.plist&lt;/code&gt; 里设置的 key 值会显示在这个页面上。&lt;/p&gt;
+
+&lt;p&gt;当用户授权后就可以开始获取数据。APP 并不能知道用户已授权或是禁止授权。不管授权结果如何，获取数据的过程都能够进行，只不过当禁止授权时，获取到的数据为空。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-id3a&quot;&gt;&lt;a id=&quot;3&quot;&gt;&lt;/a&gt;数据获取&lt;/h2&gt;
+
+&lt;h3 id=&quot;a-id31a-hksamplequery-&quot;&gt;&lt;a id=&quot;31&quot;&gt;&lt;/a&gt;声明 HKSampleQuery 实例&lt;/h3&gt;
+
+&lt;p&gt;声明一个 HKSampleQuery 实例，需要包含 HKSampleType 、NSPredicate 、limit 、NSSortDescriptor 和 resultsHandler。它们分别对应需要获取的数据类型、过滤条件、数据数量、排序方式以及结果的处理。&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sampleType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HKSampleType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;predicate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSPredicate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;sortDescriptors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;NSSortDescriptor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;resultsHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;HKSampleQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;HKSample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;a-id32a&quot;&gt;&lt;a id=&quot;32&quot;&gt;&lt;/a&gt;执行获取过程&lt;/h3&gt;
+
+&lt;p&gt;有了 HKSampleQuery 实例后，如：sampleQuery ，使用 healthStore 获取数据：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;healthStore&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sampleQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;a-id4a-core-motion-&quot;&gt;&lt;a id=&quot;4&quot;&gt;&lt;/a&gt;与 Core Motion 比较&lt;/h2&gt;
+
+&lt;p&gt;HealthKit 和 Core Motion 都可以用来获取运动数据。但它们的侧重点不同，应根据 APP 的需求，选择合适的框架。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HealthKit
+    &lt;ul&gt;
+      &lt;li&gt;除了运动数据，还可以获取健康数据，并且能够储存近乎无限的数据。&lt;/li&gt;
+      &lt;li&gt;可以用来连接外设&lt;/li&gt;
+      &lt;li&gt;获取数据的速度比 Core Motion 慢&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;CoreMotion
+    &lt;ul&gt;
+      &lt;li&gt;只能获取和保存一周以内的运动数据。&lt;/li&gt;
+      &lt;li&gt;获取数据的速度快&lt;/li&gt;
+      &lt;li&gt;不能连接外设&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Swift 3.0 ：理解 Closure</title>
@@ -125,12 +1541,13 @@
 
 &lt;p&gt;注意，这里指的是标记参数的类型，在 Swift 3 之前，它们是用来标记参数的。&lt;/p&gt;
 
-&lt;p&gt;Swift 2.3 及之前版本：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;swift
-func doSomething(withParameter parameter: Int, @escaping completion: () -&amp;gt; ()) {
-    // ...
-}
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Swift 2.3 及之前版本：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;doSomething&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withParameter&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Swift 3.0：&lt;/p&gt;
 
@@ -174,9 +1591,17 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&amp;gt
 
 &lt;p&gt;也就是说，现在 closure 作为函数的参数，默认是 @noescaping 类型的。&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@escaping&lt;/code&gt; 标记表示 closure 可以在函数运行结束后再执行，而 &lt;code class=&quot;highlighter-rouge&quot;&gt;@noescaping&lt;/code&gt; 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行：&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@escaping&lt;/code&gt; 标记表示 closure 在函数运行结束后再执行，而 &lt;code class=&quot;highlighter-rouge&quot;&gt;@noescaping&lt;/code&gt; 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;UIView&lt;/code&gt; 中的 animate 函数，它的 completion handle 就是 @escaping 的。在通常的书写代码的界面中，并没有显式表出来：&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;animate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withDuration&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TimeInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;animations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;但在定义中，可以看出：&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;animate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withDuration&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TimeInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;animations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Swift&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Swift&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -554,7 +1979,7 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&amp;gt
  </entry>
  
  <entry>
-   <title>让现有的Swift项目支持Carthage</title>
+   <title>让现有的 Swift 项目支持 Carthage</title>
    <link href="/tutorial/2016/07/30/Let-your-framework-support-carthage"/>
    <updated>2016-07-30T00:00:00+08:00</updated>
    <id>/tutorial/2016/07/30/Let-your-framework-support-carthage</id>

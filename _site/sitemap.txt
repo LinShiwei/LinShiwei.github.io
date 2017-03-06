@@ -11,7 +11,16 @@
 /css/main.css
 /rss.xml
 /sitemap.txt
+/page2/
 
+/tutorial/2017/03/01/iOS-in-app-purchase
+/tutorial/2016/12/29/Key-value-observing
+/tutorial/2016/12/23/Local-Notification-Guide
+/tutorial/2016/12/13/Localizing-your-app
+/tutorial/2016/11/05/Web-server-JSON-API
+/tutorial/2016/11/02/LOT-thermometer
+/experience/2016/10/01/Swift3-UnsafePointer
+/tutorial/2016/09/29/HealthKit-Usage
 /experience/2016/09/19/Closure-Swift-3
 /tutorial/2016/09/09/Adding-CoreData-To-Your-Project
 /tutorial/2016/09/07/iOS-Custom-searchController-and-searchBar

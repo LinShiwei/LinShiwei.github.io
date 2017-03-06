@@ -215,12 +215,13 @@
 
 <p>注意，这里指的是标记参数的类型，在 Swift 3 之前，它们是用来标记参数的。</p>
 
-<p>Swift 2.3 及之前版本：
-<code class="highlighter-rouge">swift
-func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()) {
-    // ...
-}
-</code></p>
+<p>Swift 2.3 及之前版本：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="n">withParameter</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="kd">@escaping</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+</div>
 
 <p>Swift 3.0：</p>
 
@@ -264,9 +265,17 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 
 <p>也就是说，现在 closure 作为函数的参数，默认是 @noescaping 类型的。</p>
 
-<p><code class="highlighter-rouge">@escaping</code> 标记表示 closure 可以在函数运行结束后再执行，而 <code class="highlighter-rouge">@noescaping</code> 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行：</p>
+<p><code class="highlighter-rouge">@escaping</code> 标记表示 closure 在函数运行结束后再执行，而 <code class="highlighter-rouge">@noescaping</code> 标记表示 closure 必须在函数运行结束前执行。一个常见的例子是常见的 completion handle ，它们在函数运行完成后才执行。</p>
+
+<p><code class="highlighter-rouge">UIView</code> 中的 animate 函数，它的 completion handle 就是 @escaping 的。在通常的书写代码的界面中，并没有显式表出来：</p>
 
 <div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">animate</span><span class="p">(</span><span class="n">withDuration</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span> <span class="nv">animations</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>但在定义中，可以看出：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="n">open</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">animate</span><span class="p">(</span><span class="n">withDuration</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span> <span class="nv">animations</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Void</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span>
 </code></pre>
 </div>
 
@@ -356,6 +365,14 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 </div>
 
 
+<div class="next">
+<a href="/tutorial/2016/09/29/HealthKit-Usage"  title="HealthKit 配置及使用">
+ <strong>下一篇：</strong><br/> 
+ <span>HealthKit 配置及使用
+</span>
+</a>
+</div>
+
 </nav>
 
 	
@@ -385,11 +402,11 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 		  
 		
 		  
-			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>7</sup></a></li>
+			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>14</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/#Experience" title="Experience">Experience<sup>1</sup></a></li>
+			<li><a href="/categories/#Experience" title="Experience">Experience<sup>2</sup></a></li>
 		  
 		
 		</ul>
@@ -422,11 +439,11 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 			
 		
 			
-				<li><a href="/tags/#swift" title="swift">swift<sup>5</sup></a></li>
+				<li><a href="/tags/#swift" title="swift">swift<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/#iOS" title="iOS">iOS<sup>4</sup></a></li>
+				<li><a href="/tags/#iOS" title="iOS">iOS<sup>10</sup></a></li>
 			
 		
 			
@@ -443,6 +460,54 @@ func doSomething(withParameter parameter: Int, @escaping completion: () -&gt; ()
 		
 			
 				<li><a href="/tags/#Closure" title="Closure">Closure<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#HealthKit" title="HealthKit">HealthKit<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UnsafePointer" title="UnsafePointer">UnsafePointer<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#LOT" title="LOT">LOT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Arduino" title="Arduino">Arduino<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#PHP" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#JSON" title="JSON">JSON<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Web server" title="Web server">Web server<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Xcode" title="Xcode">Xcode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UserNotifications" title="UserNotifications">UserNotifications<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#KVO" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#objective-c" title="objective-c">objective-c<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#In-app purchase" title="In-app purchase">In-app purchase<sup>1</sup></a></li>
 			
 		
 		</ul>

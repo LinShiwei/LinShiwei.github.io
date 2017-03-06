@@ -1,0 +1,711 @@
+
+        <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>iOS 10：本地消息推送指南 | Lin Shiwei</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="linshiwei">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="website">
+    
+    <meta property="og:title" content="iOS 10：本地消息推送指南">
+    <meta property="og:url" content="/tutorial/2016/12/23/Local-Notification-Guide">
+    <meta property="og:site_name" content="Lin Shiwei">
+    <meta property="og:description" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS 10：本地消息推送指南">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lin Shiwei" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.ico">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.ico">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+        <div>
+		    
+			<div id="imglogo">
+				<a href="/"><img src="/assets/img/logo.png" alt="Lin Shiwei" title="Lin Shiwei"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lin Shiwei">Lin Shiwei</a></h1>
+				<h2 class="blog-motto">A technology blog for myself.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>	
+</div>
+    </header>
+    <div id="container">
+      
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+	<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/tutorial/2016/12/23/Local-Notification-Guide" title="iOS 10：本地消息推送指南" itemprop="url">iOS 10：本地消息推送指南</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="linshiwei" target="_blank" itemprop="author">linshiwei</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-23 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<!-- lsw toc mark1. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+  <li><a href="#1">前言</a></li>
+  <li><a href="#2">iOS 消息推送的基础知识</a>
+    <ul>
+      <li><a href="#21">推送方式</a></li>
+      <li><a href="#22">管理消息推送</a></li>
+    </ul>
+  </li>
+  <li><a href="#3">本地消息推送实现</a></li>
+</ul>
+
+<!-- lsw toc mark2. Do not remove this comment so that lsw_toc can update TOC correctly. -->
+
+<h1 id="a-id1a"><a id="1"></a>前言</h1>
+
+<p>Apple 应用的消息推送分为本地消息推送（Local Notification）和远程消息推送（Remote Notification）。当有新的消息时，可以通过本地或远程推送告知用户，即使 App 并未运行。</p>
+
+<ul>
+  <li>本地消息推送不需要联网，由系统统一管理 App 推送的消息，App 只需与系统交互即可。本地消息推送适用于 iOS、tvOS 和 watchOS。</li>
+  <li>远程消息推送需要连接网络，通过 App 或者后台服务器与 Apple Push Notification（APN） 通信，再由 APN 将消息推送到终端上。远程消息推送除了支持 iOS、tvOS 和 watchOS，还支持 macOS。</li>
+</ul>
+
+<p>本文将大体介绍消息推送的相关内容，并实现基本的本地消息推送。想直接看如何实现本地消息推送，请看<strong>“本地消息推送实现”</strong>部分。</p>
+
+<h1 id="a-id2aios-"><a id="2"></a>iOS 消息推送的基础知识</h1>
+
+<h2 id="a-id21a"><a id="21"></a>推送方式</h2>
+
+<p>尽管消息推送方式分为本地和远程，但是他们展现给用户的方式是一样的，因为它们默认使用的是系统提供的外观。主要的推送方式有：</p>
+
+<ul>
+  <li>通知、横幅</li>
+  <li>应用图标标记</li>
+  <li>带有声音的通知、横幅或标记</li>
+</ul>
+
+<h2 id="a-id22a"><a id="22"></a>管理消息推送</h2>
+
+<blockquote>
+  <p>App must be configured at launch time to support local and remote notification.</p>
+</blockquote>
+
+<p>首先，我们需要在 <code class="highlighter-rouge">applicationDidFinishLaunching:</code> 之前声明支持消息推送的方式。如果想在 App 运行后某个时间再进行声明的话，在此之前要避免推送消息。因为在声明支持消息推送之前，发送任何消息都是无效的。</p>
+
+<p>当配置了消息推送的方式后，需要请求授权：<code class="highlighter-rouge">requestAuthorizationWithOptions:completionHandler:</code>，第一次调用该方法时，系统会提示用户 App 需要推送消息，等待用户确认。系统自动保存用户的授权结果，当以后调用该方法时，就不会在出现提示了。</p>
+
+<p>获得推送消息权限后，就需要考虑以下几个问题：</p>
+
+<p>一、设定 Category。当 App 推送的消息很多，需要进行分类时，就需要设定 Category。</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">let</span> <span class="nv">generalCategory</span> <span class="o">=</span> <span class="kt">UNNotificationCategory</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"GENERAL"</span><span class="p">,</span><span class="nv">actions</span><span class="p">:</span> <span class="p">[],</span><span class="nv">intentIdentifiers</span><span class="p">:</span> <span class="p">[],</span><span class="nv">options</span><span class="p">:</span> <span class="o">.</span><span class="n">customDismissAction</span><span class="p">)</span>
+ <span class="c1">// Register the category.</span>
+<span class="k">let</span> <span class="nv">center</span> <span class="o">=</span> <span class="kt">UNUserNotificationCenter</span><span class="o">.</span><span class="nf">current</span><span class="p">()</span>
+<span class="n">center</span><span class="o">.</span><span class="nf">setNotificationCategories</span><span class="p">([</span><span class="n">generalCategory</span><span class="p">])</span>
+</code></pre>
+</div>
+
+<p>设定消息的 Category 后，就可以添加自定义的行为（action），这样用户就可以在不打开 App 的情况下，对消息进行简单的操作。如果不为消息分配 Category，那么消息就会以默认的形式推送，不带有任何附加的行为。</p>
+
+<p>二、为 Category 添加自定义的行为。每个 Category 最多可以包含四个自定义的行为。</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">let</span> <span class="nv">generalCategory</span> <span class="o">=</span> <span class="kt">UNNotificationCategory</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"GENERAL"</span><span class="p">,</span><span class="nv">actions</span><span class="p">:</span> <span class="p">[],</span><span class="nv">intentIdentifiers</span><span class="p">:</span> <span class="p">[],</span><span class="nv">options</span><span class="p">:</span> <span class="o">.</span><span class="n">customDismissAction</span><span class="p">)</span>
+ 
+<span class="c1">// Create the custom actions for the TIMER_EXPIRED category.</span>
+<span class="k">let</span> <span class="nv">snoozeAction</span> <span class="o">=</span> <span class="kt">UNNotificationAction</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"SNOOZE_ACTION"</span><span class="p">,</span><span class="nv">title</span><span class="p">:</span> <span class="s">"Snooze"</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">UNNotificationActionOptions</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="mi">0</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">stopAction</span> <span class="o">=</span> <span class="kt">UNNotificationAction</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"STOP_ACTION"</span><span class="p">,</span><span class="nv">title</span><span class="p">:</span> <span class="s">"Stop"</span><span class="p">,</span><span class="nv">options</span><span class="p">:</span> <span class="o">.</span><span class="n">foreground</span><span class="p">)</span>
+ 
+<span class="k">let</span> <span class="nv">expiredCategory</span> <span class="o">=</span> <span class="kt">UNNotificationCategory</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"TIMER_EXPIRED"</span><span class="p">,</span> <span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="n">snoozeAction</span><span class="p">,</span> <span class="n">stopAction</span><span class="p">],</span><span class="nv">intentIdentifiers</span><span class="p">:</span> <span class="p">[],</span> <span class="nv">options</span><span class="p">:</span> <span class="kt">UNNotificationCategoryOptions</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="mi">0</span><span class="p">))</span>
+ 
+<span class="c1">// Register the notification categories.</span>
+<span class="k">let</span> <span class="nv">center</span> <span class="o">=</span> <span class="kt">UNUserNotificationCenter</span><span class="o">.</span><span class="nf">current</span><span class="p">()</span>
+<span class="n">center</span><span class="o">.</span><span class="nf">setNotificationCategories</span><span class="p">([</span><span class="n">generalCategory</span><span class="p">,</span> <span class="n">expiredCategory</span><span class="p">])</span>
+</code></pre>
+</div>
+
+<p>三、配置通知声音。本地和远程推送都可以自定义声音。自定义声音的音频编码形式可以是以下几种：</p>
+
+<ul>
+  <li>Linear PCM</li>
+  <li>MA(IMA/ADPCM)</li>
+  <li>uLaw</li>
+  <li>aLaw</li>
+</ul>
+
+<p>而音频文件应该为 <code class="highlighter-rouge">.aiff</code>、<code class="highlighter-rouge">.wav</code> 或 <code class="highlighter-rouge">.caf</code> 文件。音频时长必须小于 30s，否则系统会使用默认的声音。Mac 里自带了 afconvert 音频格式转换工具。如在终端中输入如下代码，可以将 16-bit linear PCM 编码的 <code class="highlighter-rouge">Submarine.aiff</code> 文件转化为 IMA4 编码的 <code class="highlighter-rouge">.caf</code> 文件：</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">afconvert</span> <span class="sr">/System/</span><span class="no">Library</span><span class="o">/</span><span class="no">Sounds</span><span class="o">/</span><span class="no">Submarine</span><span class="p">.</span><span class="nf">aiff</span> <span class="o">~</span><span class="sr">/Desktop/su</span><span class="n">b</span><span class="p">.</span><span class="nf">caf</span> <span class="o">-</span><span class="n">d</span> <span class="n">ima4</span> <span class="o">-</span><span class="n">f</span> <span class="n">caff</span> <span class="o">-</span><span class="n">v</span>
+</code></pre>
+</div>
+
+<p>四、管理推送设置。由于用户可以在设置里自由的打开或关闭 App 推送功能，在程序中，需要判断推送功能是否可用：<code class="highlighter-rouge">getNotificationSettingsWithCompletionHandler: </code>。</p>
+
+<p>五、管理推送消息。我们可以给用户推送消息，也可以管理已经推送或将要推送的消息。当一条消息已经不具备时效性，那么我们就应该把它从通知栏中消除。使用：<code class="highlighter-rouge">removeDeliveredNotificationsWithIdentifiers:</code> 或 <code class="highlighter-rouge">removePendingNotificationsWithIdentifiers:</code>。</p>
+
+<h1 id="a-id3a"><a id="3"></a>本地消息推送实现</h1>
+
+<p>下面的代码是实现了一个负责推送消息的对象，它包含了<strong>请求推送</strong>和<strong>创建推送消息</strong>的方法。</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">UIKit</span>
+<span class="kd">import</span> <span class="kt">UserNotifications</span>
+
+<span class="kd">internal</span> <span class="kd">class</span> <span class="kt">LocalNotificationManager</span><span class="p">:</span> <span class="kt">NSObject</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">LocalNotificationManager</span><span class="p">()</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">notificationCenter</span> <span class="o">=</span> <span class="kt">UNUserNotificationCenter</span><span class="o">.</span><span class="nf">current</span><span class="p">()</span>
+    <span class="kd">private</span> <span class="k">override</span> <span class="nf">init</span><span class="p">(){</span>
+        <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>        
+    <span class="p">}</span>
+    <span class="c1">//用于请求推送权限</span>
+    <span class="kd">internal</span> <span class="kd">func</span> <span class="nf">requestAuthorization</span><span class="p">(){</span>
+        <span class="n">notificationCenter</span><span class="o">.</span><span class="nf">requestAuthorization</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="n">alert</span><span class="p">,</span> <span class="o">.</span><span class="n">sound</span><span class="p">]){</span> <span class="p">(</span><span class="n">granted</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">granted</span><span class="o">&amp;&amp;</span><span class="n">error</span> <span class="o">==</span> <span class="kc">nil</span><span class="p">){</span>
+                
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//用于创建推送消息（创建的消息将在调用函数后十秒发出）</span>
+    <span class="kd">internal</span> <span class="kd">func</span> <span class="nf">createNewNotification</span><span class="p">(){</span>     
+        <span class="k">let</span> <span class="nv">content</span> <span class="o">=</span> <span class="kt">UNMutableNotificationContent</span><span class="p">()</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="kt">NSString</span><span class="o">.</span><span class="nf">localizedUserNotificationString</span><span class="p">(</span><span class="nv">forKey</span><span class="p">:</span> <span class="s">"Alarm"</span><span class="p">,</span> <span class="nv">arguments</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="kt">NSString</span><span class="o">.</span><span class="nf">localizedUserNotificationString</span><span class="p">(</span><span class="nv">forKey</span><span class="p">:</span> <span class="s">"WakeUp"</span><span class="p">,</span> <span class="nv">arguments</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+        <span class="k">let</span> <span class="nv">trigger</span> <span class="o">=</span> <span class="kt">UNTimeIntervalNotificationTrigger</span><span class="p">(</span><span class="nv">timeInterval</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">repeats</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+        <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">UNNotificationRequest</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="s">"MyNotification"</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="nv">trigger</span><span class="p">:</span> <span class="n">trigger</span><span class="p">)</span>
+        
+        <span class="n">notificationCenter</span><span class="o">.</span><span class="nf">add</span><span class="p">(</span><span class="n">request</span><span class="p">){(</span><span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">_</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+                <span class="nf">assertionFailure</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>有了上面管理消息推送的对象，实现简单的本地消息推送只需要以下两步：</p>
+
+<p>一、在 AppDelegate.swift 里的 <code class="highlighter-rouge">application:willFinishLaunchingWithOptions:</code> 调用  <code class="highlighter-rouge">requestAuthorization</code> 请求授权：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="n">willFinishLaunchingWithOptions</span> <span class="nv">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplicationLaunchOptionsKey</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+        <span class="kt">LocalNotificationManager</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">requestAuthorization</span><span class="p">()</span>  
+        <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>二、在要推送消息的地方调用：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kt">LocalNotificationManager</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">createNewNotification</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>这样就能收到推送的消息。
+当 App 在后台运行时，消息会以横幅的形式出现。
+当 App 在前台运行时，消息会直接传递给 App，默认状态下不出现横幅。想在前台运行时也出现横幅，可以实现 UNUserNotificationCenterDelegate 代理方法，在 completionHandler 里添加需要的推送形式：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">userNotificationCenter</span><span class="p">(</span><span class="n">_</span> <span class="nv">center</span><span class="p">:</span> <span class="kt">UNUserNotificationCenter</span><span class="p">,</span> <span class="n">willPresent</span> <span class="nv">notification</span><span class="p">:</span> <span class="kt">UNNotification</span><span class="p">,</span> <span class="n">withCompletionHandler</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UNNotificationPresentationOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">completionHandler</span><span class="p">(</span><span class="kt">UNNotificationPresentationOptions</span><span class="o">.</span><span class="n">alert</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><strong>有任何疑问的话，欢迎在下方评论区讨论。</strong></p>
+
+  
+	</div>
+	<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <!--
+  <%- list_categories(item.categories, {
+      show_count: false,
+      class: 'article-category',
+      style: 'none',
+      separator: '►'
+  }) %>
+  -->
+  
+  <a class="article-category-link" href="/categories/#Tutorial">Tutorial</a>
+  
+</div>
+
+
+  <div class="article-tags">
+  <!--
+  <% var tags = [];
+    item.tags.forEach(function(tag){
+      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
+    }); %>-->
+  <span></span> <!--<%- tags.join('') %>-->
+  
+  
+  <a href="/tags/#iOS">iOS</a>
+  
+  <a href="/tags/#swift">swift</a>
+  
+  <a href="/tags/#UserNotifications">UserNotifications</a>
+  
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="/tutorial/2016/12/23/Local-Notification-Guide" data-title="iOS 10：本地消息推送指南 | Lin Shiwei" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>   
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/tutorial/2016/12/13/Localizing-your-app" title="Localization：本地化 iOS 应用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Localization：本地化 iOS 应用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/tutorial/2016/12/29/Key-value-observing"  title="iOS：KVO 实现观察者模式">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS：KVO 实现观察者模式
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="_posts/2016-12-23-Local-Notification-Guide.md" data-title="iOS 10：本地消息推送指南" data-url="/tutorial/2016/12/23/Local-Notification-Guide"></div>
+</section>
+
+
+</div>  
+
+      
+      
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/#Introduction" title="Introduction">Introduction<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Tutorial" title="Tutorial">Tutorial<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/#Experience" title="Experience">Experience<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/#github" title="github">github<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#tensorflow" title="tensorflow">tensorflow<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#jekyll" title="jekyll">jekyll<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#GithubPages" title="GithubPages">GithubPages<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Carthage" title="Carthage">Carthage<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#swift" title="swift">swift<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#iOS" title="iOS">iOS<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchBar" title="UISearchBar">UISearchBar<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UISearchController" title="UISearchController">UISearchController<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#CoreData" title="CoreData">CoreData<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Closure" title="Closure">Closure<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#HealthKit" title="HealthKit">HealthKit<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UnsafePointer" title="UnsafePointer">UnsafePointer<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#LOT" title="LOT">LOT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Arduino" title="Arduino">Arduino<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#PHP" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#JSON" title="JSON">JSON<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Web server" title="Web server">Web server<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#Xcode" title="Xcode">Xcode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#UserNotifications" title="UserNotifications">UserNotifications<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#KVO" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#objective-c" title="objective-c">objective-c<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/#In-app purchase" title="In-app purchase">In-app purchase<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I'm Lin Shiwei in Nankai University, Tianjin, China. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5394744443" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LinShiwei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/5713554" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/linsw" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:linshiweicn@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+	<!--
+			<%  Array.prototype.S=String.fromCharCode(2);
+			  Array.prototype.in_array=function(e){
+    			var r=new RegExp(this.S+e+this.S);
+    			return (r.test(this.S+this.join(this.S)+this.S));
+				};
+				var cc = new Array('by','by-nc','by-nc-nd','by-nc-sa','by-nd','by-sa','zero'); %>
+		<% if (cc.in_array(theme.creative_commons) ) { %>
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/<%= theme.creative_commons %>/4.0" class="cc-opacity" target="_blank">
+            <img src="<%- config.root %>img/cc-<%= theme.creative_commons %>.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    <% } %>
+				-->
+
+		<p class="copyright">
+		Powered by <a href="http://jekyllrb.com" target="_blank" title="jekyll">jekyll</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016
+		
+		<a href="about" target="_blank" title="linshiwei">linshiwei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/js/jquery.imagesloaded.min.js"></script>
+<script src="/assets/js/gallery.js"></script>
+<script src="/assets/js/jquery.qrcode-0.12.0.min.js"></script>
+<script src="/assets/js/toc.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+});
+</script>
+
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"linsw"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<!--
+
+-->
+
+
+
+
+<link rel="stylesheet" href="/assets/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/assets/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      if ($(this).hasClass('emoji')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-80935640-1', '');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5d8208f7dc706aebe63a2bfe1e7a0651' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+  </body>
+ </html>
+
