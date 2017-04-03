@@ -36,7 +36,7 @@ excerpt: 本文介绍如何实现动态添加和删除 App 内购买项目，而
 
 ### <a id="21"></a>1、后台服务器
 
-后台服务器能够根据 http 请求，返回相应的数据。关于搭建后台服务器的方法，请看这篇文章：[文章](http://linshiwei.site/tutorial/2016/11/05/Web-server-JSON-API)。
+后台服务器能够根据 http 请求，返回相应的数据。关于搭建后台服务器的方法，请看这篇文章：[PHP：构建 JSON 数据接口的 Web 服务器](http://linshiwei.site/tutorial/2016/11/05/Web-server-JSON-API)。
 
 假定服务器返回的是 JSON 格式的数据，如下：
 
@@ -59,7 +59,7 @@ excerpt: 本文介绍如何实现动态添加和删除 App 内购买项目，而
 
 下面的代码使用单例模式，实现了从服务器获取并返回内购产品 ID 后缀的功能。
 
-```a
+```swift
 import Foundation
 import Alamofire
 import SwiftyJSON

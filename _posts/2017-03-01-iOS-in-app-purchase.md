@@ -70,7 +70,7 @@ excerpt: 本文将用一个真实的例子，以消费型内购买项目为例�
 
 一、获取商品信息，用于在界面上显示：
 
-```a
+```swift
 SwiftyStoreKit.retrieveProductsInfo([productID]) {[weak self ] result in
     if let product = result.retrievedProducts.first {
         let priceString = product.localizedPrice!
@@ -87,7 +87,7 @@ SwiftyStoreKit.retrieveProductsInfo([productID]) {[weak self ] result in
 
 二、购买商品（当用户点击购买后）：
 
-```a
+```swift
 func purchase(_ productID: String) {
     SwiftyStoreKit.purchaseProduct(productID, atomically: true) { [weak self] result in
         if case .success(let product) = result {
@@ -107,7 +107,7 @@ func purchase(_ productID: String) {
 
 三、完成购买事务：
 
-```a
+```swift
 func completeIAPTransactions() {
     SwiftyStoreKit.completeTransactions(atomically: true) { products in
         for product in products {
