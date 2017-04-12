@@ -23,8 +23,8 @@ excerpt: 本文参考 Apple 官方文档，从总体上介绍并发编程的相�
     - [Dispatch Sources](#22)
     - [Operation Queues](#23)
 - [异步设计技术](#3)
-    - [确定 App 要执行的任务](#31)
-    - [弄清楚任务的执行步骤](#32)
+    - [确定要执行的任务](#31)
+    - [弄清任务的执行步骤](#32)
     - [确定 Queue 的类型](#33)
     - [小技巧](#34)
 - [其它并发技术](#4)
@@ -45,7 +45,7 @@ excerpt: 本文参考 Apple 官方文档，从总体上介绍并发编程的相�
 
 1. Grand Central Dispatch（GCD）；
 2. Operation Queues；
-3. OpenCL 等；
+3. OpenCL 等。
 
 ## <a id="2"></a>GCD 与 Operation Queues
 
@@ -64,7 +64,7 @@ GCD 包含 Dispatch Queues 和 Dispatch Sources。
 Dispatch Queues 的执行方式有两种：
 
 1. Concurrent（并发，可以同时开始多个任务）；
-2. Serial（串行，一个任务完成后才开始下一个任务）；
+2. Serial（串行，一个任务完成后才开始下一个任务）。
 
 它们都是先入先出（FIFO），需要把执行的代码放到函数或 Block 里。
 
@@ -91,11 +91,11 @@ Dispatch Queue 总是以 FIFO 的顺序执行，而 Operation Queue 可以通过
 
 使用 Concurrency 能充分利用多核心，让主线程关注于用户的操作，而把其他任务交给另外的线程。但是这会极大增加代码的复杂度，并且加大维护难度，因此要做出权衡。
 
-### <a id="31"></a>确定 App 要执行的任务
+### <a id="31"></a>确定要执行的任务
 
 进行异步设计，首先确定 App 要完成的任务，按优先级列出，并考虑它们之间的关系。
 
-### <a id="32"></a>弄清楚任务的执行步骤
+### <a id="32"></a>弄清任务的执行步骤
 
 考虑任务的每一步（Unit），分析是否能通过多线程优化，以及能得到多大的性能提升。在不熟悉 NSThread（更底层的线程操作类） 的情况下，使用 queue 可能会比使用 NSThread 效果更好。
 
